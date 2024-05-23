@@ -1,0 +1,62 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{F02AE784-F8D6-451C-BEDE-362A2408FB88}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChatBot.Api", "src\ChatBot.Api\ChatBot.Api.csproj", "{BB061529-C824-44A2-B877-2852C0FEFEAC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChatBot.Api.Application", "src\ChatBot.Api.Application\ChatBot.Api.Application.csproj", "{7278D108-CDF1-4565-8ABB-DCB7E932CB04}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChatBot.Api.OpenAI", "src\ChatBot.Api.OpenAI\ChatBot.Api.OpenAI.csproj", "{54A83D0A-A16F-43F1-9689-8DA0E42633E4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChatBot.Api.HttpClient", "src\ChatBot.Api.HttpClient\ChatBot.Api.HttpClient.csproj", "{F69951C8-A5BE-4E70-93E0-F9383F97B879}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChatBot.Api.Infrastructure", "src\ChatBot.Api.Infrastructure\ChatBot.Api.Infrastructure.csproj", "{1366E496-2DCA-45D8-BE09-FAC76FF6BB95}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChatBot.Api.Mongo", "src\ChatBot.Api.Mongo\ChatBot.Api.Mongo.csproj", "{196BCA59-D5D5-4A18-A80B-1F2043DBE7A0}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{BB061529-C824-44A2-B877-2852C0FEFEAC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BB061529-C824-44A2-B877-2852C0FEFEAC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BB061529-C824-44A2-B877-2852C0FEFEAC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BB061529-C824-44A2-B877-2852C0FEFEAC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7278D108-CDF1-4565-8ABB-DCB7E932CB04}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7278D108-CDF1-4565-8ABB-DCB7E932CB04}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7278D108-CDF1-4565-8ABB-DCB7E932CB04}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7278D108-CDF1-4565-8ABB-DCB7E932CB04}.Release|Any CPU.Build.0 = Release|Any CPU
+		{54A83D0A-A16F-43F1-9689-8DA0E42633E4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{54A83D0A-A16F-43F1-9689-8DA0E42633E4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{54A83D0A-A16F-43F1-9689-8DA0E42633E4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{54A83D0A-A16F-43F1-9689-8DA0E42633E4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F69951C8-A5BE-4E70-93E0-F9383F97B879}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F69951C8-A5BE-4E70-93E0-F9383F97B879}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F69951C8-A5BE-4E70-93E0-F9383F97B879}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F69951C8-A5BE-4E70-93E0-F9383F97B879}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1366E496-2DCA-45D8-BE09-FAC76FF6BB95}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1366E496-2DCA-45D8-BE09-FAC76FF6BB95}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1366E496-2DCA-45D8-BE09-FAC76FF6BB95}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1366E496-2DCA-45D8-BE09-FAC76FF6BB95}.Release|Any CPU.Build.0 = Release|Any CPU
+		{196BCA59-D5D5-4A18-A80B-1F2043DBE7A0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{196BCA59-D5D5-4A18-A80B-1F2043DBE7A0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{196BCA59-D5D5-4A18-A80B-1F2043DBE7A0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{196BCA59-D5D5-4A18-A80B-1F2043DBE7A0}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{BB061529-C824-44A2-B877-2852C0FEFEAC} = {F02AE784-F8D6-451C-BEDE-362A2408FB88}
+		{7278D108-CDF1-4565-8ABB-DCB7E932CB04} = {F02AE784-F8D6-451C-BEDE-362A2408FB88}
+		{54A83D0A-A16F-43F1-9689-8DA0E42633E4} = {F02AE784-F8D6-451C-BEDE-362A2408FB88}
+		{F69951C8-A5BE-4E70-93E0-F9383F97B879} = {F02AE784-F8D6-451C-BEDE-362A2408FB88}
+		{1366E496-2DCA-45D8-BE09-FAC76FF6BB95} = {F02AE784-F8D6-451C-BEDE-362A2408FB88}
+		{196BCA59-D5D5-4A18-A80B-1F2043DBE7A0} = {F02AE784-F8D6-451C-BEDE-362A2408FB88}
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,23 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <ItemGroup>
+    <ProjectReference Include="..\ChatBot.Api.OpenAI\ChatBot.Api.OpenAI.csproj" />
+    <ProjectReference Include="..\ChatBot.Api.Application\ChatBot.Api.Application.csproj" />
+    <ProjectReference Include="..\ChatBot.Api.Mongo\ChatBot.Api.Mongo.csproj" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <InternalsVisibleTo Include="ChatBot.Api.UnitTests" />
+    <InternalsVisibleTo Include="ChatBot.Api" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MongoDB.Driver" Version="2.25.0" />
+  </ItemGroup>
+</Project>
