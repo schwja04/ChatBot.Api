@@ -21,6 +21,7 @@ public static class ServiceCollectionExtensions
         services
             .BindMongoConfigurationOptions(configuration)
             .BindPkiConfigurationOptions(configuration)
+            .AddSingleton<IMongoConfigManager, MongoConfigManager>()
             .AddSingleton<IX509Manager, X509Manager>()
             .AddSingleton<IMongoClientFactory, MongoClientFactory>();
 
@@ -68,12 +69,13 @@ public static class ServiceCollectionExtensions
     {
         MongoConfigurationRecord mongoConfigurationRecord = new();
         configuration.Bind(MongoConfigurationRecord.RootKey, mongoConfigurationRecord);
+        MongoConfigManager mongoConfigManager = new(mongoConfigurationRecord);
 
         PkiConfigurationRecord pkiConfigurationRecord = new();
         configuration.Bind(PkiConfigurationRecord.RootKey, pkiConfigurationRecord);
         X509Manager x509Manager = new(pkiConfigurationRecord);
 
-        MongoClientFactory mongoClientFactory = new MongoClientFactory(mongoConfigurationRecord, x509Manager);
+        MongoClientFactory mongoClientFactory = new MongoClientFactory(mongoConfigManager, x509Manager);
 
         IMongoDatabase database = mongoClientFactory
             .CreateClient()

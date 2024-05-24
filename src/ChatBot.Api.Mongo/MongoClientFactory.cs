@@ -1,4 +1,3 @@
-using Microsoft.Extensions.Options;
 using MongoDB.Driver;
 using System.Security.Cryptography.X509Certificates;
 
@@ -9,6 +8,7 @@ namespace ChatBot.Api.Mongo;
 public class MongoClientFactory : IMongoClientFactory
 {
     private readonly IX509Manager _x509Manager;
+    private readonly IMongoConfigManager _mongoConfigManager;
 
     private object _lock = new();
     private MongoConfigurationRecord _configuration;
@@ -17,64 +17,39 @@ public class MongoClientFactory : IMongoClientFactory
     private IMongoClient _cachedMongoClient = null!;
 
 
-    public MongoClientFactory(IOptionsMonitor<MongoConfigurationRecord> mongoConfigurationOption, IX509Manager x509Manager)
+    public MongoClientFactory(IMongoConfigManager mongoConfigManger, IX509Manager x509Manager)
     {
-        ArgumentNullException.ThrowIfNull(mongoConfigurationOption, nameof(mongoConfigurationOption));
-
         _x509Manager = x509Manager;
-        _configuration = mongoConfigurationOption.CurrentValue;
+        _mongoConfigManager = mongoConfigManger;
 
-        _certificate = x509Manager.GetCertificate();
-        mongoConfigurationOption.OnChange(OnConfigurationChange);
-    }
-
-    public MongoClientFactory(MongoConfigurationRecord mongoConfigurationRecord, IX509Manager x509Manager)
-    {
-        ArgumentNullException.ThrowIfNull(mongoConfigurationRecord, nameof(mongoConfigurationRecord));
-
-        _configuration = mongoConfigurationRecord;
-        _x509Manager = x509Manager;
-
+        _configuration = mongoConfigManger.GetMongoConfigurationRecord();
         _certificate = x509Manager.GetCertificate();
     }
 
     public IMongoClient CreateClient()
     {
-        return _cachedMongoClient ??= LoadMongoClient();
-    }
+        var mongoConfigurationRecord = _mongoConfigManager.GetMongoConfigurationRecord();
+        var certificate = _x509Manager.GetCertificate();
 
-    public MongoConfigurationRecord GetMongoConfigurationRecord()
-    {
-        return _configuration;
-    }
+        if (_cachedMongoClient is not null
+                && ReferenceEquals(mongoConfigurationRecord, _configuration)
+                && ReferenceEquals(certificate, _certificate))
+        {
+            return _cachedMongoClient;
+        }
 
-    private void OnConfigurationChange(MongoConfigurationRecord mongoConfigurationRecord)
-    {
-        _configuration = mongoConfigurationRecord;
-
-        _cachedMongoClient = LoadMongoClient();
-    }
-
-    private IMongoClient LoadMongoClient()
-    {
         if (!string.IsNullOrEmpty(_configuration.Username) && !string.IsNullOrEmpty(_configuration.Password))
         {
             lock (_lock)
             {
                 var settings = MongoClientSettings.FromConnectionString(_configuration.ConnectionString);
-                settings.Credential = MongoCredential.CreateCredential(_configuration.DatabaseName, _configuration.Username, _configuration.Password);
+                settings.Credential = MongoCredential.CreateCredential(
+                        _configuration.DatabaseName, _configuration.Username, _configuration.Password);
 
                 _cachedMongoClient = new MongoClient(settings);
 
                 return _cachedMongoClient;
             }
-        }
-
-        var certificate = _x509Manager.GetCertificate();
-
-        if (_cachedMongoClient is not null && ReferenceEquals(certificate, _certificate))
-        {
-            return _cachedMongoClient;
         }
 
         lock (_lock)
@@ -95,5 +70,10 @@ public class MongoClientFactory : IMongoClientFactory
             return _cachedMongoClient;
         }
 
+    }
+
+    public MongoConfigurationRecord GetMongoConfigurationRecord()
+    {
+        return _configuration;
     }
 }
