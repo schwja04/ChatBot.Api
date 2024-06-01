@@ -1,11 +1,14 @@
 using ChatBot.Api.Application.Abstractions;
 using ChatBot.Api.Application.Abstractions.Repositories;
 using ChatBot.Api.Infrastructure.Repositories;
+using Common.Cors;
 using Common.HttpClient;
 using Common.Mongo;
 using Common.OpenAI.Clients;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddCorsConfiguration(builder.Configuration);
 
 // Add services to the container.
 RegisterServices(builder.Services, builder.Configuration);
@@ -25,6 +28,9 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseRouting();
+
+app.UseCors("CorsPolicy");
+
 app.MapControllers();
 app.UseHttpsRedirection();
 
