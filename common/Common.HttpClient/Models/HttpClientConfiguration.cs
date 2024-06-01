@@ -1,6 +1,6 @@
 using Microsoft.Extensions.Configuration;
 
-namespace ChatBot.Api.HttpClient.Models;
+namespace Common.HttpClient.Models;
 
 public class HttpClientConfiguration<TImplementationType> : HttpClientConfiguration
 {

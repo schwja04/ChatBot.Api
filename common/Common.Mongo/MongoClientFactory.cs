@@ -1,9 +1,9 @@
 using MongoDB.Driver;
 using System.Security.Cryptography.X509Certificates;
 
-using ChatBot.Api.Mongo.Models;
+using Common.Mongo.Models;
 
-namespace ChatBot.Api.Mongo;
+namespace Common.Mongo;
 
 public class MongoClientFactory : IMongoClientFactory
 {

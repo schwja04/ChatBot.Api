@@ -1,9 +1,9 @@
 using ChatBot.Api.Application.Abstractions;
 using ChatBot.Api.Application.Abstractions.Repositories;
-using ChatBot.Api.HttpClient;
 using ChatBot.Api.Infrastructure.Repositories;
-using ChatBot.Api.Mongo;
-using ChatBot.Api.OpenAI.Clients;
+using Common.HttpClient;
+using Common.Mongo;
+using Common.OpenAI.Clients;
 
 var builder = WebApplication.CreateBuilder(args);
 

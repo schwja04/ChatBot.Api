@@ -2,9 +2,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using MS = System.Net.Http;
 
-using ChatBot.Api.HttpClient.Models;
+using Common.HttpClient.Models;
 
-namespace ChatBot.Api.HttpClient;
+namespace Common.HttpClient;
 
 public static class ServiceCollectionExtensions
 {

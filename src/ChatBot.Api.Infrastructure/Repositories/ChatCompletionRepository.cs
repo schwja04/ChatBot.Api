@@ -1,8 +1,8 @@
 using ChatBot.Api.Application.Abstractions.Repositories;
 using ChatBot.Api.Application.Models;
 using ChatBot.Api.Infrastructure.Repositories.Builders;
-using ChatBot.Api.OpenAI.Clients;
-using ChatBot.Api.OpenAI.Models;
+using Common.OpenAI.Clients;
+using Common.OpenAI.Models;
 
 namespace ChatBot.Api.Infrastructure.Repositories;
 

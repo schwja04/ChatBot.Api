@@ -4,7 +4,7 @@ using ChatBot.Api.Application.Abstractions.Repositories;
 using ChatBot.Api.Application.Models;
 using ChatBot.Api.Infrastructure.MongoModels;
 using ChatBot.Api.Infrastructure.Repositories.Mappers;
-using ChatBot.Api.Mongo;
+using Common.Mongo;
 
 namespace ChatBot.Api.Infrastructure.Repositories;
 

@@ -2,9 +2,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using MongoDB.Driver;
 
-using ChatBot.Api.Mongo.Models;
+using Common.Mongo.Models;
 
-namespace ChatBot.Api.Mongo;
+namespace Common.Mongo;
 
 public static class ServiceCollectionExtensions
 {

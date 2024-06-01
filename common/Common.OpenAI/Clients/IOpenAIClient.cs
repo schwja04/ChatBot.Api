@@ -1,6 +1,6 @@
-using ChatBot.Api.OpenAI.Models;
+using Common.OpenAI.Models;
 
-namespace ChatBot.Api.OpenAI.Clients;
+namespace Common.OpenAI.Clients;
 
 public interface IOpenAIClient
 {

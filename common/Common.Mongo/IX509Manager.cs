@@ -1,6 +1,6 @@
 using System.Security.Cryptography.X509Certificates;
 
-namespace ChatBot.Api.Mongo;
+namespace Common.Mongo;
 
 public interface IX509Manager
 {

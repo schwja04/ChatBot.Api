@@ -1,4 +1,4 @@
-namespace ChatBot.Api.OpenAI.Models;
+namespace Common.OpenAI.Models;
 
 public class CreateChatCompletionResponse
 {

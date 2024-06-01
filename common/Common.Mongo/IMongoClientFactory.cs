@@ -1,8 +1,7 @@
 using MongoDB.Driver;
+using Common.Mongo.Models;
 
-using ChatBot.Api.Mongo.Models;
-
-namespace ChatBot.Api.Mongo;
+namespace Common.Mongo;
 
 public interface IMongoClientFactory
 {

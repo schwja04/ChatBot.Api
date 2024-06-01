@@ -1,4 +1,4 @@
-namespace ChatBot.Api.Mongo.Models;
+namespace Common.Mongo.Models;
 
 public class PkiConfigurationRecord
 {

@@ -1,4 +1,4 @@
-using ChatBot.Api.OpenAI.Models;
+using Common.OpenAI.Models;
 
 namespace ChatBot.Api.Infrastructure.Repositories.Builders;
 

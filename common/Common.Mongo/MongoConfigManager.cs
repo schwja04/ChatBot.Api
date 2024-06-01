@@ -1,8 +1,8 @@
 using Microsoft.Extensions.Options;
 
-using ChatBot.Api.Mongo.Models;
+using Common.Mongo.Models;
 
-namespace ChatBot.Api.Mongo;
+namespace Common.Mongo;
 
 public class MongoConfigManager : IMongoConfigManager
 {

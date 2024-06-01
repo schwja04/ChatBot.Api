@@ -10,7 +10,7 @@
   <PropertyGroup Condition=" '$(RunConfiguration)' == 'http' " />
   <ItemGroup>
     <PackageReference Include="Mediatr" Version="12.2.0" />
-    <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.5" />
+    <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.6" />
     <PackageReference Include="Microsoft.Extensions.Options" Version="8.0.2" />
     <PackageReference Include="MongoDB.Driver" Version="2.25.0" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.6.2" />
@@ -18,9 +18,18 @@
   <ItemGroup>
     <ProjectReference Include="..\ChatBot.Api.Application\ChatBot.Api.Application.csproj" />
     <ProjectReference Include="..\ChatBot.Api.Infrastructure\ChatBot.Api.Infrastructure.csproj" />
-    <ProjectReference Include="..\ChatBot.Api.OpenAI\ChatBot.Api.OpenAI.csproj" />
-    <ProjectReference Include="..\ChatBot.Api.HttpClient\ChatBot.Api.HttpClient.csproj" />
-    <ProjectReference Include="..\ChatBot.Api.Mongo\ChatBot.Api.Mongo.csproj" />
+    <ProjectReference Include="..\..\common\Common.Cors\Common.Cors.csproj">
+      <GlobalPropertiesToRemove></GlobalPropertiesToRemove>
+    </ProjectReference>
+    <ProjectReference Include="..\..\common\Common.HttpClient\Common.HttpClient.csproj">
+      <GlobalPropertiesToRemove></GlobalPropertiesToRemove>
+    </ProjectReference>
+    <ProjectReference Include="..\..\common\Common.Mongo\Common.Mongo.csproj">
+      <GlobalPropertiesToRemove></GlobalPropertiesToRemove>
+    </ProjectReference>
+    <ProjectReference Include="..\..\common\Common.OpenAI\Common.OpenAI.csproj">
+      <GlobalPropertiesToRemove></GlobalPropertiesToRemove>
+    </ProjectReference>
   </ItemGroup>
 
   <ItemGroup>
