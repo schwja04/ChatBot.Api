@@ -6,6 +6,8 @@ public record ProcessChatMessageCommand : IRequest<ProcessChatMessageCommandResp
 {
     public Guid ContextId { get; init; }
 
-    public string Content { get; init; } = null!;
+    public required string Username { get; init; }
+
+    public required string Content { get; init; }
 }
 

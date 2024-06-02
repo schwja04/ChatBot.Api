@@ -1,9 +1,10 @@
-﻿using ChatBot.Api.Application.Models;
+﻿using System.Collections.ObjectModel;
+using ChatBot.Api.Application.Models;
 using ChatBot.Api.Contracts;
 
 namespace ChatBot.Api.Mappers;
 
-internal static class ChatHistoryMapper
+internal static class ChatMessageMapper
 {
     public static ChatMessageResponse ToChatMessageResponse(this ChatMessage chatMessage)
     {
@@ -21,13 +22,13 @@ internal static class ChatHistoryMapper
         };
     }
 
-    public static ChatMessageResponse[] ToChatMessageResponses(this IEnumerable<ChatMessage> chatMessages)
+    public static ReadOnlyCollection<ChatMessageResponse> ToChatMessageResponses(this IEnumerable<ChatMessage> chatMessages)
     {
         if (chatMessages is null)
         {
             throw new ArgumentNullException(nameof(chatMessages));
         }
 
-        return chatMessages.Select(ToChatMessageResponse).ToArray();
+        return chatMessages.Select(ToChatMessageResponse).ToList().AsReadOnly();
     }
 }

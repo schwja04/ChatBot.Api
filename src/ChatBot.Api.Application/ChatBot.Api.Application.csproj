@@ -10,4 +10,10 @@
     <PackageReference Include="Mediatr" Version="12.2.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Remove="Models\Exceptions\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Models\Exceptions\" />
+  </ItemGroup>
 </Project>

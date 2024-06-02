@@ -4,5 +4,7 @@ namespace ChatBot.Api.Application.Models.Queries;
 
 public record GetChatHistoryQuery : IRequest<GetChatHistoryQueryResponse>
 {
-    public Guid ContextId { get; init; }
+    public required Guid ContextId { get; init; }
+
+    public required string Username { get; init; }
 }

@@ -2,6 +2,7 @@ using MediatR;
 
 using ChatBot.Api.Application.Abstractions.Repositories;
 using ChatBot.Api.Application.Models.Queries;
+using ChatBot.Api.Application.Models.Exceptions;
 
 namespace ChatBot.Api.Application.Handlers;
 
@@ -18,7 +19,12 @@ public class GetChatHistoryQueryHandler : IRequestHandler<GetChatHistoryQuery, G
     {
         var chatHistory = await _chatHistoryRepository.GetChatHistoryAsync(request.ContextId, cancellationToken);
 
-        if (chatHistory is not null)
+        if (chatHistory is null)
+        {
+            return null;
+        }
+
+        if (string.Equals(chatHistory.Username, request.Username, StringComparison.OrdinalIgnoreCase))
         {
             return new GetChatHistoryQueryResponse
             {
@@ -26,6 +32,6 @@ public class GetChatHistoryQueryHandler : IRequestHandler<GetChatHistoryQuery, G
             };
         }
 
-        return (GetChatHistoryQueryResponse?)null;
+        throw new ChatHistoryAuthorizationException(request);
     }
 }

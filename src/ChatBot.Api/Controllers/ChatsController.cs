@@ -14,6 +14,8 @@ public class ChatsController : ControllerBase
 {
     private readonly IMediator _mediator;
 
+    private static readonly string DefaultUsername = "Unknown";
+
     public ChatsController(IMediator mediator)
     {
         _mediator = mediator;
@@ -24,10 +26,12 @@ public class ChatsController : ControllerBase
     [ProducesResponseType(typeof(ProcessChatMessageResponse), StatusCodes.Status200OK)]
     public async Task<IActionResult> PostAsync([FromBody] ProcessChatMessageRequest request, CancellationToken cancellationToken = default)
     {
+
         var command = new ProcessChatMessageCommand
         {
             ContextId = request.ContextId,
-            Content = request.Content
+            Content = request.Content,
+            Username = User.Identity?.Name ?? DefaultUsername
         };
 
         var response = await _mediator.Send(command, cancellationToken);
@@ -39,6 +43,30 @@ public class ChatsController : ControllerBase
         });
     }
 
+    [HttpGet("Metadatas")]
+    [Produces(MediaTypeNames.Application.Json)]
+    public async Task<IActionResult> GetChatHistoryMetadataAsync(CancellationToken cancellationToken = default)
+    {
+        var query = new GetChatHistoryMetadatasQuery()
+        {
+            UserName = User.Identity?.Name ?? DefaultUsername,
+        };
+
+        var response = await _mediator.Send(query, cancellationToken);
+
+        return Ok(new GetChatHistoryMetadatasResponse
+        {
+            ChatHistoryMetadatas = response.ChatHistoryMetadatas.Select(x => new GetChatHistoryMetadataResponse
+            {
+                ContextId = x.ContextId,
+                Title = x.Title,
+                Username = x.Username,
+                CreatedAt = x.CreatedAt,
+                UpdatedAt = x.UpdatedAt
+            }).ToArray()
+        });
+    }
+
     [HttpGet("{contextId}")]
     [Produces(MediaTypeNames.Application.Json)]
     [ProducesResponseType(typeof(GetChatHistoryResponse), StatusCodes.Status200OK)]
@@ -46,7 +74,8 @@ public class ChatsController : ControllerBase
     {
         var query = new GetChatHistoryQuery
         {
-            ContextId = contextId
+            ContextId = contextId,
+            Username = User.Identity?.Name ?? DefaultUsername
         };
 
         var response = await _mediator.Send(query, cancellationToken);
@@ -59,7 +88,12 @@ public class ChatsController : ControllerBase
         return Ok(new GetChatHistoryResponse
         {
             ContextId = response.ChatHistory.ContextId,
-            ChatMessages = response.ChatHistory.ChatMessages.ToChatMessageResponses()
+            Title = response.ChatHistory.Title,
+            Username = response.ChatHistory.Username,
+            ChatMessages = response.ChatHistory.ChatMessages.ToChatMessageResponses(),
+            CreatedAt = response.ChatHistory.CreatedAt,
+            UpdatedAt = response.ChatHistory.UpdatedAt
         });
     }
 }
+

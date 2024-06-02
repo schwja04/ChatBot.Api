@@ -1,4 +1,5 @@
 using MongoDB.Driver;
+using System.Collections.ObjectModel;
 
 using ChatBot.Api.Application.Abstractions.Repositories;
 using ChatBot.Api.Application.Models;
@@ -46,6 +47,34 @@ internal class ChatHistoryMongoRepository : IChatHistoryRepository
         var chatHistoryDal = await result.FirstOrDefaultAsync(cancellationToken);
 
         return chatHistoryDal?.ToDomain();
+    }
+
+    public async Task<ReadOnlyCollection<ChatHistoryMetadata>> GetChatHistoryMetadatasAsync(string username, CancellationToken cancellationToken)
+    {
+        var collection = GetCollection();
+
+        var filter = Builders<ChatHistoryDal>
+            .Filter
+            .Where(x => string.Equals(x.Username, username, StringComparison.OrdinalIgnoreCase));
+
+        using IAsyncCursor<ChatHistoryMetadataDal> result = await collection
+            .FindAsync(filter, new FindOptions<ChatHistoryDal, ChatHistoryMetadataDal>()
+            {
+                Projection = Builders<ChatHistoryDal>
+                    .Projection
+                    .Expression(chatHistory => new ChatHistoryMetadataDal()
+                    {
+                        ContextId = chatHistory.ContextId,
+                        Title = chatHistory.Title,
+                        Username = chatHistory.Username,
+                        CreatedAt = chatHistory.CreatedAt,
+                        UpdatedAt = chatHistory.UpdatedAt,
+                    })
+            }, cancellationToken: cancellationToken);
+
+        var chatHistoryMetadataDals = await result.ToListAsync(cancellationToken);
+
+        return chatHistoryMetadataDals.Select(dal => dal.ToDomain()).ToList().AsReadOnly();
     }
 
     private IMongoCollection<ChatHistoryDal> GetCollection()
