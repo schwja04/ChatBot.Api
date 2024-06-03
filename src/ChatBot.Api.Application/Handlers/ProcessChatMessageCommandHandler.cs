@@ -46,7 +46,7 @@ public class ProcessChatMessageCommandHandler : IRequestHandler<ProcessChatMessa
             var tempHistory = ChatHistory.CreateNew(request.Username);
 
             ChatMessage titleUserMessage = ChatMessage.CreateUserMessage($"""
-                Create a title for our conversation based on the following message. Ensure to keep the title to no more than 5 words.
+                Create a title for our conversation based on the following message. Ensure to keep the title to no more than 5 words. Do not include special characters.
 
                 ### Starting Context Here ###
                 {request.Content}

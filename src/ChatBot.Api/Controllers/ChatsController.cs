@@ -95,5 +95,20 @@ public class ChatsController : ControllerBase
             UpdatedAt = response.ChatHistory.UpdatedAt
         });
     }
+
+    [HttpPut("{contextId}:UpdateTitle")]
+    public async Task<IActionResult> UpdateTitleAsync([FromRoute] Guid contextId, [FromBody] ProcessChatMessageTitleRequest request, CancellationToken cancellationToken = default)
+    {
+        var command = new ProcessChatMessageTitleCommand
+        {
+            ContextId = contextId,
+            Title = request.Title,
+            Username = User.Identity?.Name ?? DefaultUsername
+        };
+
+        await _mediator.Send(command, cancellationToken);
+
+        return NoContent();
+    }
 }
 
