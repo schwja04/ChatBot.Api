@@ -29,12 +29,13 @@ public class X509Manager : IX509Manager
         return _certificate ??= LoadPkiCertificate(_pkiConfigurationRecord);
     }
 
-    private static X509Certificate2 LoadPkiCertificate(PkiConfigurationRecord pkiConfigurationRecord)
+    private static X509Certificate2? LoadPkiCertificate(PkiConfigurationRecord pkiConfigurationRecord)
     {
         if (string.IsNullOrWhiteSpace(pkiConfigurationRecord.ClientCertificate) ||
             string.IsNullOrWhiteSpace(pkiConfigurationRecord.ClientPrivateKey))
         {
-            throw new InvalidOperationException("Client certificate or private key is missing");
+            // throw new InvalidOperationException("Client certificate or private key is missing");
+            return null;
         }
 
         using var certificateFromDisk = X509Certificate2.CreateFromPem(pkiConfigurationRecord.ClientCertificate, pkiConfigurationRecord.ClientPrivateKey);
