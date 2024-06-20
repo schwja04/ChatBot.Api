@@ -10,6 +10,8 @@ internal record ChatMessageDal
 
     public required string Content { get; init; }
 
+    public required string PromptKey { get; init; }
+
     [BsonRepresentation(BsonType.DateTime)]
     public required DateTimeOffset CreatedAt { get; init; }
 

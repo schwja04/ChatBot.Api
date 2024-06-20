@@ -2,10 +2,12 @@ namespace ChatBot.Api.Application.Models;
 
 public record ChatMessage
 {
-    private ChatMessage(Guid messageId, string content, DateTimeOffset createdAt, ChatterRole role)
+    private ChatMessage(
+        Guid messageId, string content, string promptKey, DateTimeOffset createdAt, ChatterRole role)
     {
         MessageId = messageId;
         Content = content;
+        PromptKey = promptKey;
         CreatedAt = createdAt;
         Role = role;
     }
@@ -18,11 +20,14 @@ public record ChatMessage
 
     public ChatterRole Role { get; }
 
-    public static ChatMessage CreateUserMessage(string content)
+    public string PromptKey { get; }
+
+    public static ChatMessage CreateUserMessage(string content, string promptKey)
     {
         return new ChatMessage(
             messageId: Guid.NewGuid(),
             content: content,
+            promptKey: promptKey,
             createdAt: DateTimeOffset.UtcNow,
             role: ChatterRole.User);
     }
@@ -32,15 +37,18 @@ public record ChatMessage
         return new ChatMessage(
             messageId: Guid.NewGuid(),
             content: content,
+            promptKey: Models.PromptKey.None,
             createdAt: DateTimeOffset.UtcNow,
             role: ChatterRole.Assistant);
     }
 
-    public static ChatMessage CreateExistingChatMessage(Guid messageId, string content, DateTimeOffset createdAt, ChatterRole role)
+    public static ChatMessage CreateExistingChatMessage(
+        Guid messageId, string content, string promptKey, DateTimeOffset createdAt, ChatterRole role)
     {
         return new ChatMessage(
             messageId: messageId,
             content: content,
+            promptKey: promptKey,
             createdAt: createdAt,
             role: role);
     }

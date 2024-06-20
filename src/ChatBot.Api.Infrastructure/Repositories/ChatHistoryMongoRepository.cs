@@ -18,7 +18,7 @@ internal class ChatHistoryMongoRepository : IChatHistoryRepository
         _mongoClientFactory = mongoClientFactory;
     }
 
-    public Task SaveChatHistoryAsync(ChatHistory chatHistory, CancellationToken cancellationToken)
+    public async Task SaveChatHistoryAsync(ChatHistory chatHistory, CancellationToken cancellationToken)
     {
         var collection = GetCollection();
 
@@ -26,7 +26,7 @@ internal class ChatHistoryMongoRepository : IChatHistoryRepository
             .Filter
             .Where(x => x.ContextId == chatHistory.ContextId);
 
-        return collection.ReplaceOneAsync(
+        await collection.ReplaceOneAsync(
             Builders<ChatHistoryDal>.Filter.Eq(x => x.ContextId, chatHistory.ContextId),
             chatHistory.ToDal(),
             new ReplaceOptions { IsUpsert = true },
@@ -75,6 +75,17 @@ internal class ChatHistoryMongoRepository : IChatHistoryRepository
         var chatHistoryMetadataDals = await result.ToListAsync(cancellationToken);
 
         return chatHistoryMetadataDals.Select(dal => dal.ToDomain()).ToList().AsReadOnly();
+    }
+
+    public async Task DeleteChatHistoryAsync(Guid contextId, CancellationToken cancellationToken)
+    {
+        var collection = GetCollection();
+
+        var filter = Builders<ChatHistoryDal>
+            .Filter
+            .Where(x => x.ContextId == contextId);
+
+        await collection.DeleteOneAsync(filter, (DeleteOptions?)null, cancellationToken);
     }
 
     private IMongoCollection<ChatHistoryDal> GetCollection()

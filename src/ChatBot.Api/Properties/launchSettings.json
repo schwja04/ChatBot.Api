@@ -20,6 +20,6 @@
         "ASPNETCORE_ENVIRONMENT": "Local"
       },
       "dotnetRunMessages": true
-    },
+    }
   }
 }

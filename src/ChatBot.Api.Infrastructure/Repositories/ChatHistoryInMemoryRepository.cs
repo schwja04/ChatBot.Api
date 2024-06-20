@@ -40,4 +40,11 @@ internal class ChatHistoryInMemoryRepository : IChatHistoryRepository
 
         return Task.FromResult(chatHistoryMetadatas);
     }
+
+    public Task DeleteChatHistoryAsync(Guid contextId, CancellationToken cancellationToken)
+    {
+        _chatHistories.Remove(contextId);
+
+        return Task.CompletedTask;
+    }
 }

@@ -1,10 +1,11 @@
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using System.Net.Mime;
 using ChatBot.Api.Application.Models.Commands;
 using ChatBot.Api.Application.Models.Queries;
 using ChatBot.Api.Contracts;
 using ChatBot.Api.Mappers;
-using System.Net.Mime;
+using ChatBot.Api.Application.Models;
 
 namespace ChatBot.Api.Controllers;
 
@@ -31,6 +32,7 @@ public class ChatsController : ControllerBase
         {
             ContextId = request.ContextId,
             Content = request.Content,
+            PromptKey = request.PromptKey,
             Username = User.Identity?.Name ?? DefaultUsername
         };
 
@@ -45,6 +47,7 @@ public class ChatsController : ControllerBase
 
     [HttpGet("Metadatas")]
     [Produces(MediaTypeNames.Application.Json)]
+    [ProducesResponseType(typeof(GetChatHistoryMetadatasResponse), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetChatHistoryMetadataAsync(CancellationToken cancellationToken = default)
     {
         var query = new GetChatHistoryMetadatasQuery()
@@ -70,6 +73,7 @@ public class ChatsController : ControllerBase
     [HttpGet("{contextId}")]
     [Produces(MediaTypeNames.Application.Json)]
     [ProducesResponseType(typeof(GetChatHistoryResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetAsync([FromRoute] Guid contextId, CancellationToken cancellationToken = default)
     {
         var query = new GetChatHistoryQuery
@@ -97,9 +101,13 @@ public class ChatsController : ControllerBase
     }
 
     [HttpPut("{contextId}:UpdateTitle")]
-    public async Task<IActionResult> UpdateTitleAsync([FromRoute] Guid contextId, [FromBody] ProcessChatMessageTitleRequest request, CancellationToken cancellationToken = default)
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    public async Task<IActionResult> UpdateTitleAsync(
+        [FromRoute] Guid contextId,
+        [FromBody] ProcessChatMessageTitleRequest request,
+        CancellationToken cancellationToken = default)
     {
-        var command = new ProcessChatMessageTitleCommand
+        var command = new UpdateChatMessageTitleCommand
         {
             ContextId = contextId,
             Title = request.Title,
@@ -110,5 +118,20 @@ public class ChatsController : ControllerBase
 
         return NoContent();
     }
-}
 
+    [HttpDelete("{contextId}")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    public async Task<IActionResult> DeleteAsync(
+        [FromRoute] Guid contextId, CancellationToken cancellationToken = default)
+    {
+        var command = new DeleteChatHistoryCommand
+        {
+            ContextId = contextId,
+            Username = User.Identity?.Name ?? DefaultUsername
+        };
+
+        await _mediator.Send(command, cancellationToken);
+
+        return NoContent();
+    }
+}

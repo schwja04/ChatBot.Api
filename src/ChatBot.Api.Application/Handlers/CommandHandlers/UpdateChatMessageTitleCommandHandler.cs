@@ -4,18 +4,18 @@ using ChatBot.Api.Application.Abstractions.Repositories;
 using ChatBot.Api.Application.Models.Commands;
 using ChatBot.Api.Application.Models.Exceptions;
 
-namespace ChatBot.Api.Application.Handlers;
+namespace ChatBot.Api.Application.Handlers.CommandHandlers;
 
-public class ProcessChatMessageTitleCommandHandler : IRequestHandler<ProcessChatMessageTitleCommand>
+internal class UpdateChatMessageTitleCommandHandler : IRequestHandler<UpdateChatMessageTitleCommand>
 {
     private readonly IChatHistoryRepository _chatHistoryRepository;
 
-    public ProcessChatMessageTitleCommandHandler(IChatHistoryRepository chatHistoryRepository)
+    public UpdateChatMessageTitleCommandHandler(IChatHistoryRepository chatHistoryRepository)
     {
         _chatHistoryRepository = chatHistoryRepository;
     }
 
-    public async Task Handle(ProcessChatMessageTitleCommand request, CancellationToken cancellationToken)
+    public async Task Handle(UpdateChatMessageTitleCommand request, CancellationToken cancellationToken)
     {
         var chatHistory = await _chatHistoryRepository.GetChatHistoryAsync(request.ContextId, cancellationToken);
 

@@ -14,6 +14,7 @@
     <None Remove="Models\Exceptions\" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Handlers/CommandHandlers/" />
     <Folder Include="Models\Exceptions\" />
   </ItemGroup>
 </Project>

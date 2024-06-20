@@ -11,6 +11,7 @@ internal static class ChatMessageMapper
         {
             MessageId = message.MessageId,
             Content = message.Content,
+            PromptKey = message.PromptKey,
             CreatedAt = message.CreatedAt,
             ChatterRole = Enum.GetName(message.Role)!.ToLowerInvariant()
         };
@@ -23,6 +24,7 @@ internal static class ChatMessageMapper
         return ChatMessage.CreateExistingChatMessage(
             messageId: message.MessageId,
             content: message.Content,
+            promptKey: message.PromptKey ?? PromptKey.None,
             createdAt: message.CreatedAt,
             role: chatterRole);
     }

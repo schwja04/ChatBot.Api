@@ -4,9 +4,9 @@ using ChatBot.Api.Application.Abstractions.Repositories;
 using ChatBot.Api.Application.Models.Queries;
 using ChatBot.Api.Application.Models.Exceptions;
 
-namespace ChatBot.Api.Application.Handlers;
+namespace ChatBot.Api.Application.Handlers.QueryHandlers;
 
-public class GetChatHistoryQueryHandler : IRequestHandler<GetChatHistoryQuery, GetChatHistoryQueryResponse?>
+internal class GetChatHistoryQueryHandler : IRequestHandler<GetChatHistoryQuery, GetChatHistoryQueryResponse?>
 {
     private readonly IChatHistoryRepository _chatHistoryRepository;
 

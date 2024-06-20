@@ -11,4 +11,6 @@ public interface IChatHistoryRepository
     Task<ReadOnlyCollection<ChatHistoryMetadata>> GetChatHistoryMetadatasAsync(string username, CancellationToken cancellationToken);
 
     Task SaveChatHistoryAsync(ChatHistory chatHistory, CancellationToken cancellationToken);
+
+    Task DeleteChatHistoryAsync(Guid contextId, CancellationToken cancellationToken);
 }

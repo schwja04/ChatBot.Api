@@ -3,9 +3,9 @@ using MediatR;
 using ChatBot.Api.Application.Models.Queries;
 using ChatBot.Api.Application.Abstractions.Repositories;
 
-namespace ChatBot.Api.Application.Handlers;
+namespace ChatBot.Api.Application.Handlers.QueryHandlers;
 
-public class GetChatHistoryMetadatasQueryHandler
+internal class GetChatHistoryMetadatasQueryHandler
     : IRequestHandler<GetChatHistoryMetadatasQuery, GetChatHistoryMetadatasQueryResponse>
 {
     private readonly IChatHistoryRepository _chatHistoryRepository;

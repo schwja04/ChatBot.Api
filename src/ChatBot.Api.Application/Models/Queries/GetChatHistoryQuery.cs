@@ -8,3 +8,8 @@ public record GetChatHistoryQuery : IRequest<GetChatHistoryQueryResponse>
 
     public required string Username { get; init; }
 }
+
+public record GetChatHistoryQueryResponse
+{
+    public required ChatHistory ChatHistory { get; init; }
+}
