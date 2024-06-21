@@ -114,6 +114,9 @@ internal class CachedUserAccessiblePromptRepository : IPromptRepository, IReadPr
                 {
                     string singleCacheKey = string.Format(SinglePromptKey, prompt.Owner, prompt.Key);
                     _cache.Set(singleCacheKey, prompt, TimeSpan.FromDays(1));
+
+                    string singleCacheId = string.Format(SinglePromptKey, prompt.Owner, prompt.PromptId);
+                    _cache.Set(singleCacheId, prompt, TimeSpan.FromDays(1));
                 }
                 _cache.Set(userAllCacheKey, userPrompts, TimeSpan.FromDays(1));
             }
