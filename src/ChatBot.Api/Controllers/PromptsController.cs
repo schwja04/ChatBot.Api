@@ -9,7 +9,6 @@ using Microsoft.AspNetCore.Mvc;
 namespace ChatBot.Api.Controllers;
 
 [ApiController]
-[Route("api/Chats/[controller]")]
 public class PromptsController : ControllerBase
 {
     private readonly IMediator _mediator;
@@ -21,7 +20,7 @@ public class PromptsController : ControllerBase
         _mediator = mediator;
     }
 
-    [HttpGet]
+    [HttpGet(Routes.Prompts)]
     [Produces(MediaTypeNames.Application.Json)]
     [ProducesResponseType(typeof(GetPromptsResponse), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetManyAsync(CancellationToken cancellationToken = default)
@@ -39,7 +38,7 @@ public class PromptsController : ControllerBase
         });
     }
 
-    [HttpGet("{promptId}", Name = "GetPromptById")]
+    [HttpGet(Routes.PromptsByPromptId)]
     [Produces(MediaTypeNames.Application.Json)]
     [ProducesResponseType(typeof(Prompt), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -60,7 +59,7 @@ public class PromptsController : ControllerBase
         return NotFound();
     }
 
-    [HttpPost]
+    [HttpPost(Routes.Prompts)]
     [Produces(MediaTypeNames.Application.Json)]
     [ProducesResponseType(typeof(CreatePromptResponse), StatusCodes.Status201Created)]
     public async Task<IActionResult> CreateAsync(
@@ -77,20 +76,14 @@ public class PromptsController : ControllerBase
 
         var response = await _mediator.Send(command, cancellationToken);
 
-        return Created($"api/Chats/Prompts/{response.Prompt.PromptId}", new CreatePromptResponse { Prompt = response.Prompt });
-        return CreatedAtAction(
-            nameof(GetAsync),
-            new
-            {
-                promptId = response.Prompt.PromptId
-            },
-            new CreatePromptResponse
-            {
-                Prompt = response.Prompt
-            });
+        var uri = new Uri(
+            Routes.PromptsByPromptId.Replace("{promptId}", response.Prompt.PromptId.ToString()),
+            UriKind.Relative);
+
+        return Created(uri, new CreatePromptResponse { Prompt = response.Prompt });
     }
 
-    [HttpDelete("{promptId}")]
+    [HttpDelete(Routes.PromptsByPromptId)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     public async Task<IActionResult> DeleteAsync(
         [FromRoute] Guid promptId, CancellationToken cancellationToken = default)

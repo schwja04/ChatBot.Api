@@ -3,7 +3,7 @@ using ChatBot.Api.Application.Models;
 using ChatBot.Api.Application.Models.Queries;
 using MediatR;
 
-namespace ChatBot.Api.Application;
+namespace ChatBot.Api.Application.QueryHandlers;
 
 internal class GetPromptQueryHandler : IRequestHandler<GetPromptQuery, GetPromptQueryResponse>
 {
@@ -16,7 +16,7 @@ internal class GetPromptQueryHandler : IRequestHandler<GetPromptQuery, GetPrompt
 
     public async Task<GetPromptQueryResponse> Handle(GetPromptQuery request, CancellationToken cancellationToken)
     {
-        Prompt? prompt = null;
+        Prompt? prompt;
         if (request.PromptId.HasValue)
         {
             prompt = await _readPromptRepository.GetAsync(request.Username, request.PromptId.Value, cancellationToken);

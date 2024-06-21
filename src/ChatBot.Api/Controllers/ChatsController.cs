@@ -5,12 +5,10 @@ using ChatBot.Api.Application.Models.Commands;
 using ChatBot.Api.Application.Models.Queries;
 using ChatBot.Api.Contracts;
 using ChatBot.Api.Mappers;
-using ChatBot.Api.Application.Models;
 
 namespace ChatBot.Api.Controllers;
 
 [ApiController]
-[Route("api/[controller]")]
 public class ChatsController : ControllerBase
 {
     private readonly IMediator _mediator;
@@ -22,7 +20,7 @@ public class ChatsController : ControllerBase
         _mediator = mediator;
     }
 
-    [HttpPost]
+    [HttpPost(Routes.Chats)]
     [Produces(MediaTypeNames.Application.Json)]
     [ProducesResponseType(typeof(ProcessChatMessageResponse), StatusCodes.Status200OK)]
     public async Task<IActionResult> PostAsync([FromBody] ProcessChatMessageRequest request, CancellationToken cancellationToken = default)
@@ -45,7 +43,7 @@ public class ChatsController : ControllerBase
         });
     }
 
-    [HttpGet("Metadatas")]
+    [HttpGet(Routes.ChatMetadatas)]
     [Produces(MediaTypeNames.Application.Json)]
     [ProducesResponseType(typeof(GetChatHistoryMetadatasResponse), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetChatHistoryMetadataAsync(CancellationToken cancellationToken = default)
@@ -70,7 +68,7 @@ public class ChatsController : ControllerBase
         });
     }
 
-    [HttpGet("{contextId}")]
+    [HttpGet(Routes.ChatsByContextId)]
     [Produces(MediaTypeNames.Application.Json)]
     [ProducesResponseType(typeof(GetChatHistoryResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -100,7 +98,7 @@ public class ChatsController : ControllerBase
         });
     }
 
-    [HttpPut("{contextId}:UpdateTitle")]
+    [HttpPut(Routes.UpdateChatTitleByContextId)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     public async Task<IActionResult> UpdateTitleAsync(
         [FromRoute] Guid contextId,
@@ -119,7 +117,7 @@ public class ChatsController : ControllerBase
         return NoContent();
     }
 
-    [HttpDelete("{contextId}")]
+    [HttpDelete(Routes.ChatsByContextId)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     public async Task<IActionResult> DeleteAsync(
         [FromRoute] Guid contextId, CancellationToken cancellationToken = default)
