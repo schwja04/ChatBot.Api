@@ -2,7 +2,7 @@
 
 namespace ChatBot.Api.Application.Models.Commands;
 
-public record CreatePromptCommand : IRequest<CreatePromptCommandResponse>
+public record CreatePromptCommand : IRequest<Prompt>
 {
     public required string Key { get; init; }
 

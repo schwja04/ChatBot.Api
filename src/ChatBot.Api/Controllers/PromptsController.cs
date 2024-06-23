@@ -33,7 +33,10 @@ public class PromptsController : ControllerBase
 
         ReadOnlyCollection<Prompt> prompts = await _mediator.Send(query, cancellationToken);
 
-        return Ok(prompts);
+        return Ok(new GetPromptsResponse
+        {
+            Prompts = prompts
+        });
     }
 
     [HttpGet(Routes.PromptsByPromptId)]
@@ -72,13 +75,13 @@ public class PromptsController : ControllerBase
             Owner = username
         };
 
-        var response = await _mediator.Send(command, cancellationToken);
+        Prompt prompt = await _mediator.Send(command, cancellationToken);
 
         var uri = new Uri(
-            Routes.PromptsByPromptId.Replace("{promptId}", response.Prompt.PromptId.ToString()),
+            Routes.PromptsByPromptId.Replace("{promptId}", prompt.PromptId.ToString()),
             UriKind.Relative);
 
-        return Created(uri, new CreatePromptResponse { Prompt = response.Prompt });
+        return Created(uri, new CreatePromptResponse { Prompt = prompt });
     }
 
     [HttpDelete(Routes.PromptsByPromptId)]
@@ -92,6 +95,26 @@ public class PromptsController : ControllerBase
         {
             PromptId = promptId,
             Username = username
+        };
+
+        await _mediator.Send(command, cancellationToken);
+
+        return NoContent();
+    }
+
+    [HttpPut(Routes.PromptsByPromptId)]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    public async Task<IActionResult> UpdateAsync(
+        [FromRoute] Guid promptId, [FromBody] UpdatePromptRequest request, CancellationToken cancellationToken = default)
+    {
+        string username = User.Identity?.Name ?? DefaultUsername;
+
+        var command = new UpdatePromptCommand
+        {
+            PromptId = promptId,
+            Key = request.Key,
+            Value = request.Value,
+            Owner = username
         };
 
         await _mediator.Send(command, cancellationToken);

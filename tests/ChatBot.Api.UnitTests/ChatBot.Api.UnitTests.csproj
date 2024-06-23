@@ -38,11 +38,13 @@
     <None Remove="Application\" />
     <None Remove="Application\Handlers\" />
     <None Remove="Application\Handlers\QueryHandlers\" />
+    <None Remove="Application\Handlers\CommandHandlers\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Intrastructure\Repositories\Mappers\" />
     <Folder Include="Application\" />
     <Folder Include="Application\Handlers\" />
     <Folder Include="Application\Handlers\QueryHandlers\" />
+    <Folder Include="Application\Handlers\CommandHandlers\" />
   </ItemGroup>
 </Project>
