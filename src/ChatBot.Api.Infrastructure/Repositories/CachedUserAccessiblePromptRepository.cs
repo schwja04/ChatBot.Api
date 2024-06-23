@@ -26,68 +26,12 @@ internal class CachedUserAccessiblePromptRepository : IPromptRepository, IReadPr
 
     public async Task<Prompt?> GetAsync(string username, Guid promptId, CancellationToken cancellationToken)
     {
-        string systemCacheKey = string.Format(SinglePromptKey, System, promptId);
-        string userCacheKey = string.Format(SinglePromptKey, username, promptId);
-
-        // First Check Cache
-        if (TryGetValue(systemCacheKey, userCacheKey, out Prompt? value))
-        {
-            return value;
-        }
-
-        // Invalidate cache and rebuild cache
-        InvalidateCache(username);
-        await GetManyAsync(username, cancellationToken);
-
-        // This just avoids a redundant Get if user is System
-        if (!string.Equals(username, System, StringComparison.OrdinalIgnoreCase))
-        {
-            await GetManyAsync(System, cancellationToken);
-        }
-
-        // Double Check Cache
-        if (TryGetValue(systemCacheKey, userCacheKey, out value))
-        {
-            return value;
-        }
-
-        // Give up, temporarily cache a null
-        _cache.Set(userCacheKey, (Prompt?)null, TimeSpan.FromMinutes(60));
-
-        return null;
+        return await GetAsync(username, (object)promptId, cancellationToken);
     }
 
     public async Task<Prompt?> GetAsync(string username, string promptKey, CancellationToken cancellationToken)
     {
-        string systemCacheKey = string.Format(SinglePromptKey, System, promptKey);
-        string userCacheKey = string.Format(SinglePromptKey, username, promptKey);
-
-        // First Check Cache
-        if (TryGetValue(systemCacheKey, userCacheKey, out Prompt? value))
-        {
-            return value;
-        }
-
-        // Invalidate cache and rebuild cache
-        InvalidateCache(username);
-        await GetManyAsync(username, cancellationToken);
-
-        // This just avoids a redundant Get if user is System
-        if (!string.Equals(username, System, StringComparison.OrdinalIgnoreCase))
-        {
-            await GetManyAsync(System, cancellationToken);
-        }
-
-        // Double Check Cache
-        if (TryGetValue(systemCacheKey, userCacheKey, out value))
-        {
-            return value;
-        }
-
-        // Give up, temporarily cache a null
-        _cache.Set(userCacheKey, (Prompt?)null, TimeSpan.FromMinutes(60));
-
-        return null;
+        return await GetAsync(username, (object)promptKey, cancellationToken);
     }
 
     public async Task<ReadOnlyCollection<Prompt>> GetManyAsync(string username, CancellationToken cancellationToken)
@@ -125,6 +69,51 @@ internal class CachedUserAccessiblePromptRepository : IPromptRepository, IReadPr
         }
     }
 
+    public async Task SaveAsync(Prompt prompt, CancellationToken cancellationToken)
+    {
+        await _writePromptRepository.SaveAsync(prompt, cancellationToken);
+
+        InvalidateCache(prompt.Owner);
+
+        await GetManyAsync(prompt.Owner, cancellationToken);
+    }
+
+    public async Task DeleteAsync(string username, Guid promptId, CancellationToken cancellationToken)
+    {
+        await _writePromptRepository.DeleteAsync(username, promptId, cancellationToken);
+
+        InvalidateCache(username);
+
+        await GetManyAsync(username, cancellationToken);
+    }
+
+    private async Task<Prompt?> GetAsync(string username, object promptIdentifier, CancellationToken cancellationToken)
+    {
+        string systemCacheKey = string.Format(SinglePromptKey, System, promptIdentifier);
+        string userCacheKey = string.Format(SinglePromptKey, username, promptIdentifier);
+
+        // First Check Cache
+        if (TryGetValue(systemCacheKey, userCacheKey, out Prompt? value))
+        {
+            return value;
+        }
+
+        // Invalidate cache and rebuild cache
+        InvalidateCache(username);
+        await GetManyAsync(username, cancellationToken);
+
+        // Double Check Cache
+        if (TryGetValue(systemCacheKey, userCacheKey, out value))
+        {
+            return value;
+        }
+
+        // Give up, temporarily cache a null
+        _cache.Set(userCacheKey, (Prompt?)null, TimeSpan.FromMinutes(60));
+
+        return null;
+    }
+
     private bool TryGetValue(string systemCacheKey, string userCacheKey, out Prompt? value)
     {
         if (_cache.TryGetValue(systemCacheKey, out value))
@@ -155,24 +144,6 @@ internal class CachedUserAccessiblePromptRepository : IPromptRepository, IReadPr
         }
 
         _cache.Remove(allCacheKey);
-    }
-
-    public async Task SaveAsync(Prompt prompt, CancellationToken cancellationToken)
-    {
-        await _writePromptRepository.SaveAsync(prompt, cancellationToken);
-
-        InvalidateCache(prompt.Owner);
-
-        await GetManyAsync(prompt.Owner, cancellationToken);
-    }
-
-    public async Task DeleteAsync(string username, Guid promptId, CancellationToken cancellationToken)
-    {
-        await _writePromptRepository.DeleteAsync(username, promptId, cancellationToken);
-
-        InvalidateCache(username);
-
-        await GetManyAsync(username, cancellationToken);
     }
 }
 

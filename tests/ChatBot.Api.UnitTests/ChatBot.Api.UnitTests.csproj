@@ -1,0 +1,48 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+
+    <IsPackable>false</IsPackable>
+    <IsTestProject>true</IsTestProject>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoFixture" Version="4.18.1" />
+    <PackageReference Include="coverlet.collector" Version="6.0.0" />
+    <PackageReference Include="FluentAssertions" Version="6.12.0" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.8.0" />
+    <PackageReference Include="MongoDB.Driver" Version="2.26.0" />
+    <PackageReference Include="NSubstitute" Version="5.1.0" />
+    <PackageReference Include="xunit" Version="2.5.3" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.5.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Using Include="Xunit" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\common\Common.Mongo\Common.Mongo.csproj" />
+    <ProjectReference Include="..\..\src\ChatBot.Api.Infrastructure\ChatBot.Api.Infrastructure.csproj" />
+    <ProjectReference Include="..\..\src\ChatBot.Api.Application\ChatBot.Api.Application.csproj" />
+    <ProjectReference Include="..\..\src\ChatBot.Api\ChatBot.Api.csproj" />
+    <ProjectReference Include="..\..\common\Common.HttpClient\Common.HttpClient.csproj" />
+    <ProjectReference Include="..\..\common\Common.OpenAI\Common.OpenAI.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="Intrastructure\Repositories\Mappers\" />
+    <None Remove="Application\" />
+    <None Remove="Application\Handlers\" />
+    <None Remove="Application\Handlers\QueryHandlers\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Intrastructure\Repositories\Mappers\" />
+    <Folder Include="Application\" />
+    <Folder Include="Application\Handlers\" />
+    <Folder Include="Application\Handlers\QueryHandlers\" />
+  </ItemGroup>
+</Project>

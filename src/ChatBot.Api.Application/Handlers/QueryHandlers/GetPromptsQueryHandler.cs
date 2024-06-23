@@ -1,11 +1,12 @@
-﻿using MediatR;
-
-using ChatBot.Api.Application.Abstractions.Repositories;
+﻿using ChatBot.Api.Application.Abstractions.Repositories;
 using ChatBot.Api.Application.Models.Queries;
+using ChatBot.Api.Application.Models;
+using MediatR;
+using System.Collections.ObjectModel;
 
 namespace ChatBot.Api.Application.Handlers.QueryHandlers;
 
-internal class GetPromptsQueryHandler : IRequestHandler<GetPromptsQuery, GetPromptsQueryResponse>
+internal class GetPromptsQueryHandler : IRequestHandler<GetPromptsQuery, ReadOnlyCollection<Prompt>>
 {
 	private readonly IReadPromptRepository _readPromptRepository;
 
@@ -14,14 +15,9 @@ internal class GetPromptsQueryHandler : IRequestHandler<GetPromptsQuery, GetProm
 		_readPromptRepository = promptRepository;
 	}
 
-    public async Task<GetPromptsQueryResponse> Handle(GetPromptsQuery request, CancellationToken cancellationToken)
+    public async Task<ReadOnlyCollection<Prompt>> Handle(GetPromptsQuery request, CancellationToken cancellationToken)
     {
-		var prompts = await _readPromptRepository.GetManyAsync(request.Username, cancellationToken);
-
-		return new GetPromptsQueryResponse
-		{
-			Prompts = prompts
-		};
+		return await _readPromptRepository.GetManyAsync(request.Username, cancellationToken);
     }
 }
 

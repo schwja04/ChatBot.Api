@@ -1,4 +1,5 @@
-﻿using System.Net.Mime;
+﻿using System.Collections.ObjectModel;
+using System.Net.Mime;
 using ChatBot.Api.Application.Models;
 using ChatBot.Api.Application.Models.Commands;
 using ChatBot.Api.Application.Models.Queries;
@@ -30,12 +31,9 @@ public class PromptsController : ControllerBase
             Username = User.Identity?.Name ?? DefaultUsername
         };
 
-        var response = await _mediator.Send(query, cancellationToken);
+        ReadOnlyCollection<Prompt> prompts = await _mediator.Send(query, cancellationToken);
 
-        return Ok(new GetPromptsResponse
-        {
-            Prompts = response.Prompts,
-        });
+        return Ok(prompts);
     }
 
     [HttpGet(Routes.PromptsByPromptId)]
@@ -49,11 +47,11 @@ public class PromptsController : ControllerBase
 
         var command = new GetPromptQuery(username, promptId);
 
-        var response = await _mediator.Send(command, cancellationToken);
+        Prompt? prompt = await _mediator.Send(command, cancellationToken);
 
-        if (response.Prompt is not null)
+        if (prompt is not null)
         {
-            return Ok(response.Prompt!);
+            return Ok(prompt!);
         }
 
         return NotFound();

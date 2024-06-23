@@ -5,7 +5,7 @@ using MediatR;
 
 namespace ChatBot.Api.Application.QueryHandlers;
 
-internal class GetPromptQueryHandler : IRequestHandler<GetPromptQuery, GetPromptQueryResponse>
+internal class GetPromptQueryHandler : IRequestHandler<GetPromptQuery, Prompt?>
 {
     private readonly IReadPromptRepository _readPromptRepository;
 
@@ -14,23 +14,13 @@ internal class GetPromptQueryHandler : IRequestHandler<GetPromptQuery, GetPrompt
         _readPromptRepository = promptRepository;
     }
 
-    public async Task<GetPromptQueryResponse> Handle(GetPromptQuery request, CancellationToken cancellationToken)
+    public async Task<Prompt?> Handle(GetPromptQuery request, CancellationToken cancellationToken)
     {
-        Prompt? prompt;
         if (request.PromptId.HasValue)
         {
-            prompt = await _readPromptRepository.GetAsync(request.Username, request.PromptId.Value, cancellationToken);
-            return new GetPromptQueryResponse
-            {
-                Prompt = prompt,
-            };
+            return await _readPromptRepository.GetAsync(request.Username, request.PromptId.Value, cancellationToken);
         }
 
-        prompt = await _readPromptRepository.GetAsync(request.Username, request.PromptKey!, cancellationToken);
-
-        return new GetPromptQueryResponse
-        {
-            Prompt = prompt,
-        };
+        return await _readPromptRepository.GetAsync(request.Username, request.PromptKey!, cancellationToken);
     }
 }

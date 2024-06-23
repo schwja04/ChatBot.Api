@@ -2,7 +2,7 @@
 
 namespace ChatBot.Api.Application.Models.Queries;
 
-public record GetPromptQuery : IRequest<GetPromptQueryResponse>
+public record GetPromptQuery : IRequest<Prompt?>
 {
     public GetPromptQuery(string username, Guid promptId)
     {
@@ -21,9 +21,4 @@ public record GetPromptQuery : IRequest<GetPromptQueryResponse>
     public Guid? PromptId { get; }
 
     public string? PromptKey { get; }
-}
-
-public record GetPromptQueryResponse
-{
-    public required Prompt? Prompt { get; init; }
 }

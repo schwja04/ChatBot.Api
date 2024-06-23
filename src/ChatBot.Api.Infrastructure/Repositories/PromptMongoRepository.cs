@@ -1,11 +1,12 @@
-﻿using System.Collections.ObjectModel;
-using ChatBot.Api.Application.Abstractions.Repositories;
+﻿using ChatBot.Api.Application.Abstractions.Repositories;
 using ChatBot.Api.Application.Models;
 using ChatBot.Api.Application.Models.Exceptions;
 using ChatBot.Api.Infrastructure.MongoModels;
 using ChatBot.Api.Infrastructure.Repositories.Mappers;
 using Common.Mongo;
 using MongoDB.Driver;
+using System.Collections.ObjectModel;
+using System.Diagnostics;
 
 namespace ChatBot.Api.Infrastructure.Repositories;
 
@@ -130,14 +131,20 @@ internal class PromptMongoRepository : IPromptRepository, IReadPromptRepository,
             throw new PromptAuthorizationException(promptId, username, prompt);
         }
 
-        await collection.DeleteOneAsync(filter, cancellationToken);
+        var deleteResult = await collection.DeleteOneAsync(filter, cancellationToken);
+
+        if (deleteResult.DeletedCount == 0)
+        {
+            throw new UnreachableException();
+        }
     }
 
     private IMongoCollection<PromptDal> GetCollection()
     {
-        return _mongoClientFactory
-            .CreateClient()
-            .GetDatabase(_mongoClientFactory.GetMongoConfigurationRecord().DatabaseName)
-            .GetCollection<PromptDal>("Prompts");
+        IMongoClient client = _mongoClientFactory.CreateClient();
+
+        IMongoDatabase database = client.GetDatabase(_mongoClientFactory.GetMongoConfigurationRecord().DatabaseName);
+
+        return database.GetCollection<PromptDal>("Prompts");
     }
 }
