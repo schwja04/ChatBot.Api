@@ -1,0 +1,10 @@
+**/bin/
+**/obj/
+**/.vs/
+**/.git/
+**/.gitignore
+Dockerfile
+.dockerignore
+Makefile
+docker-compose.yml
+docker-compose.*.yml
