@@ -39,6 +39,8 @@
     <None Remove="Application\Handlers\" />
     <None Remove="Application\Handlers\QueryHandlers\" />
     <None Remove="Application\Handlers\CommandHandlers\" />
+    <None Remove="Api\" />
+    <None Remove="Api\Controllers\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Intrastructure\Repositories\Mappers\" />
@@ -46,5 +48,7 @@
     <Folder Include="Application\Handlers\" />
     <Folder Include="Application\Handlers\QueryHandlers\" />
     <Folder Include="Application\Handlers\CommandHandlers\" />
+    <Folder Include="Api\" />
+    <Folder Include="Api\Controllers\" />
   </ItemGroup>
 </Project>
