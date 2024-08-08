@@ -4,6 +4,7 @@ using ChatBot.Api.Application.Models.Exceptions;
 using ChatBot.Api.Infrastructure.MongoModels;
 using ChatBot.Api.Infrastructure.Repositories.Mappers;
 using Common.Mongo;
+using Microsoft.Extensions.Logging;
 using MongoDB.Driver;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
@@ -12,10 +13,12 @@ namespace ChatBot.Api.Infrastructure.Repositories;
 
 internal class PromptMongoRepository : IPromptRepository, IReadPromptRepository, IWritePromptRepository
 {
+    private readonly ILogger<PromptMongoRepository> _logger;
     private readonly IMongoClientFactory _mongoClientFactory;
 
-    public PromptMongoRepository(IMongoClientFactory mongoClientFactory)
+    public PromptMongoRepository(ILogger<PromptMongoRepository> logger, IMongoClientFactory mongoClientFactory)
     {
+        _logger = logger;
         _mongoClientFactory = mongoClientFactory;
     }
 
@@ -123,11 +126,13 @@ internal class PromptMongoRepository : IPromptRepository, IReadPromptRepository,
 
         if (prompt is null)
         {
+            _logger.LogInformation("Prompt {PromptId} not found while attempting to delete", promptId);
             return;
         }
 
         if (!string.Equals(prompt.Owner, username, StringComparison.OrdinalIgnoreCase))
         {
+            _logger.LogWarning("Prompt {PromptId} was not deleted as it is not owned by {Username}", promptId, username);
             throw new PromptAuthorizationException(promptId, username, prompt);
         }
 
@@ -135,6 +140,7 @@ internal class PromptMongoRepository : IPromptRepository, IReadPromptRepository,
 
         if (deleteResult.DeletedCount == 0)
         {
+            _logger.LogWarning("Prompt {PromptId} was not deleted. Only possibility is that a different caller got there first.", promptId);
             throw new UnreachableException();
         }
     }

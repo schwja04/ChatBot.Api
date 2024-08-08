@@ -13,12 +13,14 @@ namespace ChatBot.Api.Controllers;
 public class PromptsController : ControllerBase
 {
     private readonly IMediator _mediator;
+    private readonly ILogger _logger;
 
     private static readonly string DefaultUsername = "Unknown";
 
-    public PromptsController(IMediator mediator)
+    public PromptsController(ILogger<PromptsController> logger, IMediator mediator)
     {
         _mediator = mediator;
+        _logger = logger;
     }
 
     [HttpGet(Routes.Prompts)]
@@ -31,6 +33,7 @@ public class PromptsController : ControllerBase
             Username = User.Identity?.Name ?? DefaultUsername
         };
 
+        _logger.LogInformation("Getting prompts for {Username}", query.Username);
         ReadOnlyCollection<Prompt> prompts = await _mediator.Send(query, cancellationToken);
 
         return Ok(new GetPromptsResponse
@@ -50,13 +53,16 @@ public class PromptsController : ControllerBase
 
         var command = new GetPromptQuery(username, promptId);
 
+        _logger.LogInformation("Getting prompt {PromptId} for {Username}", promptId, username);
         Prompt? prompt = await _mediator.Send(command, cancellationToken);
 
         if (prompt is not null)
         {
+            _logger.LogInformation("Prompt {PromptId} found for {Username}", promptId, username);
             return Ok(prompt!);
         }
 
+        _logger.LogInformation("Prompt {PromptId} not found for {Username}", promptId, username);
         return NotFound();
     }
 
@@ -75,12 +81,14 @@ public class PromptsController : ControllerBase
             Owner = username
         };
 
+        _logger.LogInformation("Creating prompt for {Username}", username);
         Prompt prompt = await _mediator.Send(command, cancellationToken);
 
         var uri = new Uri(
             Routes.PromptsByPromptId.Replace("{promptId}", prompt.PromptId.ToString()),
             UriKind.Relative);
 
+        _logger.LogInformation("Prompt {PromptId} created for {Username}", prompt.PromptId, username);
         return Created(uri, new CreatePromptResponse { Prompt = prompt });
     }
 
@@ -97,6 +105,7 @@ public class PromptsController : ControllerBase
             Username = username
         };
 
+        _logger.LogInformation("Deleting prompt {PromptId} for {Username}", promptId, username);
         await _mediator.Send(command, cancellationToken);
 
         return NoContent();
@@ -117,6 +126,7 @@ public class PromptsController : ControllerBase
             Owner = username
         };
 
+        _logger.LogInformation("Updating prompt {PromptId} for {Username}", promptId, username);
         await _mediator.Send(command, cancellationToken);
 
         return NoContent();

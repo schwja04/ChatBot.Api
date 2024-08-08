@@ -8,7 +8,6 @@ using Common.Cors;
 using Common.HttpClient;
 using Common.Mongo;
 using Common.OpenAI.Clients;
-using MongoDB.Driver;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -23,6 +22,8 @@ builder.Services.AddSwaggerGen(c =>
 {
     c.SchemaFilter<EnumSchemaFilter>();
 });
+
+builder.Services.AddLogging(builder => builder.AddConsole());
 
 // Add swagger with Newtonsoft functionality
 builder.Services
@@ -58,7 +59,6 @@ static void RegisterServices(IServiceCollection services, IConfiguration configu
 
     services.AddTransientWithHttpClient<IOpenAIClient, OpenAIClient>(configuration);
     services.AddTransient<IChatCompletionRepository, ChatCompletionRepository>();
-    // services.AddSingleton<IChatHistoryRepository, ChatHistoryInMemoryRepository>();
     services.AddSingleton<IPromptMessageMapper, PromptMessageMapper>();
 
     services.AddSingletonMongoClientFactory(configuration);
@@ -68,24 +68,6 @@ static void RegisterServices(IServiceCollection services, IConfiguration configu
 
     services.AddSingleton<IPromptRepository, PromptMongoRepository>()
         .Decorate<IPromptRepository, CachedUserAccessiblePromptRepository>();
-    // RegisterPromptRepositories(services);
 }
 
-// static void RegisterPromptRepositories(IServiceCollection services)
-// {
-//     services.AddSingleton<IReadPromptRepository, PromptMongoRepository>();
 
-//     services.AddSingleton<IWritePromptRepository>(sp => 
-//     {
-//         var mongoRepo = sp.GetRequiredService<IReadPromptRepository>() as PromptMongoRepository;
-//         return mongoRepo!;
-//     });
-
-//     services.Decorate<IReadPromptRepository, CachedUserAccessiblePromptRepository>();
-//     services.Decorate<IWritePromptRepository>((_, sp) => 
-//     {
-//         var cachedRepo = sp.GetServices<IReadPromptRepository>().First(r => r is CachedUserAccessiblePromptRepository) as CachedUserAccessiblePromptRepository;
-
-//         return cachedRepo!;
-//     });
-// }
