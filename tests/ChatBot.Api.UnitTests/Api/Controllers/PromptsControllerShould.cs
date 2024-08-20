@@ -11,6 +11,7 @@ using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using NSubstitute;
 
 namespace ChatBot.Api.UnitTests.Api.Controllers;
@@ -18,6 +19,7 @@ namespace ChatBot.Api.UnitTests.Api.Controllers;
 public class PromptsControllerShould
 {
 	private readonly IMediator _mediator;
+    private readonly ILogger<PromptsController> _logger;
 
 	private readonly PromptsController _sut;
 
@@ -26,7 +28,8 @@ public class PromptsControllerShould
 	public PromptsControllerShould()
 	{
 		_mediator = Substitute.For<IMediator>();
-		_sut = new PromptsController(_mediator);
+        _logger = Substitute.For<ILogger<PromptsController>>();
+		_sut = new PromptsController(_logger, _mediator);
 
 		_fixture = new Fixture();
 	}

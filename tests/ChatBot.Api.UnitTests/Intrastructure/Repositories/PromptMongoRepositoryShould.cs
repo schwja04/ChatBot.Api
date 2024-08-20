@@ -8,11 +8,14 @@ using Common.Mongo;
 using FluentAssertions;
 using MongoDB.Driver;
 using NSubstitute;
+using Amazon.Runtime.Internal.Util;
+using Microsoft.Extensions.Logging;
 
 namespace ChatBot.Api.UnitTests.Infrastructure.Repositories;
 
 public class PromptMongoRepositoryShould
 {
+    private readonly ILogger<PromptMongoRepository> _logger;
     private readonly IMongoClientFactory _mongoClientFactory;
     private readonly IMongoClient _mongoClient;
     private readonly IMongoDatabase _mongoDatabase;
@@ -24,6 +27,7 @@ public class PromptMongoRepositoryShould
 
     public PromptMongoRepositoryShould()
     {
+        _logger = Substitute.For<ILogger<PromptMongoRepository>>();
         _mongoClientFactory = Substitute.For<IMongoClientFactory>();
         _mongoClient = Substitute.For<IMongoClient>();
         _mongoDatabase = Substitute.For<IMongoDatabase>();
@@ -37,7 +41,7 @@ public class PromptMongoRepositoryShould
         _mongoCollection.FindAsync<PromptDal>(Arg.Any<FilterDefinition<PromptDal>>(), Arg.Any<FindOptions<PromptDal>>(), Arg.Any<CancellationToken>())
             .Returns(_mongoCursor);
 
-        _sut = new PromptMongoRepository(_mongoClientFactory);
+        _sut = new PromptMongoRepository(_logger, _mongoClientFactory);
 
         _fixture = new Fixture();
     }
