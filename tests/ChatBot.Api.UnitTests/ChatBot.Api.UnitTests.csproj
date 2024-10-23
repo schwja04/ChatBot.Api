@@ -31,6 +31,7 @@
     <ProjectReference Include="..\..\src\ChatBot.Api\ChatBot.Api.csproj" />
     <ProjectReference Include="..\..\common\Common.HttpClient\Common.HttpClient.csproj" />
     <ProjectReference Include="..\..\common\Common.OpenAI\Common.OpenAI.csproj" />
+    <ProjectReference Include="..\..\src\ChatBot.Api.Domain\ChatBot.Api.Domain.csproj" />
   </ItemGroup>
 
   <ItemGroup>

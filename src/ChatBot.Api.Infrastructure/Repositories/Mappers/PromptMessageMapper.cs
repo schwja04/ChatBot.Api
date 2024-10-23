@@ -1,5 +1,5 @@
-﻿using ChatBot.Api.Application.Abstractions.Repositories;
-using ChatBot.Api.Application.Models;
+﻿using ChatBot.Api.Domain.ChatHistoryEntity;
+using ChatBot.Api.Domain.PromptEntity;
 
 namespace ChatBot.Api.Infrastructure.Repositories.Mappers;
 

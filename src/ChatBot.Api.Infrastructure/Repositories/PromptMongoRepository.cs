@@ -1,6 +1,5 @@
-﻿using ChatBot.Api.Application.Abstractions.Repositories;
-using ChatBot.Api.Application.Models;
-using ChatBot.Api.Application.Models.Exceptions;
+﻿using ChatBot.Api.Domain.Exceptions;
+using ChatBot.Api.Domain.PromptEntity;
 using ChatBot.Api.Infrastructure.MongoModels;
 using ChatBot.Api.Infrastructure.Repositories.Mappers;
 using Common.Mongo;

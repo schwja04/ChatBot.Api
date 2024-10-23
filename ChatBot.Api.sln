@@ -25,6 +25,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{CC14550A
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChatBot.Api.UnitTests", "tests\ChatBot.Api.UnitTests\ChatBot.Api.UnitTests.csproj", "{B41D5FBA-208D-424A-916C-CBF6DB826D8F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChatBot.Api.Domain", "src\ChatBot.Api.Domain\ChatBot.Api.Domain.csproj", "{3DFE874B-DDD8-411C-B297-3FE79FC175F8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -63,6 +65,10 @@ Global
 		{B41D5FBA-208D-424A-916C-CBF6DB826D8F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B41D5FBA-208D-424A-916C-CBF6DB826D8F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B41D5FBA-208D-424A-916C-CBF6DB826D8F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3DFE874B-DDD8-411C-B297-3FE79FC175F8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3DFE874B-DDD8-411C-B297-3FE79FC175F8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3DFE874B-DDD8-411C-B297-3FE79FC175F8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3DFE874B-DDD8-411C-B297-3FE79FC175F8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -76,5 +82,6 @@ Global
 		{196BCA59-D5D5-4A18-A80B-1F2043DBE7A0} = {8270AEA0-A37B-4465-9848-3F9DA449E34C}
 		{F5B3CEBC-3674-4F1B-B970-D3B1E0F1B533} = {8270AEA0-A37B-4465-9848-3F9DA449E34C}
 		{B41D5FBA-208D-424A-916C-CBF6DB826D8F} = {CC14550A-5AB0-4102-B454-FD2F88EA313C}
+		{3DFE874B-DDD8-411C-B297-3FE79FC175F8} = {F02AE784-F8D6-451C-BEDE-362A2408FB88}
 	EndGlobalSection
 EndGlobal

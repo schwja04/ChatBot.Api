@@ -1,8 +1,8 @@
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using System.Net.Mime;
-using ChatBot.Api.Application.Models.Commands;
-using ChatBot.Api.Application.Models.Queries;
+using ChatBot.Api.Application.Commands;
+using ChatBot.Api.Application.Queries;
 using ChatBot.Api.Contracts;
 using ChatBot.Api.Mappers;
 

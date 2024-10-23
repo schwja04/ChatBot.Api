@@ -1,7 +1,6 @@
 ﻿using System.Collections.ObjectModel;
-using ChatBot.Api.Application.Abstractions.Repositories;
-using ChatBot.Api.Application.Models;
-using ChatBot.Api.Application.Models.Exceptions;
+using ChatBot.Api.Domain.Exceptions;
+using ChatBot.Api.Domain.PromptEntity;
 
 namespace ChatBot.Api.Infrastructure.Repositories;
 

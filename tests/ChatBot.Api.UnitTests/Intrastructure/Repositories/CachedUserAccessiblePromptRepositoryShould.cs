@@ -1,10 +1,9 @@
-using ChatBot.Api.Application.Abstractions.Repositories;
-using ChatBot.Api.Application.Models;
 using ChatBot.Api.Infrastructure.Repositories;
 using AutoFixture;
 using FluentAssertions;
 using Microsoft.Extensions.Caching.Memory;
 using NSubstitute;
+using ChatBot.Api.Domain.PromptEntity;
 
 namespace ChatBot.Api.UnitTests.Infrastructure.Repositories;
 

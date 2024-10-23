@@ -1,6 +1,5 @@
 ﻿using System.Collections.ObjectModel;
-using ChatBot.Api.Application.Abstractions.Repositories;
-using ChatBot.Api.Application.Models;
+using ChatBot.Api.Domain.PromptEntity;
 using Microsoft.Extensions.Caching.Memory;
 
 namespace ChatBot.Api.Infrastructure.Repositories;

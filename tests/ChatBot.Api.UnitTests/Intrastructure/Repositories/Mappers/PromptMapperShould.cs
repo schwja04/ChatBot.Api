@@ -1,5 +1,5 @@
 ﻿using AutoFixture;
-using ChatBot.Api.Application.Models;
+using ChatBot.Api.Domain.PromptEntity;
 using ChatBot.Api.Infrastructure.MongoModels;
 using ChatBot.Api.Infrastructure.Repositories.Mappers;
 using FluentAssertions;

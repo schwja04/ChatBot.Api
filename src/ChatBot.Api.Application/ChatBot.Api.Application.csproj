@@ -11,14 +11,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Remove="Models\Exceptions\" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Handlers/CommandHandlers/" />
-    <Folder Include="Models\Exceptions\" />
-  </ItemGroup>
-  <ItemGroup>
     <InternalsVisibleTo Include="ChatBot.Api.UnitTests" />
     <InternalsVisibleTo Include="DynamicProxyGenAssembly2" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ChatBot.Api.Domain\ChatBot.Api.Domain.csproj" />
   </ItemGroup>
 </Project>

@@ -1,4 +1,4 @@
-﻿using ChatBot.Api.Application.Models;
+﻿using ChatBot.Api.Domain.ChatHistoryEntity;
 using ChatBot.Api.Infrastructure.MongoModels;
 
 namespace ChatBot.Api.Infrastructure.Repositories.Mappers;

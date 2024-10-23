@@ -4,6 +4,7 @@
     <ProjectReference Include="..\ChatBot.Api.Application\ChatBot.Api.Application.csproj" />
     <ProjectReference Include="..\..\common\Common.OpenAI\Common.OpenAI.csproj" />
     <ProjectReference Include="..\..\common\Common.Mongo\Common.Mongo.csproj" />
+    <ProjectReference Include="..\ChatBot.Api.Domain\ChatBot.Api.Domain.csproj" />
   </ItemGroup>
 
   <PropertyGroup>

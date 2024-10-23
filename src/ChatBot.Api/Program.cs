@@ -1,6 +1,8 @@
 using System.Text.Json.Serialization;
 using ChatBot.Api.Application.Abstractions;
 using ChatBot.Api.Application.Abstractions.Repositories;
+using ChatBot.Api.Domain.ChatHistoryEntity;
+using ChatBot.Api.Domain.PromptEntity;
 using ChatBot.Api.Infrastructure.Repositories;
 using ChatBot.Api.Infrastructure.Repositories.Mappers;
 using ChatBot.Api.Swagger.Filters;

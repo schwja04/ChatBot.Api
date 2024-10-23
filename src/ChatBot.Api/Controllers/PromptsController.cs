@@ -1,9 +1,9 @@
 ﻿using System.Collections.ObjectModel;
 using System.Net.Mime;
-using ChatBot.Api.Application.Models;
-using ChatBot.Api.Application.Models.Commands;
-using ChatBot.Api.Application.Models.Queries;
+using ChatBot.Api.Application.Commands;
+using ChatBot.Api.Application.Queries;
 using ChatBot.Api.Contracts;
+using ChatBot.Api.Domain.PromptEntity;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 

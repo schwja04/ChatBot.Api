@@ -1,6 +1,6 @@
 using System.Collections.ObjectModel;
 using ChatBot.Api.Application.Abstractions.Repositories;
-using ChatBot.Api.Application.Models;
+using ChatBot.Api.Domain.ChatHistoryEntity;
 using ChatBot.Api.Infrastructure.Repositories.Builders;
 using ChatBot.Api.Infrastructure.Repositories.Mappers;
 using Common.OpenAI.Clients;

@@ -1,8 +1,7 @@
 ﻿using AutoFixture;
-using ChatBot.Api.Application.Abstractions.Repositories;
-using ChatBot.Api.Application.Handlers.QueryHandlers;
-using ChatBot.Api.Application.Models;
-using ChatBot.Api.Application.Models.Queries;
+using ChatBot.Api.Application.Queries;
+using ChatBot.Api.Application.QueryHandlers;
+using ChatBot.Api.Domain.PromptEntity;
 using FluentAssertions;
 using NSubstitute;
 

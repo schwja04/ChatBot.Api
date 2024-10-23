@@ -1,11 +1,9 @@
 using MongoDB.Driver;
 using System.Collections.ObjectModel;
-
-using ChatBot.Api.Application.Abstractions.Repositories;
-using ChatBot.Api.Application.Models;
 using ChatBot.Api.Infrastructure.MongoModels;
 using ChatBot.Api.Infrastructure.Repositories.Mappers;
 using Common.Mongo;
+using ChatBot.Api.Domain.ChatHistoryEntity;
 
 namespace ChatBot.Api.Infrastructure.Repositories;
 

@@ -1,4 +1,4 @@
-﻿using ChatBot.Api.Application.Models;
+﻿using ChatBot.Api.Domain.PromptEntity;
 
 namespace ChatBot.Api.Contracts;
 
