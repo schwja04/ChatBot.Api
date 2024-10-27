@@ -1,6 +1,6 @@
 using System.Collections.ObjectModel;
 using ChatBot.Api.Application.Abstractions.Repositories;
-using ChatBot.Api.Domain.ChatHistoryEntity;
+using ChatBot.Api.Domain.ChatContextEntity;
 using ChatBot.Api.Infrastructure.Repositories.Builders;
 using ChatBot.Api.Infrastructure.Repositories.Mappers;
 using Common.OpenAI.Clients;
@@ -25,10 +25,10 @@ internal class ChatCompletionRepository : IChatCompletionRepository
         _promptMapper = promptMapper;
     }
 
-    public async Task<ChatMessage> GetChatCompletionAsync(ChatHistory chatHistory, CancellationToken cancellationToken)
+    public async Task<ChatMessage> GetChatCompletionAsync(ChatContext chatContext, CancellationToken cancellationToken)
     {
         // Convert ChatHistory to CreateChatCompletionRequest
-        var messages = await MapMessagesAsync(chatHistory, cancellationToken);
+        var messages = await MapMessagesAsync(chatContext, cancellationToken);
 
         CreateChatCompletionRequest request = new CreateChatCompletionRequestBuilder()
             .UseAllDefaults()
@@ -46,15 +46,15 @@ internal class ChatCompletionRepository : IChatCompletionRepository
         return chatMessage;
     }
 
-    private async Task<ReadOnlyCollection<ChatCompletionRequestMessage>> MapMessagesAsync(ChatHistory chatHistory, CancellationToken cancellationToken)
+    private async Task<ReadOnlyCollection<ChatCompletionRequestMessage>> MapMessagesAsync(ChatContext chatContext, CancellationToken cancellationToken)
     {
-        List<ChatCompletionRequestMessage> reqMessages = new(chatHistory.ChatMessages.Count);
+        List<ChatCompletionRequestMessage> reqMessages = new(chatContext.ChatMessages.Count);
 
         ChatMessage currentMessage;
         // Want to loop over all but last
-        for (int i = 0; i < chatHistory.ChatMessages.Count - 1; i++)
+        for (int i = 0; i < chatContext.ChatMessages.Count - 1; i++)
         {
-            currentMessage = chatHistory.ChatMessages[i];
+            currentMessage = chatContext.ChatMessages[i];
             reqMessages.Add(new ChatCompletionRequestMessage
             {
                 Role = Enum.GetName(currentMessage.Role)!.ToLowerInvariant(),
@@ -62,11 +62,11 @@ internal class ChatCompletionRepository : IChatCompletionRepository
             });
         }
 
-        currentMessage = chatHistory.ChatMessages[^1];
+        currentMessage = chatContext.ChatMessages[^1];
         reqMessages.Add(new ChatCompletionRequestMessage
         {
             Role = Enum.GetName(currentMessage.Role)!.ToLowerInvariant(),
-            Content = await _promptMapper.BuildMessageContentAsync(currentMessage, chatHistory.Username, cancellationToken)
+            Content = await _promptMapper.BuildMessageContentAsync(currentMessage, chatContext.Username, cancellationToken)
         });
 
         return reqMessages.AsReadOnly();

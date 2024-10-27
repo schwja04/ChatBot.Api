@@ -1,6 +1,6 @@
 namespace ChatBot.Api.Contracts;
 
-public record GetChatHistoryResponse
+public record GetChatContextResponse
 {
     public required Guid ContextId { get; init; }
 

@@ -9,17 +9,12 @@ using ChatBot.Api.Mappers;
 namespace ChatBot.Api.Controllers;
 
 [ApiController]
-public class ChatsController : ControllerBase
+public class ChatsController(IMediator mediator) : ControllerBase
 {
-    private readonly IMediator _mediator;
+    private readonly IMediator _mediator = mediator;
 
     private static readonly string DefaultUsername = "Unknown";
-
-    public ChatsController(IMediator mediator)
-    {
-        _mediator = mediator;
-    }
-
+    
     [HttpPost(Routes.Chats)]
     [Produces(MediaTypeNames.Application.Json)]
     [ProducesResponseType(typeof(ProcessChatMessageResponse), StatusCodes.Status200OK)]
@@ -45,19 +40,19 @@ public class ChatsController : ControllerBase
 
     [HttpGet(Routes.ChatMetadatas)]
     [Produces(MediaTypeNames.Application.Json)]
-    [ProducesResponseType(typeof(GetChatHistoryMetadatasResponse), StatusCodes.Status200OK)]
-    public async Task<IActionResult> GetChatHistoryMetadataAsync(CancellationToken cancellationToken = default)
+    [ProducesResponseType(typeof(GetChatContextMetadatasResponse), StatusCodes.Status200OK)]
+    public async Task<IActionResult> GetManyChatContextMetadataAsync(CancellationToken cancellationToken = default)
     {
-        var query = new GetChatHistoryMetadatasQuery()
+        var query = new GetManyChatContextMetadataQuery()
         {
             UserName = User.Identity?.Name ?? DefaultUsername,
         };
 
         var response = await _mediator.Send(query, cancellationToken);
 
-        return Ok(new GetChatHistoryMetadatasResponse
+        return Ok(new GetChatContextMetadatasResponse
         {
-            ChatHistoryMetadatas = response.ChatHistoryMetadatas.Select(x => new GetChatHistoryMetadataResponse
+            ChatHistoryMetadatas = response.ChatContextMetadatas.Select(x => new GetChatContextMetadataResponse
             {
                 ContextId = x.ContextId,
                 Title = x.Title,
@@ -70,11 +65,11 @@ public class ChatsController : ControllerBase
 
     [HttpGet(Routes.ChatsByContextId)]
     [Produces(MediaTypeNames.Application.Json)]
-    [ProducesResponseType(typeof(GetChatHistoryResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(GetChatContextResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetAsync([FromRoute] Guid contextId, CancellationToken cancellationToken = default)
     {
-        var query = new GetChatHistoryQuery
+        var query = new GetChatContextQuery
         {
             ContextId = contextId,
             Username = User.Identity?.Name ?? DefaultUsername
@@ -87,14 +82,14 @@ public class ChatsController : ControllerBase
             return NotFound();
         }
 
-        return Ok(new GetChatHistoryResponse
+        return Ok(new GetChatContextResponse
         {
-            ContextId = response.ChatHistory.ContextId,
-            Title = response.ChatHistory.Title,
-            Username = response.ChatHistory.Username,
-            ChatMessages = response.ChatHistory.ChatMessages.ToChatMessageResponses(),
-            CreatedAt = response.ChatHistory.CreatedAt,
-            UpdatedAt = response.ChatHistory.UpdatedAt
+            ContextId = response.ChatContext.ContextId,
+            Title = response.ChatContext.Title,
+            Username = response.ChatContext.Username,
+            ChatMessages = response.ChatContext.ChatMessages.ToChatMessageResponses(),
+            CreatedAt = response.ChatContext.CreatedAt,
+            UpdatedAt = response.ChatContext.UpdatedAt
         });
     }
 
@@ -102,10 +97,10 @@ public class ChatsController : ControllerBase
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     public async Task<IActionResult> UpdateTitleAsync(
         [FromRoute] Guid contextId,
-        [FromBody] ProcessChatMessageTitleRequest request,
+        [FromBody] ProcessChatContextTitleRequest request,
         CancellationToken cancellationToken = default)
     {
-        var command = new UpdateChatMessageTitleCommand
+        var command = new UpdateChatContextTitleCommand
         {
             ContextId = contextId,
             Title = request.Title,
@@ -122,7 +117,7 @@ public class ChatsController : ControllerBase
     public async Task<IActionResult> DeleteAsync(
         [FromRoute] Guid contextId, CancellationToken cancellationToken = default)
     {
-        var command = new DeleteChatHistoryCommand
+        var command = new DeleteChatContextCommand
         {
             ContextId = contextId,
             Username = User.Identity?.Name ?? DefaultUsername

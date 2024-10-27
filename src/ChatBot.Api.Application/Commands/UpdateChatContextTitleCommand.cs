@@ -2,7 +2,7 @@ using MediatR;
 
 namespace ChatBot.Api.Application.Commands;
 
-public record UpdateChatMessageTitleCommand : IRequest
+public record UpdateChatContextTitleCommand : IRequest
 {
     public required Guid ContextId { get; init; }
 

@@ -1,26 +1,26 @@
-using ChatBot.Api.Domain.ChatHistoryEntity;
+using ChatBot.Api.Domain.ChatContextEntity;
 using ChatBot.Api.Infrastructure.MongoModels;
 
 namespace ChatBot.Api.Infrastructure.Repositories.Mappers;
 
 internal static class ChatHistoryMapper
 {
-    public static ChatHistoryDal ToDal(this ChatHistory history)
+    public static ChatHistoryDal ToDal(this ChatContext context)
     {
         return new ChatHistoryDal
         {
-            ContextId = history.ContextId,
-            Title = history.Title,
-            Username = history.Username,
-            ChatMessages = history.ChatMessages.Select(message => message.ToDal()),
-            CreatedAt = history.CreatedAt,
-            UpdatedAt = history.UpdatedAt
+            ContextId = context.ContextId,
+            Title = context.Title,
+            Username = context.Username,
+            ChatMessages = context.ChatMessages.Select(message => message.ToDal()),
+            CreatedAt = context.CreatedAt,
+            UpdatedAt = context.UpdatedAt
         };
     }
 
-    public static ChatHistory ToDomain(this ChatHistoryDal history)
+    public static ChatContext ToDomain(this ChatHistoryDal history)
     {
-        return ChatHistory.CreateExisting(
+        return ChatContext.CreateExisting(
             contextId: history.ContextId,
             title: history.Title,
             username: history.Username,

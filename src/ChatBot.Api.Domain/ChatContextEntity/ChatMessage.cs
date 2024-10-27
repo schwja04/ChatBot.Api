@@ -1,4 +1,4 @@
-namespace ChatBot.Api.Domain.ChatHistoryEntity;
+namespace ChatBot.Api.Domain.ChatContextEntity;
 public record ChatMessage
 {
     private ChatMessage(

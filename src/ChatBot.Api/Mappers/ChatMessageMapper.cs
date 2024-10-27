@@ -1,6 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 using ChatBot.Api.Contracts;
-using ChatBot.Api.Domain.ChatHistoryEntity;
+using ChatBot.Api.Domain.ChatContextEntity;
 
 namespace ChatBot.Api.Mappers;
 

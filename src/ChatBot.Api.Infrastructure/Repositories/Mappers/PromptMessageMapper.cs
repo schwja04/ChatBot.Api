@@ -1,4 +1,4 @@
-﻿using ChatBot.Api.Domain.ChatHistoryEntity;
+﻿using ChatBot.Api.Domain.ChatContextEntity;
 using ChatBot.Api.Domain.PromptEntity;
 
 namespace ChatBot.Api.Infrastructure.Repositories.Mappers;

@@ -1,8 +1,8 @@
-namespace ChatBot.Api.Domain.ChatHistoryEntity;
+namespace ChatBot.Api.Domain.ChatContextEntity;
 
-public record ChatHistoryMetadata
+public record ChatContextMetadata
 {
-    private ChatHistoryMetadata(
+    private ChatContextMetadata(
         Guid contextId, string title, string username, DateTimeOffset createdAt, DateTimeOffset updatedAt)
     {
         ContextId = contextId;
@@ -22,10 +22,10 @@ public record ChatHistoryMetadata
 
     public DateTimeOffset UpdatedAt { get; }
 
-    public static ChatHistoryMetadata CreateExisting(
+    public static ChatContextMetadata CreateExisting(
         Guid contextId, string title, string username, DateTimeOffset createdAt, DateTimeOffset updatedAt)
     {
-        return new ChatHistoryMetadata(
+        return new ChatContextMetadata(
             contextId: contextId,
             title: title,
             username: username,

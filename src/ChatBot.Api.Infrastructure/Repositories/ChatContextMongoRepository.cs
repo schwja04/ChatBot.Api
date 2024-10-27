@@ -1,37 +1,37 @@
 using MongoDB.Driver;
 using System.Collections.ObjectModel;
+using ChatBot.Api.Domain.ChatContextEntity;
 using ChatBot.Api.Infrastructure.MongoModels;
 using ChatBot.Api.Infrastructure.Repositories.Mappers;
 using Common.Mongo;
-using ChatBot.Api.Domain.ChatHistoryEntity;
 
 namespace ChatBot.Api.Infrastructure.Repositories;
 
-internal class ChatHistoryMongoRepository : IChatHistoryRepository
+internal class ChatContextMongoRepository : IChatContextRepository
 {
     private readonly IMongoClientFactory _mongoClientFactory;
 
-    public ChatHistoryMongoRepository(IMongoClientFactory mongoClientFactory)
+    public ChatContextMongoRepository(IMongoClientFactory mongoClientFactory)
     {
         _mongoClientFactory = mongoClientFactory;
     }
 
-    public async Task SaveChatHistoryAsync(ChatHistory chatHistory, CancellationToken cancellationToken)
+    public async Task SaveAsync(ChatContext chatContext, CancellationToken cancellationToken)
     {
         var collection = GetCollection();
 
         var filter = Builders<ChatHistoryDal>
             .Filter
-            .Where(x => x.ContextId == chatHistory.ContextId);
+            .Where(x => x.ContextId == chatContext.ContextId);
 
         await collection.ReplaceOneAsync(
-            Builders<ChatHistoryDal>.Filter.Eq(x => x.ContextId, chatHistory.ContextId),
-            chatHistory.ToDal(),
+            Builders<ChatHistoryDal>.Filter.Eq(x => x.ContextId, chatContext.ContextId),
+            chatContext.ToDal(),
             new ReplaceOptions { IsUpsert = true },
             cancellationToken);
     }
 
-    public async Task<ChatHistory?> GetChatHistoryAsync(Guid contextId, CancellationToken cancellationToken)
+    public async Task<ChatContext?> GetAsync(Guid contextId, CancellationToken cancellationToken)
     {
         var collection = GetCollection();
 
@@ -47,7 +47,7 @@ internal class ChatHistoryMongoRepository : IChatHistoryRepository
         return chatHistoryDal?.ToDomain();
     }
 
-    public async Task<ReadOnlyCollection<ChatHistoryMetadata>> GetChatHistoryMetadatasAsync(string username, CancellationToken cancellationToken)
+    public async Task<ReadOnlyCollection<ChatContextMetadata>> GetManyMetadataAsync(string username, CancellationToken cancellationToken)
     {
         var collection = GetCollection();
 
@@ -75,7 +75,7 @@ internal class ChatHistoryMongoRepository : IChatHistoryRepository
         return chatHistoryMetadataDals.Select(dal => dal.ToDomain()).ToList().AsReadOnly();
     }
 
-    public async Task DeleteChatHistoryAsync(Guid contextId, CancellationToken cancellationToken)
+    public async Task DeleteAsync(Guid contextId, CancellationToken cancellationToken)
     {
         var collection = GetCollection();
 

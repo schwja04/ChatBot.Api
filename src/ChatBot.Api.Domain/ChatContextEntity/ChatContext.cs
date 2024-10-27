@@ -1,12 +1,12 @@
 using System.Collections.ObjectModel;
 
-namespace ChatBot.Api.Domain.ChatHistoryEntity;
+namespace ChatBot.Api.Domain.ChatContextEntity;
 
-public record ChatHistory
+public record ChatContext
 {
     private readonly List<ChatMessage> _messages;
 
-    private ChatHistory(Guid contextId, string title, string username, IEnumerable<ChatMessage> messages, DateTimeOffset createdAt, DateTimeOffset updatedAt)
+    private ChatContext(Guid contextId, string title, string username, IEnumerable<ChatMessage> messages, DateTimeOffset createdAt, DateTimeOffset updatedAt)
     {
         ContextId = contextId;
         Title = title;
@@ -44,11 +44,11 @@ public record ChatHistory
         _messages.Add(message);
     }
 
-    public static ChatHistory CreateNew(string username)
+    public static ChatContext CreateNew(string username)
     {
         DateTimeOffset now = DateTimeOffset.Now;
 
-        return new ChatHistory(
+        return new ChatContext(
             contextId: Guid.NewGuid(),
             title: string.Empty,
             username: username,
@@ -57,7 +57,7 @@ public record ChatHistory
             updatedAt: now);
     }
 
-    public static ChatHistory CreateExisting(
+    public static ChatContext CreateExisting(
         Guid contextId,
         string title,
         string username,
@@ -65,7 +65,7 @@ public record ChatHistory
         DateTimeOffset createdAt,
         DateTimeOffset updatedAt)
     {
-        return new ChatHistory(
+        return new ChatContext(
             contextId: contextId,
             title: title,
             username: username,

@@ -1,14 +1,14 @@
 ﻿using System.Collections.ObjectModel;
 using ChatBot.Api.Contracts;
-using ChatBot.Api.Domain.ChatHistoryEntity;
+using ChatBot.Api.Domain.ChatContextEntity;
 
 namespace ChatBot.Api.Mappers;
 
-public static class ChatHistoryMetadataMapper
+public static class ChatContextMetadataMapper
 {
-    public static GetChatHistoryMetadataResponse ToResponse(this ChatHistoryMetadata metadata)
+    public static GetChatContextMetadataResponse ToResponse(this ChatContextMetadata metadata)
     {
-        return new GetChatHistoryMetadataResponse
+        return new GetChatContextMetadataResponse
         {
             ContextId = metadata.ContextId,
             Title = metadata.Title,
@@ -18,8 +18,8 @@ public static class ChatHistoryMetadataMapper
         };
     }
 
-    public static ReadOnlyCollection<GetChatHistoryMetadataResponse> ToResponses(
-        this IEnumerable<ChatHistoryMetadata> metadatas)
+    public static ReadOnlyCollection<GetChatContextMetadataResponse> ToResponses(
+        this IEnumerable<ChatContextMetadata> metadatas)
     {
         if (metadatas is null)
         {

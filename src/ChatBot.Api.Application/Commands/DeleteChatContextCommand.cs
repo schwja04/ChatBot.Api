@@ -2,7 +2,7 @@
 
 namespace ChatBot.Api.Application.Commands;
 
-public record DeleteChatHistoryCommand : IRequest
+public record DeleteChatContextCommand : IRequest
 {
     public required Guid ContextId { get; init; }
 

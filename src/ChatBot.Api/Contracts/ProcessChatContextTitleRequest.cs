@@ -1,6 +1,6 @@
 namespace ChatBot.Api.Contracts;
 
-public record ProcessChatMessageTitleRequest
+public record ProcessChatContextTitleRequest
 {
     public required Guid ContextId { get; init; }
 
