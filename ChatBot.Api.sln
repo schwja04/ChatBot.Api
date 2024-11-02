@@ -27,6 +27,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChatBot.Api.UnitTests", "te
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChatBot.Api.Domain", "src\ChatBot.Api.Domain\ChatBot.Api.Domain.csproj", "{3DFE874B-DDD8-411C-B297-3FE79FC175F8}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChatBot.Api.EntityFrameworkCore.SqlServer", "efcore\ChatBot.Api.EntityFrameworkCore.SqlServer\ChatBot.Api.EntityFrameworkCore.SqlServer.csproj", "{CDEF0D1A-5BC0-481B-8E8C-2B79A1B0ED6E}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "efcore", "efcore", "{4453207F-ACC2-4BA2-8248-50F522CF46CD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChatBot.Api.EntityFrameworkCore.Postgresql", "efcore\ChatBot.Api.EntityFrameworkCore.Postgresql\ChatBot.Api.EntityFrameworkCore.Postgresql.csproj", "{9C21F919-89A0-4703-9F55-C7375A72899F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -69,6 +75,14 @@ Global
 		{3DFE874B-DDD8-411C-B297-3FE79FC175F8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3DFE874B-DDD8-411C-B297-3FE79FC175F8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3DFE874B-DDD8-411C-B297-3FE79FC175F8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CDEF0D1A-5BC0-481B-8E8C-2B79A1B0ED6E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CDEF0D1A-5BC0-481B-8E8C-2B79A1B0ED6E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CDEF0D1A-5BC0-481B-8E8C-2B79A1B0ED6E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CDEF0D1A-5BC0-481B-8E8C-2B79A1B0ED6E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9C21F919-89A0-4703-9F55-C7375A72899F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9C21F919-89A0-4703-9F55-C7375A72899F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9C21F919-89A0-4703-9F55-C7375A72899F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9C21F919-89A0-4703-9F55-C7375A72899F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -83,5 +97,7 @@ Global
 		{F5B3CEBC-3674-4F1B-B970-D3B1E0F1B533} = {8270AEA0-A37B-4465-9848-3F9DA449E34C}
 		{B41D5FBA-208D-424A-916C-CBF6DB826D8F} = {CC14550A-5AB0-4102-B454-FD2F88EA313C}
 		{3DFE874B-DDD8-411C-B297-3FE79FC175F8} = {F02AE784-F8D6-451C-BEDE-362A2408FB88}
+		{CDEF0D1A-5BC0-481B-8E8C-2B79A1B0ED6E} = {4453207F-ACC2-4BA2-8248-50F522CF46CD}
+		{9C21F919-89A0-4703-9F55-C7375A72899F} = {4453207F-ACC2-4BA2-8248-50F522CF46CD}
 	EndGlobalSection
 EndGlobal

@@ -6,11 +6,16 @@
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
-  <PropertyGroup Condition=" '$(RunConfiguration)' == 'https' " />
   <PropertyGroup Condition=" '$(RunConfiguration)' == 'local' " />
+  <PropertyGroup Condition=" '$(RunConfiguration)' == 'development' " />
   <ItemGroup>
     <PackageReference Include="Mediatr" Version="12.3.0" />
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.6" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.10">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.10" />
     <PackageReference Include="Microsoft.Extensions.Options" Version="8.0.2" />
     <PackageReference Include="MongoDB.Driver" Version="2.26.0" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.6.2" />
@@ -19,6 +24,8 @@
     <PackageReference Include="Scrutor" Version="4.2.2" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\efcore\ChatBot.Api.EntityFrameworkCore.Postgresql\ChatBot.Api.EntityFrameworkCore.Postgresql.csproj" />
+    <ProjectReference Include="..\..\efcore\ChatBot.Api.EntityFrameworkCore.SqlServer\ChatBot.Api.EntityFrameworkCore.SqlServer.csproj" />
     <ProjectReference Include="..\ChatBot.Api.Application\ChatBot.Api.Application.csproj" />
     <ProjectReference Include="..\ChatBot.Api.Infrastructure\ChatBot.Api.Infrastructure.csproj" />
     <ProjectReference Include="..\..\common\Common.Cors\Common.Cors.csproj">

@@ -12,7 +12,7 @@ internal static class ChatHistoryMapper
             ContextId = context.ContextId,
             Title = context.Title,
             Username = context.Username,
-            ChatMessages = context.ChatMessages.Select(message => message.ToDal()),
+            ChatMessages = context.Messages.Select(message => message.ToDal()),
             CreatedAt = context.CreatedAt,
             UpdatedAt = context.UpdatedAt
         };

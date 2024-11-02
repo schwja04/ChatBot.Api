@@ -4,6 +4,7 @@ using System.Net.Mime;
 using ChatBot.Api.Application.Commands;
 using ChatBot.Api.Application.Queries;
 using ChatBot.Api.Contracts;
+using ChatBot.Api.Domain.Exceptions;
 using ChatBot.Api.Mappers;
 
 namespace ChatBot.Api.Controllers;
@@ -18,9 +19,9 @@ public class ChatsController(IMediator mediator) : ControllerBase
     [HttpPost(Routes.Chats)]
     [Produces(MediaTypeNames.Application.Json)]
     [ProducesResponseType(typeof(ProcessChatMessageResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> PostAsync([FromBody] ProcessChatMessageRequest request, CancellationToken cancellationToken = default)
     {
-
         var command = new ProcessChatMessageCommand
         {
             ContextId = request.ContextId,
@@ -29,13 +30,19 @@ public class ChatsController(IMediator mediator) : ControllerBase
             Username = User.Identity?.Name ?? DefaultUsername
         };
 
-        var response = await _mediator.Send(command, cancellationToken);
-
-        return Ok(new ProcessChatMessageResponse
+        try
         {
-            ContextId = response.ContextId,
-            ChatMessage = response.ChatMessage.ToChatMessageResponse()
-        });
+            var response = await _mediator.Send(command, cancellationToken);
+            return Ok(new ProcessChatMessageResponse
+            {
+                ContextId = response.ContextId,
+                ChatMessage = response.ChatMessage.ToChatMessageResponse()
+            });
+        }
+        catch (ChatContextNotFoundException)
+        {
+            return NotFound();
+        }
     }
 
     [HttpGet(Routes.ChatMetadatas)]
@@ -87,7 +94,7 @@ public class ChatsController(IMediator mediator) : ControllerBase
             ContextId = response.ChatContext.ContextId,
             Title = response.ChatContext.Title,
             Username = response.ChatContext.Username,
-            ChatMessages = response.ChatContext.ChatMessages.ToChatMessageResponses(),
+            ChatMessages = response.ChatContext.Messages.ToChatMessageResponses(),
             CreatedAt = response.ChatContext.CreatedAt,
             UpdatedAt = response.ChatContext.UpdatedAt
         });

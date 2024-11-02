@@ -14,7 +14,7 @@ public class MongoClientFactory : IMongoClientFactory
     private MongoConfigurationRecord _configuration;
     private X509Certificate2? _certificate;
 
-    private IMongoClient _cachedMongoClient = null!;
+    private IMongoClient? _cachedMongoClient;
 
 
     public MongoClientFactory(IMongoConfigManager mongoConfigManger, IX509Manager x509Manager)

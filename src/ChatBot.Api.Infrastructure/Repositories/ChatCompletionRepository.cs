@@ -48,13 +48,13 @@ internal class ChatCompletionRepository : IChatCompletionRepository
 
     private async Task<ReadOnlyCollection<ChatCompletionRequestMessage>> MapMessagesAsync(ChatContext chatContext, CancellationToken cancellationToken)
     {
-        List<ChatCompletionRequestMessage> reqMessages = new(chatContext.ChatMessages.Count);
+        List<ChatCompletionRequestMessage> reqMessages = new(chatContext.Messages.Count);
 
         ChatMessage currentMessage;
         // Want to loop over all but last
-        for (int i = 0; i < chatContext.ChatMessages.Count - 1; i++)
+        for (int i = 0; i < chatContext.Messages.Count - 1; i++)
         {
-            currentMessage = chatContext.ChatMessages[i];
+            currentMessage = chatContext.Messages[i];
             reqMessages.Add(new ChatCompletionRequestMessage
             {
                 Role = Enum.GetName(currentMessage.Role)!.ToLowerInvariant(),
@@ -62,7 +62,7 @@ internal class ChatCompletionRepository : IChatCompletionRepository
             });
         }
 
-        currentMessage = chatContext.ChatMessages[^1];
+        currentMessage = chatContext.Messages[^1];
         reqMessages.Add(new ChatCompletionRequestMessage
         {
             Role = Enum.GetName(currentMessage.Role)!.ToLowerInvariant(),

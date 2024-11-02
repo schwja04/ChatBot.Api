@@ -4,18 +4,28 @@ namespace ChatBot.Api.Domain.ChatContextEntity;
 
 public record ChatContext
 {
-    private readonly List<ChatMessage> _messages;
+    private readonly List<ChatMessage> _messages = new();
 
-    private ChatContext(Guid contextId, string title, string username, IEnumerable<ChatMessage> messages, DateTimeOffset createdAt, DateTimeOffset updatedAt)
+#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
+    private ChatContext() {}
+#pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
+
+
+    private ChatContext(
+        Guid contextId, 
+        string title, 
+        string username, 
+        IEnumerable<ChatMessage> messages, 
+        DateTimeOffset createdAt, 
+        DateTimeOffset updatedAt)
     {
         ContextId = contextId;
         Title = title;
         Username = username;
-        _messages = messages.ToList();
+        _messages.AddRange(messages);
 
         CreatedAt = createdAt;
         UpdatedAt = updatedAt;
-        ChatMessages = _messages.AsReadOnly();
     }
 
     public Guid ContextId { get; }
@@ -24,7 +34,7 @@ public record ChatContext
 
     public string Username { get; }
 
-    public ReadOnlyCollection<ChatMessage> ChatMessages { get; }
+    public ReadOnlyCollection<ChatMessage> Messages => _messages.AsReadOnly();
 
     public DateTimeOffset CreatedAt { get; }
 

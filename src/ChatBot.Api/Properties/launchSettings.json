@@ -11,13 +11,25 @@
       },
       "dotnetRunMessages": true
     },
-    "local": {
+    "postgresql": {
       "commandName": "Project",
       "launchBrowser": true,
       "launchUrl": "swagger",
       "applicationUrl": "https://localhost:5001;http://localhost:5000",
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Local"
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "DatabaseProvider": "Postgresql"
+      },
+      "dotnetRunMessages": true
+    },
+    "sqlserver": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "launchUrl": "swagger",
+      "applicationUrl": "https://localhost:5001;http://localhost:5000",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "DatabaseProvider": "SqlServer"
       },
       "dotnetRunMessages": true
     }
