@@ -106,8 +106,8 @@ static void RegisterServices(IServiceCollection services, IConfiguration configu
 
 public static class DatabaseProviders
 {
-    public const string SqlServer = "SqlServer";
-    public const string Postgresql = "Postgres";
+    public const string SqlServer = nameof(SqlServer);
+    public const string Postgresql = nameof(Postgresql);
     public const string MySql = "MySql";
     public const string InMemory = "InMemory";
 }

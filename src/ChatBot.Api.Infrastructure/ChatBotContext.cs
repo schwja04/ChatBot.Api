@@ -29,8 +29,12 @@ public class ChatContextConfiguration : IEntityTypeConfiguration<ChatContext>
         // Configure properties
         builder.Property(cc => cc.Title).IsRequired();
         builder.Property(cc => cc.Username).IsRequired();
-        builder.Property(cc => cc.CreatedAt).IsRequired();
-        builder.Property(cc => cc.UpdatedAt).IsRequired();
+        builder.Property(cc => cc.CreatedAt)
+            .HasConversion(x => x.UtcDateTime, x => new DateTimeOffset(x, TimeSpan.Zero))
+            .IsRequired();
+        builder.Property(cc => cc.UpdatedAt)
+            .HasConversion(x => x.UtcDateTime, x => new DateTimeOffset(x, TimeSpan.Zero))
+            .IsRequired();
 
         // Configure one-to-many relationship between ChatContext and ChatMessage
         builder.Ignore(cc => cc.Messages);
@@ -50,7 +54,9 @@ public class ChatContextConfiguration : IEntityTypeConfiguration<ChatContext>
             // Configure properties
             cmNavBuilder.Property(cm => cm.Content).IsRequired();
             cmNavBuilder.Property(cm => cm.PromptKey).IsRequired();
-            cmNavBuilder.Property(cm => cm.CreatedAt).IsRequired();
+            cmNavBuilder.Property(cm => cm.CreatedAt)
+                .HasConversion(x => x.UtcDateTime, x => new DateTimeOffset(x, TimeSpan.Zero))
+                .IsRequired();
             cmNavBuilder.Property(cm => cm.Role).IsRequired();
         
             cmNavBuilder.HasIndex(cm => cm.MessageId).IsUnique();

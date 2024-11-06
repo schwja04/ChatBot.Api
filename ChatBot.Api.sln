@@ -33,6 +33,14 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "efcore", "efcore", "{445320
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChatBot.Api.EntityFrameworkCore.Postgresql", "efcore\ChatBot.Api.EntityFrameworkCore.Postgresql\ChatBot.Api.EntityFrameworkCore.Postgresql.csproj", "{9C21F919-89A0-4703-9F55-C7375A72899F}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_project-files", "_project-files", "{B877FF1F-7B68-41AD-9B53-A3EE191C36DA}"
+	ProjectSection(SolutionItems) = preProject
+		Makefile = Makefile
+		docker-compose.yml = docker-compose.yml
+		Dockerfile = Dockerfile
+		global.json = global.json
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
