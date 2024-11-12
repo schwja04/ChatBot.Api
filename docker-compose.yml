@@ -1,0 +1,49 @@
+version: '3.8'
+
+services:
+  mongo:
+    image: mongo:5.0.27
+    container_name: mongo
+    env_file: .env
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_USERNAME}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_PASSWORD}
+    volumes:
+      - mongo-data:/data/db
+    ports:
+      - "27017:27017"
+    restart: unless-stopped
+
+  postgresql:
+    image: postgres:17.0
+    container_name: postgresql
+    env_file: .env
+    environment:
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    volumes:
+      - postgresql-data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    restart: unless-stopped
+    
+  sql-server:
+    image: mcr.microsoft.com/azure-sql-edge
+    container_name: sql-server
+    cap_add:
+      - SYS_PTRACE
+    env_file: .env
+    environment:
+      ACCEPT_EULA: Y
+      MSSQL_PID: Developer
+      MSSQL_SA_PASSWORD: ${MSSQL_SA_PASSWORD}
+    volumes:
+      - sql-server-data:/var/opt/mssql
+    ports:
+      - "1433:1433"
+    platform: linux/arm64
+    restart: unless-stopped
+    
+volumes:
+  mongo-data:
+  postgresql-data:
+  sql-server-data:
