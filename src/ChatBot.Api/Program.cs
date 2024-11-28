@@ -1,4 +1,3 @@
-using System.Reflection;
 using System.Text.Json.Serialization;
 using ChatBot.Api.Application.Abstractions;
 using ChatBot.Api.Application.Abstractions.Repositories;
@@ -14,7 +13,6 @@ using Common.Cors;
 using Common.HttpClient;
 using Common.Mongo;
 using Common.OpenAI.Clients;
-using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -35,7 +33,7 @@ builder.Services.AddSwaggerGen(c =>
     c.SchemaFilter<EnumSchemaFilter>();
 });
 
-builder.Services.AddLogging(builder => builder.AddConsole());
+builder.Services.AddLogging(loggingBuilder => loggingBuilder.AddConsole());
 
 // Add swagger with Newtonsoft functionality
 builder.Services
@@ -72,48 +70,86 @@ static void RegisterServices(IServiceCollection services, IConfiguration configu
     services.AddTransientWithHttpClient<IOpenAIClient, OpenAIClient>(configuration);
     services.AddTransient<IChatCompletionRepository, ChatCompletionRepository>();
     services.AddSingleton<IPromptMessageMapper, PromptMessageMapper>();
-
-    services.AddSingletonMongoClientFactory(configuration);
-    // services.AddSingleton<IChatContextRepository, ChatContextMongoRepository>();
-
-    services.AddDbContext<ChatBotContext>(builder =>
-    {
-        switch (configuration.GetValue<string>("DatabaseProvider"))
-        {
-            case DatabaseProviders.Postgresql:
-                builder.UsePostgresqlDbContext(configuration.GetConnectionString(ConnectionStrings.ChatBotContextPostgresqlConnectionString)!);
-                break;
-            case DatabaseProviders.SqlServer:
-            default:
-                builder.UseSqlServerDbContext(configuration.GetConnectionString(ConnectionStrings.ChatBotContextSqlServerConnectionString)!);
-                break;
-            // case DatabaseProviders.MySql:
-            //     builder.UseMySqlDbContext(configuration.GetConnectionString("ChatBotContext")!);
-            //     break;
-            // case DatabaseProviders.InMemory:
-            //     builder.UseInMemoryDbContext("ChatBotContext");
-            //     break;
-        }
-    });
     
-    services.AddScoped<IChatContextRepository, ChatContextEntityFrameworkRepository>();
+    var databaseProvider = configuration.GetValue<string>("DatabaseProvider");
+    switch (databaseProvider)
+    {
+        case DatabaseProviders.SqlServer:
+            services.AddSqlServerRepositories(configuration);
+            break;
+        case DatabaseProviders.Postgresql:
+            services.AddPostgresqlRepositories(configuration);
+            break;
+        case DatabaseProviders.InMemory:
+            services.AddInMemoryRepositories();
+            break;
+        case DatabaseProviders.Mongo:
+            services.AddMongoRepositories(configuration);
+            break;
+        default:
+            throw new ArgumentOutOfRangeException(nameof(databaseProvider), databaseProvider, "Database provider is not supported.");
+    }
 
-    services.AddMemoryCache();
-
-    services.AddSingleton<IPromptRepository, PromptMongoRepository>()
+    services.AddMemoryCache()
         .Decorate<IPromptRepository, CachedUserAccessiblePromptRepository>();
 }
 
-public static class DatabaseProviders
+internal static class ServiceCollectionExtensions
+{
+    public static IServiceCollection AddSqlServerRepositories(this IServiceCollection services, IConfiguration configuration)
+    {
+        services.AddDbContext<ChatBotContext>(builder =>
+        {
+            builder.UseSqlServerDbContext(configuration.GetConnectionString(ConnectionStrings.ChatBotContextSqlServerConnectionString)!);
+        });
+
+        services.AddScoped<IChatContextRepository, ChatContextEntityFrameworkRepository>();
+        services.AddScoped<IPromptRepository, PromptEntityFrameworkRepository>();
+
+        return services;
+    }
+    
+    public static IServiceCollection AddPostgresqlRepositories(this IServiceCollection services, IConfiguration configuration)
+    {
+        services.AddDbContext<ChatBotContext>(builder =>
+        {
+            builder.UsePostgresqlDbContext(configuration.GetConnectionString(ConnectionStrings.ChatBotContextPostgresqlConnectionString)!);
+        });
+
+        services.AddScoped<IChatContextRepository, ChatContextEntityFrameworkRepository>();
+        services.AddScoped<IPromptRepository, PromptEntityFrameworkRepository>();
+
+        return services;
+    }
+    
+    public static IServiceCollection AddMongoRepositories(this IServiceCollection services, IConfiguration configuration)
+    {
+        services.AddSingletonMongoClientFactory(configuration);
+        services.AddSingleton<IChatContextRepository, ChatContextMongoRepository>();
+        services.AddSingleton<IPromptRepository, PromptMongoRepository>();
+
+        return services;
+    }
+    
+    public static IServiceCollection AddInMemoryRepositories(this IServiceCollection services)
+    {
+        services.AddSingleton<IChatContextRepository, ChatContextInMemoryRepository>();
+        services.AddSingleton<IPromptRepository, PromptInMemoryRepository>();
+
+        return services;
+    }
+}
+
+internal static class DatabaseProviders
 {
     public const string SqlServer = nameof(SqlServer);
     public const string Postgresql = nameof(Postgresql);
-    public const string MySql = "MySql";
-    public const string InMemory = "InMemory";
+    public const string Mongo = nameof(Mongo);
+    public const string InMemory = nameof(InMemory);
 }
 
-public static class ConnectionStrings
+internal static class ConnectionStrings
 {
-    public static string ChatBotContextPostgresqlConnectionString = nameof(ChatBotContextPostgresqlConnectionString);
-    public static string ChatBotContextSqlServerConnectionString = nameof(ChatBotContextSqlServerConnectionString);
+    public const string ChatBotContextPostgresqlConnectionString = nameof(ChatBotContextPostgresqlConnectionString);
+    public const string ChatBotContextSqlServerConnectionString = nameof(ChatBotContextSqlServerConnectionString);
 }

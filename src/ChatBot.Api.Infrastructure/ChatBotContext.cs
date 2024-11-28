@@ -1,4 +1,5 @@
 using ChatBot.Api.Domain.ChatContextEntity;
+using ChatBot.Api.Domain.PromptEntity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -7,11 +8,31 @@ namespace ChatBot.Api.Infrastructure;
 public class ChatBotContext(DbContextOptions<ChatBotContext> options) : DbContext(options)
 {
     public DbSet<ChatContext> ChatContexts { get; set; }
+    public DbSet<Prompt> Prompts { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.ApplyConfiguration(new ChatContextConfiguration());
-        // modelBuilder.ApplyConfiguration(new ChatMessageConfiguration());
+        modelBuilder.ApplyConfiguration(new PromptConfiguration());
+    }
+}
+
+public class PromptConfiguration : IEntityTypeConfiguration<Prompt>
+{
+    public void Configure(EntityTypeBuilder<Prompt> builder)
+    {
+        builder.Property<long>("Id")
+            .IsRequired()
+            .ValueGeneratedOnAdd();
+        builder.HasKey("Id");
+        
+        builder.Property(p => p.PromptId).IsRequired();
+        builder.Property(p => p.Key).IsRequired();
+        builder.Property(p => p.Value).IsRequired();
+        builder.Property(p => p.Owner).IsRequired();
+        
+        builder.HasIndex(p => p.PromptId).IsUnique();
+        builder.HasIndex(p => new { p.Owner, p.Key }).IsUnique();
     }
 }
 
@@ -61,10 +82,6 @@ public class ChatContextConfiguration : IEntityTypeConfiguration<ChatContext>
         
             cmNavBuilder.HasIndex(cm => cm.MessageId).IsUnique();
         });
-        
-        // Configure EF to use the private _messages field for Messages
-        // builder.Metadata.FindNavigation(nameof(ChatContext.Messages))!
-        //     .SetPropertyAccessMode(PropertyAccessMode.PreferProperty);
         
         builder.HasIndex(cc => cc.ContextId).IsUnique();
     }

@@ -33,15 +33,15 @@ namespace ChatBot.Api.EntityFrameworkCore.SqlServer.Migrations
                     b.Property<Guid>("ContextId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<DateTimeOffset>("CreatedAt")
-                        .HasColumnType("datetimeoffset");
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTimeOffset>("UpdatedAt")
-                        .HasColumnType("datetimeoffset");
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Username")
                         .IsRequired()
@@ -53,6 +53,40 @@ namespace ChatBot.Api.EntityFrameworkCore.SqlServer.Migrations
                         .IsUnique();
 
                     b.ToTable("ChatContexts");
+                });
+
+            modelBuilder.Entity("ChatBot.Api.Domain.PromptEntity.Prompt", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
+
+                    b.Property<string>("Key")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Owner")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<Guid>("PromptId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Value")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PromptId")
+                        .IsUnique();
+
+                    b.HasIndex("Owner", "Key")
+                        .IsUnique();
+
+                    b.ToTable("Prompts");
                 });
 
             modelBuilder.Entity("ChatBot.Api.Domain.ChatContextEntity.ChatContext", b =>
@@ -72,8 +106,8 @@ namespace ChatBot.Api.EntityFrameworkCore.SqlServer.Migrations
                                 .IsRequired()
                                 .HasColumnType("nvarchar(max)");
 
-                            b1.Property<DateTimeOffset>("CreatedAt")
-                                .HasColumnType("datetimeoffset");
+                            b1.Property<DateTime>("CreatedAt")
+                                .HasColumnType("datetime2");
 
                             b1.Property<Guid>("MessageId")
                                 .HasColumnType("uniqueidentifier");
