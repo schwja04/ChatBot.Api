@@ -4,14 +4,10 @@ using MediatR;
 
 namespace ChatBot.Api.Application.QueryHandlers;
 
-internal class GetPromptQueryHandler : IRequestHandler<GetPromptQuery, Prompt?>
+internal class GetPromptQueryHandler(IPromptRepository promptRepository) 
+    : IRequestHandler<GetPromptQuery, Prompt?>
 {
-    private readonly IReadPromptRepository _readPromptRepository;
-
-    public GetPromptQueryHandler(IPromptRepository promptRepository)
-    {
-        _readPromptRepository = promptRepository;
-    }
+    private readonly IReadPromptRepository _readPromptRepository = promptRepository;
 
     public async Task<Prompt?> Handle(GetPromptQuery request, CancellationToken cancellationToken)
     {

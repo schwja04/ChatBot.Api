@@ -10,16 +10,13 @@ using System.Diagnostics;
 
 namespace ChatBot.Api.Infrastructure.Repositories;
 
-internal class PromptMongoRepository : IPromptRepository, IReadPromptRepository, IWritePromptRepository
+internal class PromptMongoRepository(
+    ILogger<PromptMongoRepository> logger, 
+    IMongoClientFactory mongoClientFactory)
+    : IPromptRepository
 {
-    private readonly ILogger<PromptMongoRepository> _logger;
-    private readonly IMongoClientFactory _mongoClientFactory;
-
-    public PromptMongoRepository(ILogger<PromptMongoRepository> logger, IMongoClientFactory mongoClientFactory)
-    {
-        _logger = logger;
-        _mongoClientFactory = mongoClientFactory;
-    }
+    private readonly ILogger<PromptMongoRepository> _logger = logger;
+    private readonly IMongoClientFactory _mongoClientFactory = mongoClientFactory;
 
     public async Task<Prompt?> GetAsync(string username, Guid promptId, CancellationToken cancellationToken)
     {
@@ -91,7 +88,7 @@ internal class PromptMongoRepository : IPromptRepository, IReadPromptRepository,
 
         if (savedPrompt is null)
         {
-            await collection.InsertOneAsync(promptToSave, (InsertOneOptions?)null, cancellationToken);
+            await collection.InsertOneAsync(promptToSave, options: null, cancellationToken);
             return;
         }
 

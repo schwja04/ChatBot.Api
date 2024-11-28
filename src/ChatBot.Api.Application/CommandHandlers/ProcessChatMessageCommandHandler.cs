@@ -8,18 +8,13 @@ using ChatBot.Api.Domain.PromptEntity;
 
 namespace ChatBot.Api.Application.CommandHandlers;
 
-internal class ProcessChatMessageCommandHandler : IRequestHandler<ProcessChatMessageCommand, ProcessChatMessageCommandResponse>
+internal class ProcessChatMessageCommandHandler(
+    IChatCompletionRepository chatCompletionRepository,
+    IChatContextRepository chatContextRepository) 
+    : IRequestHandler<ProcessChatMessageCommand, ProcessChatMessageCommandResponse>
 {
-    private readonly IChatCompletionRepository _chatCompletionRepository;
-    private readonly IChatContextRepository _chatContextRepository;
-
-    public ProcessChatMessageCommandHandler(
-        IChatCompletionRepository chatCompletionRepository,
-        IChatContextRepository chatContextRepository)
-    {
-        _chatCompletionRepository = chatCompletionRepository;
-        _chatContextRepository = chatContextRepository;
-    }
+    private readonly IChatCompletionRepository _chatCompletionRepository = chatCompletionRepository;
+    private readonly IChatContextRepository _chatContextRepository = chatContextRepository;
 
     public async Task<ProcessChatMessageCommandResponse> Handle(ProcessChatMessageCommand request, CancellationToken cancellationToken)
     {

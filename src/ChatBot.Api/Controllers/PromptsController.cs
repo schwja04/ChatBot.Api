@@ -10,18 +10,12 @@ using Microsoft.AspNetCore.Mvc;
 namespace ChatBot.Api.Controllers;
 
 [ApiController]
-public class PromptsController : ControllerBase
+public class PromptsController(ILogger<PromptsController> logger, IMediator mediator) : ControllerBase
 {
-    private readonly IMediator _mediator;
-    private readonly ILogger _logger;
+    private readonly IMediator _mediator = mediator;
+    private readonly ILogger _logger = logger;
 
     private static readonly string DefaultUsername = "Unknown";
-
-    public PromptsController(ILogger<PromptsController> logger, IMediator mediator)
-    {
-        _mediator = mediator;
-        _logger = logger;
-    }
 
     [HttpGet(Routes.Prompts)]
     [Produces(MediaTypeNames.Application.Json)]

@@ -4,15 +4,10 @@ using ChatBot.Api.Domain.PromptEntity;
 
 namespace ChatBot.Api.Application.CommandHandlers;
 
-internal class CreatePromptCommandHandler
+internal class CreatePromptCommandHandler(IPromptRepository promptRepository)
     : IRequestHandler<CreatePromptCommand, Prompt>
 {
-    private readonly IWritePromptRepository _writePromptRepository;
-
-    public CreatePromptCommandHandler(IPromptRepository promptRepository)
-    {
-        _writePromptRepository = promptRepository;
-    }
+    private readonly IWritePromptRepository _writePromptRepository = promptRepository;
 
     public async Task<Prompt> Handle(
         CreatePromptCommand request, CancellationToken cancellationToken)

@@ -39,14 +39,14 @@ public record Prompt
 
 public static class PromptKey
 {
-    public static readonly string Email = nameof(Email);
-    public static readonly string None = nameof(None);
-    public static readonly string Title = nameof(Title);
+    public const string Email = nameof(Email);
+    public const string None = nameof(None);
+    public const string Title = nameof(Title);
 }
 
 public static class PromptValue
 {
-    public static readonly string Email = """
+    public const string Email = """
         Format all of your your responses back as an email.
 
         ### Starting Context Here ###
@@ -54,9 +54,9 @@ public static class PromptValue
         ### Ending Context Here ###
         """;
 
-    public static readonly string None = string.Empty;
+    public const string None = "";
 
-    public static readonly string Title = """
+    public const string Title = """
         Create a title for our conversation based on the following message.
         Ensure to keep the title to no more than 5 words.
         Do not include special characters.

@@ -3,14 +3,9 @@ using ChatBot.Api.Domain.PromptEntity;
 
 namespace ChatBot.Api.Infrastructure.Repositories.Mappers;
 
-internal class PromptMessageMapper : IPromptMessageMapper
+internal class PromptMessageMapper(IPromptRepository promptRepository) : IPromptMessageMapper
 {
-    private readonly IReadPromptRepository _readPromptRepository;
-
-    public PromptMessageMapper(IPromptRepository promptRepository)
-    {
-        _readPromptRepository = promptRepository;
-    }
+    private readonly IReadPromptRepository _readPromptRepository = promptRepository;
 
     public async Task<string> BuildMessageContentAsync(ChatMessage message, string username, CancellationToken cancellationToken)
     {

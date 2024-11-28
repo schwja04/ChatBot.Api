@@ -4,24 +4,17 @@ using Microsoft.Extensions.Caching.Memory;
 
 namespace ChatBot.Api.Infrastructure.Repositories;
 
-internal class CachedUserAccessiblePromptRepository : IPromptRepository, IReadPromptRepository, IWritePromptRepository
+internal class CachedUserAccessiblePromptRepository(
+    IMemoryCache memoryCache,
+    IPromptRepository promptRepository)
+    : IPromptRepository
 {
     private const string System = nameof(System);
     private static readonly string AllPromptsKey = "AllPrompts_{0}";
     private static readonly string SinglePromptKey = "Prompt_{0}_{1}";
 
-    private readonly IMemoryCache _cache;
-    private readonly IReadPromptRepository _readPromptRepository;
-    private readonly IWritePromptRepository _writePromptRepository;
-
-	public CachedUserAccessiblePromptRepository(
-        IMemoryCache memoryCache,
-        IPromptRepository promptRepository)
-	{
-        _cache = memoryCache;
-        _readPromptRepository = promptRepository;
-        _writePromptRepository = promptRepository;
-	}
+    private readonly IMemoryCache _cache = memoryCache;
+    private readonly IPromptRepository _promptRepository = promptRepository;
 
     public async Task<Prompt?> GetAsync(string username, Guid promptId, CancellationToken cancellationToken)
     {
@@ -35,42 +28,42 @@ internal class CachedUserAccessiblePromptRepository : IPromptRepository, IReadPr
 
     public async Task<ReadOnlyCollection<Prompt>> GetManyAsync(string username, CancellationToken cancellationToken)
     {
-        var systemPrompts = await HelperAsync(System, cancellationToken);
-        var userPrompts = await HelperAsync(username, cancellationToken);
+        var systemPrompts = await HelperAsync(_cache, _promptRepository, System, cancellationToken);
+        var userPrompts = await HelperAsync(_cache, _promptRepository, username, cancellationToken);
 
-        var returnPrompts = new List<Prompt>(systemPrompts!.Count + userPrompts!.Count);
-        returnPrompts.AddRange(systemPrompts!);
-        returnPrompts.AddRange(userPrompts!);
+        var returnPrompts = new List<Prompt>(systemPrompts.Count + userPrompts.Count);
+        returnPrompts.AddRange(systemPrompts);
+        returnPrompts.AddRange(userPrompts);
 
         return returnPrompts.Distinct().ToList().AsReadOnly();
 
 
-        async Task<ReadOnlyCollection<Prompt>> HelperAsync(string username, CancellationToken cancellationToken)
+        static async Task<ReadOnlyCollection<Prompt>> HelperAsync(IMemoryCache cache, IReadPromptRepository readPromptRepository, string innerUsername, CancellationToken innerCancellationToken)
         {
-            string userAllCacheKey = string.Format(AllPromptsKey, username);
-            bool userCacheHit = _cache.TryGetValue(userAllCacheKey, out ReadOnlyCollection<Prompt>? userPrompts);
+            string userAllCacheKey = string.Format(AllPromptsKey, innerUsername);
+            bool userCacheHit = cache.TryGetValue(userAllCacheKey, out ReadOnlyCollection<Prompt>? innerUserPrompts);
 
             if (!userCacheHit)
             {
-                userPrompts = await _readPromptRepository.GetManyAsync(username, cancellationToken);
-                foreach (Prompt prompt in userPrompts)
+                innerUserPrompts = await readPromptRepository.GetManyAsync(innerUsername, innerCancellationToken);
+                foreach (Prompt prompt in innerUserPrompts)
                 {
                     string singleCacheKey = string.Format(SinglePromptKey, prompt.Owner, prompt.Key);
-                    _cache.Set(singleCacheKey, prompt, TimeSpan.FromDays(1));
+                    cache.Set(singleCacheKey, prompt, TimeSpan.FromDays(1));
 
                     string singleCacheId = string.Format(SinglePromptKey, prompt.Owner, prompt.PromptId);
-                    _cache.Set(singleCacheId, prompt, TimeSpan.FromDays(1));
+                    cache.Set(singleCacheId, prompt, TimeSpan.FromDays(1));
                 }
-                _cache.Set(userAllCacheKey, userPrompts, TimeSpan.FromDays(1));
+                cache.Set(userAllCacheKey, innerUserPrompts, TimeSpan.FromDays(1));
             }
 
-            return userPrompts!;
+            return innerUserPrompts!;
         }
     }
 
     public async Task SaveAsync(Prompt prompt, CancellationToken cancellationToken)
     {
-        await _writePromptRepository.SaveAsync(prompt, cancellationToken);
+        await _promptRepository.SaveAsync(prompt, cancellationToken);
 
         InvalidateCache(prompt.Owner);
 
@@ -79,7 +72,7 @@ internal class CachedUserAccessiblePromptRepository : IPromptRepository, IReadPr
 
     public async Task DeleteAsync(string username, Guid promptId, CancellationToken cancellationToken)
     {
-        await _writePromptRepository.DeleteAsync(username, promptId, cancellationToken);
+        await _promptRepository.DeleteAsync(username, promptId, cancellationToken);
 
         InvalidateCache(username);
 

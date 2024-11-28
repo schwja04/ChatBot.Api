@@ -5,7 +5,8 @@ using ChatBot.Api.Domain.Exceptions;
 
 namespace ChatBot.Api.Application.CommandHandlers;
 
-internal class UpdateChatContextTitleCommandHandler(IChatContextRepository chatContextRepository) : IRequestHandler<UpdateChatContextTitleCommand>
+internal class UpdateChatContextTitleCommandHandler(IChatContextRepository chatContextRepository) 
+    : IRequestHandler<UpdateChatContextTitleCommand>
 {
     private readonly IChatContextRepository _chatContextRepository = chatContextRepository;
 

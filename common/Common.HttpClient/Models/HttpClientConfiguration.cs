@@ -2,17 +2,12 @@ using Microsoft.Extensions.Configuration;
 
 namespace Common.HttpClient.Models;
 
-public class HttpClientConfiguration<TImplementationType> : HttpClientConfiguration
-{
-    public HttpClientConfiguration(IConfiguration configuration)
-        : base(typeof(TImplementationType).Name, configuration)
-    {
-    }
-}
+public class HttpClientConfiguration<TImplementationType>(IConfiguration configuration)
+    : HttpClientConfiguration(typeof(TImplementationType).Name, configuration);
 
 public class HttpClientConfiguration
 {
-    public HttpClientConfiguration(string clientTypeName, IConfiguration configuration)
+    protected HttpClientConfiguration(string clientTypeName, IConfiguration configuration)
     {
         var clientSection = configuration.GetSection($"Services:{clientTypeName}");
         if (!clientSection.Exists())

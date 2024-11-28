@@ -5,7 +5,8 @@ using MediatR;
 
 namespace ChatBot.Api.Application.CommandHandlers;
 
-internal class DeleteChatContextCommandHandler(IChatContextRepository chatContextRepository) : IRequestHandler<DeleteChatContextCommand>
+internal class DeleteChatContextCommandHandler(IChatContextRepository chatContextRepository) 
+    : IRequestHandler<DeleteChatContextCommand>
 {
     private readonly IChatContextRepository _chatContextRepository = chatContextRepository;
 

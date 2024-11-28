@@ -7,23 +7,14 @@ using Common.Mongo;
 
 namespace ChatBot.Api.Infrastructure.Repositories;
 
-internal class ChatContextMongoRepository : IChatContextRepository
+internal class ChatContextMongoRepository(IMongoClientFactory mongoClientFactory) : IChatContextRepository
 {
-    private readonly IMongoClientFactory _mongoClientFactory;
-
-    public ChatContextMongoRepository(IMongoClientFactory mongoClientFactory)
-    {
-        _mongoClientFactory = mongoClientFactory;
-    }
-
+    private readonly IMongoClientFactory _mongoClientFactory = mongoClientFactory;
+    
     public async Task SaveAsync(ChatContext chatContext, CancellationToken cancellationToken)
     {
         var collection = GetCollection();
-
-        var filter = Builders<ChatHistoryDal>
-            .Filter
-            .Where(x => x.ContextId == chatContext.ContextId);
-
+        
         await collection.ReplaceOneAsync(
             Builders<ChatHistoryDal>.Filter.Eq(x => x.ContextId, chatContext.ContextId),
             chatContext.ToDal(),
@@ -83,7 +74,7 @@ internal class ChatContextMongoRepository : IChatContextRepository
             .Filter
             .Where(x => x.ContextId == contextId);
 
-        await collection.DeleteOneAsync(filter, (DeleteOptions?)null, cancellationToken);
+        await collection.DeleteOneAsync(filter, options: null, cancellationToken);
     }
 
     private IMongoCollection<ChatHistoryDal> GetCollection()

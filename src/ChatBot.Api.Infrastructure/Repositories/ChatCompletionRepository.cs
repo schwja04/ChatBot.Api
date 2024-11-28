@@ -8,23 +8,18 @@ using Common.OpenAI.Models;
 
 namespace ChatBot.Api.Infrastructure.Repositories;
 
-internal class ChatCompletionRepository : IChatCompletionRepository
+internal class ChatCompletionRepository(IOpenAIClient openAIClient, IPromptMessageMapper promptMapper)
+    : IChatCompletionRepository
 {
-    private readonly IOpenAIClient _openAIClient;
-    private readonly IPromptMessageMapper _promptMapper;
+    private readonly IOpenAIClient _openAIClient = openAIClient;
+    private readonly IPromptMessageMapper _promptMapper = promptMapper;
 
     // TODO: ADD ILogger<ChatCompletionRepository>
     // This will allow me to log information about the chat completion
 
     // TODO: ADD IOptionsMonitor<OpenAIOptions>
     // This will allow me to dynamically change the model on the fly
-
-    public ChatCompletionRepository(IOpenAIClient openAIClient, IPromptMessageMapper promptMapper)
-    {
-        _openAIClient = openAIClient;
-        _promptMapper = promptMapper;
-    }
-
+    
     public async Task<ChatMessage> GetChatCompletionAsync(ChatContext chatContext, CancellationToken cancellationToken)
     {
         // Convert ChatHistory to CreateChatCompletionRequest

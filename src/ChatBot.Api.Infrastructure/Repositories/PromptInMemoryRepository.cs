@@ -4,36 +4,33 @@ using ChatBot.Api.Domain.PromptEntity;
 
 namespace ChatBot.Api.Infrastructure.Repositories;
 
-internal class PromptInMemoryRepository : IPromptRepository, IReadPromptRepository, IWritePromptRepository
+internal class PromptInMemoryRepository : IPromptRepository
 {
-    private readonly List<Prompt> _prompts;
-
-    public PromptInMemoryRepository()
+    private readonly List<Prompt> _prompts = new()
     {
-        _prompts = new List<Prompt>()
-        {
-            Prompt.CreateNew(
-                key: PromptKey.Email,
-                value: PromptValue.Email,
-                owner: "System"),
-            Prompt.CreateNew(
-                key: PromptKey.None,
-                value: PromptValue.None,
-                owner: "System"),
-            Prompt.CreateNew(
-                key: PromptKey.Title,
-                value: PromptValue.Title,
-                owner: "System"),
-            Prompt.CreateNew(
-                key: "Custom",
-                value: "Does not matter {0}",
-                owner: "Unknown"),
-            Prompt.CreateNew(
-                key: "ShouldNotShow",
-                value: "Also does not matter {0}",
-                owner: "schwjac"),
-        };
-    }
+        Prompt.CreateNew(
+            key: PromptKey.Email,
+            value: PromptValue.Email,
+            owner: "System"),
+        Prompt.CreateNew(
+            key: PromptKey.None,
+            value: PromptValue.None,
+            owner: "System"),
+        Prompt.CreateNew(
+            key: PromptKey.Title,
+            value: PromptValue.Title,
+            owner: "System"),
+        Prompt.CreateNew(
+            key: "Custom",
+            value: "Does not matter {0}",
+            owner: "Unknown"),
+        Prompt.CreateNew(
+            key: "ShouldNotShow",
+            value: "Also does not matter {0}",
+            owner: "schwjac"),
+    };
+
+
 
     public Task<Prompt?> GetAsync(string username, string promptKey, CancellationToken cancellationToken)
     {

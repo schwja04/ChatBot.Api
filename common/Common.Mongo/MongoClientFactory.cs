@@ -5,26 +5,18 @@ using Common.Mongo.Models;
 
 namespace Common.Mongo;
 
-public class MongoClientFactory : IMongoClientFactory
+public class MongoClientFactory(IMongoConfigManager mongoConfigManger, IX509Manager x509Manager)
+    : IMongoClientFactory
 {
-    private readonly IX509Manager _x509Manager;
-    private readonly IMongoConfigManager _mongoConfigManager;
+    private readonly IX509Manager _x509Manager = x509Manager;
+    private readonly IMongoConfigManager _mongoConfigManager = mongoConfigManger;
 
     private object _lock = new();
-    private MongoConfigurationRecord _configuration;
-    private X509Certificate2? _certificate;
+    private MongoConfigurationRecord _configuration = mongoConfigManger.GetMongoConfigurationRecord();
+    private X509Certificate2? _certificate = x509Manager.GetCertificate();
 
     private IMongoClient? _cachedMongoClient;
 
-
-    public MongoClientFactory(IMongoConfigManager mongoConfigManger, IX509Manager x509Manager)
-    {
-        _x509Manager = x509Manager;
-        _mongoConfigManager = mongoConfigManger;
-
-        _configuration = mongoConfigManger.GetMongoConfigurationRecord();
-        _certificate = x509Manager.GetCertificate();
-    }
 
     public IMongoClient CreateClient()
     {
@@ -55,7 +47,7 @@ public class MongoClientFactory : IMongoClientFactory
         lock (_lock)
         {
             var pkiSettings = MongoClientSettings.FromUrl(new MongoUrl(_configuration.ConnectionString));
-            pkiSettings.Credential = MongoCredential.CreateMongoX509Credential(null);
+            pkiSettings.Credential = MongoCredential.CreateMongoX509Credential(username: null);
             pkiSettings.UseTls = true;
 
             pkiSettings.SslSettings = new SslSettings

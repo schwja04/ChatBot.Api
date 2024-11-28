@@ -5,14 +5,10 @@ using ChatBot.Api.Domain.PromptEntity;
 
 namespace ChatBot.Api.Application.QueryHandlers;
 
-internal class GetPromptsQueryHandler : IRequestHandler<GetPromptsQuery, ReadOnlyCollection<Prompt>>
+internal class GetPromptsQueryHandler(IPromptRepository promptRepository)
+	: IRequestHandler<GetPromptsQuery, ReadOnlyCollection<Prompt>>
 {
-	private readonly IReadPromptRepository _readPromptRepository;
-
-	public GetPromptsQueryHandler(IPromptRepository promptRepository)
-	{
-		_readPromptRepository = promptRepository;
-	}
+	private readonly IReadPromptRepository _readPromptRepository = promptRepository;
 
     public async Task<ReadOnlyCollection<Prompt>> Handle(GetPromptsQuery request, CancellationToken cancellationToken)
     {
