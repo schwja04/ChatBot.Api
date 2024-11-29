@@ -4,6 +4,7 @@ using FluentAssertions;
 using Microsoft.Extensions.Caching.Memory;
 using NSubstitute;
 using ChatBot.Api.Domain.PromptEntity;
+using ChatBot.Api.Infrastructure.Repositories.Persistence.Cached;
 
 namespace ChatBot.Api.UnitTests.Infrastructure.Repositories;
 

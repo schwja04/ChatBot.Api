@@ -2,7 +2,7 @@
 using ChatBot.Api.Domain.Exceptions;
 using ChatBot.Api.Domain.PromptEntity;
 
-namespace ChatBot.Api.Infrastructure.Repositories;
+namespace ChatBot.Api.Infrastructure.Repositories.Persistence.InMemory;
 
 internal class PromptInMemoryRepository : IPromptRepository
 {

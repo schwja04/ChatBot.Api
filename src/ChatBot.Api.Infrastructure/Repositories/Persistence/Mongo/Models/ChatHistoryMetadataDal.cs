@@ -1,9 +1,9 @@
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 
-namespace ChatBot.Api.Infrastructure.MongoModels;
+namespace ChatBot.Api.Infrastructure.Repositories.Persistence.Mongo.Models;
 
-internal record ChatHistoryDal
+internal record ChatHistoryMetadataDal
 {
     [BsonId]
     [BsonRepresentation(BsonType.String)]
@@ -12,8 +12,6 @@ internal record ChatHistoryDal
     public required string Title { get; init; }
 
     public required string Username { get; init; }
-
-    public required IEnumerable<ChatMessageDal> ChatMessages { get; init; }
 
     [BsonRepresentation(BsonType.DateTime)]
     public required DateTimeOffset CreatedAt { get; init; }

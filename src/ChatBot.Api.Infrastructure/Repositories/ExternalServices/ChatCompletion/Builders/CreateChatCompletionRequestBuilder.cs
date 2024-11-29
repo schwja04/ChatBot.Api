@@ -1,6 +1,6 @@
 using Common.OpenAI.Models;
 
-namespace ChatBot.Api.Infrastructure.Repositories.Builders;
+namespace ChatBot.Api.Infrastructure.Repositories.ExternalServices.ChatCompletion.Builders;
 
 internal class CreateChatCompletionRequestBuilder
 {

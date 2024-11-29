@@ -3,7 +3,7 @@ using ChatBot.Api.Domain.PromptEntity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace ChatBot.Api.Infrastructure;
+namespace ChatBot.Api.Infrastructure.Repositories.Persistence.EntityFrameworkCore;
 
 public class ChatBotContext(DbContextOptions<ChatBotContext> options) : DbContext(options)
 {

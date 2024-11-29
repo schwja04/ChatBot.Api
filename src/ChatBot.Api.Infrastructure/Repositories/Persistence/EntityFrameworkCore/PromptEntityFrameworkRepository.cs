@@ -2,7 +2,7 @@ using System.Collections.ObjectModel;
 using ChatBot.Api.Domain.PromptEntity;
 using Microsoft.EntityFrameworkCore;
 
-namespace ChatBot.Api.Infrastructure.Repositories;
+namespace ChatBot.Api.Infrastructure.Repositories.Persistence.EntityFrameworkCore;
 
 internal class PromptEntityFrameworkRepository(ChatBotContext dbContext) : IPromptRepository
 {

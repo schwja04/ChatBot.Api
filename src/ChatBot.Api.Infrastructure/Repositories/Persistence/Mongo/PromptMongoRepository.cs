@@ -1,14 +1,14 @@
-﻿using ChatBot.Api.Domain.Exceptions;
+﻿using System.Collections.ObjectModel;
+using System.Diagnostics;
+using ChatBot.Api.Domain.Exceptions;
 using ChatBot.Api.Domain.PromptEntity;
-using ChatBot.Api.Infrastructure.MongoModels;
-using ChatBot.Api.Infrastructure.Repositories.Mappers;
+using ChatBot.Api.Infrastructure.Repositories.Persistence.Mongo.Mappers;
+using ChatBot.Api.Infrastructure.Repositories.Persistence.Mongo.Models;
 using Common.Mongo;
 using Microsoft.Extensions.Logging;
 using MongoDB.Driver;
-using System.Collections.ObjectModel;
-using System.Diagnostics;
 
-namespace ChatBot.Api.Infrastructure.Repositories;
+namespace ChatBot.Api.Infrastructure.Repositories.Persistence.Mongo;
 
 internal class PromptMongoRepository(
     ILogger<PromptMongoRepository> logger, 

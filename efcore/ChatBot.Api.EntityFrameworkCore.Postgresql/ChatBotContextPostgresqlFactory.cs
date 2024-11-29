@@ -1,5 +1,6 @@
 using System.Reflection;
 using ChatBot.Api.Infrastructure;
+using ChatBot.Api.Infrastructure.Repositories.Persistence.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Configuration;

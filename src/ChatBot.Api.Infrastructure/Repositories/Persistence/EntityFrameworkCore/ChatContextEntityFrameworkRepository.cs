@@ -2,7 +2,7 @@ using System.Collections.ObjectModel;
 using ChatBot.Api.Domain.ChatContextEntity;
 using Microsoft.EntityFrameworkCore;
 
-namespace ChatBot.Api.Infrastructure.Repositories;
+namespace ChatBot.Api.Infrastructure.Repositories.Persistence.EntityFrameworkCore;
 
 public class ChatContextEntityFrameworkRepository(ChatBotContext dbContext) : IChatContextRepository
 {

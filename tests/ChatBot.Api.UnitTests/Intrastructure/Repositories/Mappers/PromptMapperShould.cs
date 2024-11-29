@@ -1,7 +1,7 @@
 ﻿using AutoFixture;
 using ChatBot.Api.Domain.PromptEntity;
-using ChatBot.Api.Infrastructure.MongoModels;
-using ChatBot.Api.Infrastructure.Repositories.Mappers;
+using ChatBot.Api.Infrastructure.Repositories.Persistence.Mongo.Mappers;
+using ChatBot.Api.Infrastructure.Repositories.Persistence.Mongo.Models;
 using FluentAssertions;
 
 namespace ChatBot.Api.UnitTests.Intrastructure.Repositories.Mappers;

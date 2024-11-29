@@ -1,7 +1,7 @@
 ﻿using AutoFixture;
 using ChatBot.Api.Domain.ChatContextEntity;
 using ChatBot.Api.Domain.PromptEntity;
-using ChatBot.Api.Infrastructure.Repositories.Mappers;
+using ChatBot.Api.Infrastructure.Repositories.ExternalServices.ChatCompletion.Mappers;
 using FluentAssertions;
 using NSubstitute;
 

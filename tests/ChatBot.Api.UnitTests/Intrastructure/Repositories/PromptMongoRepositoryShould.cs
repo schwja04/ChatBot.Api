@@ -1,4 +1,3 @@
-using ChatBot.Api.Infrastructure.MongoModels;
 using ChatBot.Api.Infrastructure.Repositories;
 using Common.Mongo.Models;
 using AutoFixture;
@@ -9,6 +8,8 @@ using NSubstitute;
 using Microsoft.Extensions.Logging;
 using ChatBot.Api.Domain.Exceptions;
 using ChatBot.Api.Domain.PromptEntity;
+using ChatBot.Api.Infrastructure.Repositories.Persistence.Mongo;
+using ChatBot.Api.Infrastructure.Repositories.Persistence.Mongo.Models;
 
 namespace ChatBot.Api.UnitTests.Infrastructure.Repositories;
 
