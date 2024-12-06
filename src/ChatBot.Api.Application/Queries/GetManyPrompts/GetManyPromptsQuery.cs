@@ -2,9 +2,9 @@
 using ChatBot.Api.Domain.PromptEntity;
 using MediatR;
 
-namespace ChatBot.Api.Application.Queries;
+namespace ChatBot.Api.Application.Queries.GetManyPrompts;
 
-public record GetPromptsQuery : IRequest<ReadOnlyCollection<Prompt>>
+public record GetManyPromptsQuery : IRequest<ReadOnlyCollection<Prompt>>
 {
 	public required string Username { get; init; }
 }

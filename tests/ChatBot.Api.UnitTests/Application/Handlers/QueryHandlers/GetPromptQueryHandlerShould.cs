@@ -1,6 +1,5 @@
 ﻿using AutoFixture;
-using ChatBot.Api.Application.Queries;
-using ChatBot.Api.Application.QueryHandlers;
+using ChatBot.Api.Application.Queries.GetPrompt;
 using ChatBot.Api.Domain.PromptEntity;
 using FluentAssertions;
 using NSubstitute;

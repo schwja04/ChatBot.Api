@@ -1,8 +1,7 @@
-﻿using ChatBot.Api.Application.Queries;
-using ChatBot.Api.Domain.PromptEntity;
+﻿using ChatBot.Api.Domain.PromptEntity;
 using MediatR;
 
-namespace ChatBot.Api.Application.QueryHandlers;
+namespace ChatBot.Api.Application.Queries.GetPrompt;
 
 internal class GetPromptQueryHandler(IPromptRepository promptRepository) 
     : IRequestHandler<GetPromptQuery, Prompt?>

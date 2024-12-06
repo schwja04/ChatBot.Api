@@ -1,7 +1,7 @@
 using ChatBot.Api.Domain.ChatContextEntity;
 using MediatR;
 
-namespace ChatBot.Api.Application.Commands;
+namespace ChatBot.Api.Application.Commands.ProcessChatMessage;
 
 public record ProcessChatMessageCommand : IRequest<ProcessChatMessageCommandResponse>
 {

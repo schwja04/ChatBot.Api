@@ -1,25 +1,24 @@
 ﻿using AutoFixture;
-using ChatBot.Api.Application.Queries;
-using ChatBot.Api.Application.QueryHandlers;
+using ChatBot.Api.Application.Queries.GetManyPrompts;
 using ChatBot.Api.Domain.PromptEntity;
 using FluentAssertions;
 using NSubstitute;
 
 namespace ChatBot.Api.UnitTests.Application.Handlers.QueryHandlers;
 
-public class GetPromptsQueryHandlerShould
+public class GetManyPromptQueryHandlerShould
 {
 	private readonly IPromptRepository _promptRepository;
 
-	private readonly GetPromptsQueryHandler _sut;
+	private readonly GetManyPromptsQueryHandler _sut;
 
 	private readonly IFixture _fixture;
 
-	public GetPromptsQueryHandlerShould()
+	public GetManyPromptQueryHandlerShould()
 	{
 		_promptRepository = Substitute.For<IPromptRepository>();
 
-		_sut = new GetPromptsQueryHandler(_promptRepository);
+		_sut = new GetManyPromptsQueryHandler(_promptRepository);
 
 		_fixture = new Fixture();
 	}
@@ -28,7 +27,7 @@ public class GetPromptsQueryHandlerShould
 	public async Task Handle_ShouldReturn_Prompts()
 	{
 		// Arrange
-		var query = _fixture.Create<GetPromptsQuery>();
+		var query = _fixture.Create<GetManyPromptsQuery>();
 		var cancellationToken = CancellationToken.None;
 
 		_promptRepository

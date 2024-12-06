@@ -18,6 +18,7 @@ using Common.Cors;
 using Common.HttpClient;
 using Common.Mongo;
 using Common.OpenAI.Clients;
+// ReSharper disable ClassNeverInstantiated.Global
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -67,7 +68,6 @@ app.MapControllers();
 app.UseHttpsRedirection();
 
 app.Run();
-
 static void RegisterServices(IServiceCollection services, IConfiguration configuration)
 {
     services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining<IMediatrRegistration>());
@@ -158,3 +158,5 @@ internal static class ConnectionStrings
     public const string ChatBotContextPostgresqlConnectionString = nameof(ChatBotContextPostgresqlConnectionString);
     public const string ChatBotContextSqlServerConnectionString = nameof(ChatBotContextSqlServerConnectionString);
 }
+
+public partial class Program { }

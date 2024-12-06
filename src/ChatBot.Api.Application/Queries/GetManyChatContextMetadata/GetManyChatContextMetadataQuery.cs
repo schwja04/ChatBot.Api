@@ -2,7 +2,7 @@ using System.Collections.ObjectModel;
 using ChatBot.Api.Domain.ChatContextEntity;
 using MediatR;
 
-namespace ChatBot.Api.Application.Queries;
+namespace ChatBot.Api.Application.Queries.GetManyChatContextMetadata;
 
 public record GetManyChatContextMetadataQuery : IRequest<GetChatHistoryMetadatasQueryResponse>
 {

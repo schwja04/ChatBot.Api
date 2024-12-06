@@ -1,6 +1,6 @@
 ﻿using MediatR;
 
-namespace ChatBot.Api.Application.Commands;
+namespace ChatBot.Api.Application.Commands.DeleteChatContext;
 
 public record DeleteChatContextCommand : IRequest
 {

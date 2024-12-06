@@ -1,7 +1,12 @@
 ﻿using System.Collections.ObjectModel;
 using System.Net.Mime;
 using ChatBot.Api.Application.Commands;
+using ChatBot.Api.Application.Commands.CreatePrompt;
+using ChatBot.Api.Application.Commands.DeletePrompt;
+using ChatBot.Api.Application.Commands.UpdatePrompt;
 using ChatBot.Api.Application.Queries;
+using ChatBot.Api.Application.Queries.GetManyPrompts;
+using ChatBot.Api.Application.Queries.GetPrompt;
 using ChatBot.Api.Contracts;
 using ChatBot.Api.Domain.PromptEntity;
 using MediatR;
@@ -19,10 +24,10 @@ public class PromptsController(ILogger<PromptsController> logger, IMediator medi
 
     [HttpGet(Routes.Prompts)]
     [Produces(MediaTypeNames.Application.Json)]
-    [ProducesResponseType(typeof(GetPromptsResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(GetManyPromptsResponse), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetManyAsync(CancellationToken cancellationToken = default)
     {
-        var query = new GetPromptsQuery()
+        var query = new GetManyPromptsQuery()
         {
             Username = User.Identity?.Name ?? DefaultUsername
         };
@@ -30,9 +35,15 @@ public class PromptsController(ILogger<PromptsController> logger, IMediator medi
         _logger.LogInformation("Getting prompts for {Username}", query.Username);
         ReadOnlyCollection<Prompt> prompts = await _mediator.Send(query, cancellationToken);
 
-        return Ok(new GetPromptsResponse
+        return Ok(new GetManyPromptsResponse
         {
-            Prompts = prompts
+            Prompts = prompts.Select(x => new GetPromptResponse()
+            {
+                PromptId = x.PromptId,
+                Key = x.Key,
+                Value = x.Value,
+                Owner = x.Owner
+            }).ToList().AsReadOnly()
         });
     }
 

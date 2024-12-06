@@ -1,8 +1,7 @@
-﻿using MediatR;
-using ChatBot.Api.Application.Commands;
-using ChatBot.Api.Domain.PromptEntity;
+﻿using ChatBot.Api.Domain.PromptEntity;
+using MediatR;
 
-namespace ChatBot.Api.Application.CommandHandlers;
+namespace ChatBot.Api.Application.Commands.DeletePrompt;
 
 internal class DeletePromptCommandHandler(IPromptRepository promptRepository)
     : IRequestHandler<DeletePromptCommand>

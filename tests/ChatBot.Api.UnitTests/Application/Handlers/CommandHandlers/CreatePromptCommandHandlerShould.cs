@@ -1,6 +1,5 @@
 ﻿using AutoFixture;
-using ChatBot.Api.Application.CommandHandlers;
-using ChatBot.Api.Application.Commands;
+using ChatBot.Api.Application.Commands.CreatePrompt;
 using ChatBot.Api.Domain.PromptEntity;
 using FluentAssertions;
 using NSubstitute;

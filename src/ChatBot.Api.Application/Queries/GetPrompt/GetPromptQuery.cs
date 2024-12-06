@@ -1,7 +1,7 @@
 ﻿using ChatBot.Api.Domain.PromptEntity;
 using MediatR;
 
-namespace ChatBot.Api.Application.Queries;
+namespace ChatBot.Api.Application.Queries.GetPrompt;
 
 public record GetPromptQuery : IRequest<Prompt?>
 {

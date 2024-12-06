@@ -1,9 +1,8 @@
-using MediatR;
-using ChatBot.Api.Domain.Exceptions;
-using ChatBot.Api.Application.Queries;
 using ChatBot.Api.Domain.ChatContextEntity;
+using ChatBot.Api.Domain.Exceptions;
+using MediatR;
 
-namespace ChatBot.Api.Application.QueryHandlers;
+namespace ChatBot.Api.Application.Queries.GetChatContext;
 
 internal class GetChatContextQueryHandler(IChatContextRepository chatContextRepository) : IRequestHandler<GetChatContextQuery, GetChatContextQueryResponse?>
 {

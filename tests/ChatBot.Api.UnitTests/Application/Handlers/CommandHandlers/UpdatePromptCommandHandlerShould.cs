@@ -1,6 +1,5 @@
 ﻿using AutoFixture;
-using ChatBot.Api.Application.CommandHandlers;
-using ChatBot.Api.Application.Commands;
+using ChatBot.Api.Application.Commands.UpdatePrompt;
 using ChatBot.Api.Domain.PromptEntity;
 using FluentAssertions;
 using NSubstitute;
@@ -34,7 +33,7 @@ public class UpdatePromptCommandHandlerShould
 		// Act
 		var act = () => _sut.Handle(cmd, cancellationToken);
 
-		// Asserst
+		// Assert
 		await act.Should().NotThrowAsync();
 
 		await _promptRepository

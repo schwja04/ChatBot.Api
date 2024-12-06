@@ -1,9 +1,8 @@
-﻿using ChatBot.Api.Application.Commands;
-using ChatBot.Api.Domain.ChatContextEntity;
+﻿using ChatBot.Api.Domain.ChatContextEntity;
 using ChatBot.Api.Domain.Exceptions;
 using MediatR;
 
-namespace ChatBot.Api.Application.CommandHandlers;
+namespace ChatBot.Api.Application.Commands.DeleteChatContext;
 
 internal class DeleteChatContextCommandHandler(IChatContextRepository chatContextRepository) 
     : IRequestHandler<DeleteChatContextCommand>

@@ -1,7 +1,12 @@
 ﻿using System.Security.Principal;
 using AutoFixture;
 using ChatBot.Api.Application.Commands;
+using ChatBot.Api.Application.Commands.CreatePrompt;
+using ChatBot.Api.Application.Commands.DeletePrompt;
+using ChatBot.Api.Application.Commands.UpdatePrompt;
 using ChatBot.Api.Application.Queries;
+using ChatBot.Api.Application.Queries.GetManyPrompts;
+using ChatBot.Api.Application.Queries.GetPrompt;
 using ChatBot.Api.Contracts;
 using ChatBot.Api.Controllers;
 using ChatBot.Api.Domain.PromptEntity;
@@ -41,7 +46,7 @@ public class PromptsControllerShould
 		var prompts = new List<Prompt>().AsReadOnly();
 		var cancellationToken = CancellationToken.None;
 
-		_mediator.Send(Arg.Any<GetPromptsQuery>(), Arg.Any<CancellationToken>())
+		_mediator.Send(Arg.Any<GetManyPromptsQuery>(), Arg.Any<CancellationToken>())
 			.Returns(prompts);
 
 		_sut.ControllerContext = CreateTestControllerContext(username);
@@ -51,7 +56,7 @@ public class PromptsControllerShould
 
 		// Assert
 		var okResponse = (response as OkObjectResult);
-		var getPromptsResponse = (okResponse!.Value as GetPromptsResponse);
+		var getPromptsResponse = (okResponse!.Value as GetManyPromptsResponse);
         getPromptsResponse!.Prompts.Should().BeEquivalentTo(prompts!);
 
 	}

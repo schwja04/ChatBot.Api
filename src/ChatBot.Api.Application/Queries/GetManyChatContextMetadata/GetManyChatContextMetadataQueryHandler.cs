@@ -1,8 +1,7 @@
-using MediatR;
-using ChatBot.Api.Application.Queries;
 using ChatBot.Api.Domain.ChatContextEntity;
+using MediatR;
 
-namespace ChatBot.Api.Application.QueryHandlers;
+namespace ChatBot.Api.Application.Queries.GetManyChatContextMetadata;
 
 internal class GetManyChatContextMetadataQueryHandler(IChatContextRepository chatContextRepository)
     : IRequestHandler<GetManyChatContextMetadataQuery, GetChatHistoryMetadatasQueryResponse>
