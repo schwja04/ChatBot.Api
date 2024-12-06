@@ -10,6 +10,6 @@ public static class Routes
 
     public const string ChatMetadatas = $"{Chats}/metadatas";
 
-    public const string Prompts = $"{Chats}/prompts";
+    public const string Prompts = $"{ApiRoot}/prompts";
     public const string PromptsByPromptId = $"{Prompts}/{{promptId}}";
 }
