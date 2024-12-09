@@ -1,5 +1,6 @@
 ﻿using AutoFixture;
 using ChatBot.Api.Application.Commands.CreatePrompt;
+using ChatBot.Api.Domain.Exceptions.PromptExceptions;
 using ChatBot.Api.Domain.PromptEntity;
 using FluentAssertions;
 using NSubstitute;
@@ -40,7 +41,26 @@ public class CreatePromptCommandHandlerShould
 
 		await _promptRepository
 			.Received(1)
-			.SaveAsync(result, Arg.Any<CancellationToken>());
+			.CreateAsync(result, Arg.Any<CancellationToken>());
+	}
+	
+	[Fact]
+	public async Task Handle_ShouldThrowException_WhenPromptAlreadyExistsWithSameKey()
+	{
+		// Arrange
+		var cmd = _fixture.Create<CreatePromptCommand>();
+		var prompt = Prompt.CreateNew(cmd.Key, _fixture.Create<string>(), cmd.Owner);
+		var cancellationToken = CancellationToken.None;
+
+		_promptRepository
+			.GetAsync(cmd.Owner, cmd.Key, cancellationToken)
+			.Returns(prompt);
+
+		// Act
+		Func<Task> act = async () => await _sut.Handle(cmd, cancellationToken);
+
+		// Assert
+		await act.Should().ThrowAsync<PromptDuplicateKeyException>();
 	}
 }
 

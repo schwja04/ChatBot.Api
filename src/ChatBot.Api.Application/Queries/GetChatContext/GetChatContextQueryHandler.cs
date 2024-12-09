@@ -1,5 +1,5 @@
 using ChatBot.Api.Domain.ChatContextEntity;
-using ChatBot.Api.Domain.Exceptions;
+using ChatBot.Api.Domain.Exceptions.ChatContextExceptions;
 using MediatR;
 
 namespace ChatBot.Api.Application.Queries.GetChatContext;
@@ -25,6 +25,6 @@ internal class GetChatContextQueryHandler(IChatContextRepository chatContextRepo
             };
         }
 
-        throw new ChatContextAuthorizationException(request);
+        throw new ChatContextAuthorizationException(request.ContextId, request.Username);
     }
 }

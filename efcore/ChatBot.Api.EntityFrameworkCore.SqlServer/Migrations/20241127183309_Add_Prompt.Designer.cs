@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace ChatBot.Api.EntityFrameworkCore.SqlServer.Migrations
 {
-    [DbContext(typeof(ChatBotContext))]
+    [DbContext(typeof(ChatBotDbContext))]
     [Migration("20241127183309_Add_Prompt")]
     partial class Add_Prompt
     {

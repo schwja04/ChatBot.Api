@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace ChatBot.Api.Infrastructure.Repositories.Persistence.EntityFrameworkCore;
 
-public class ChatBotContext(DbContextOptions<ChatBotContext> options) : DbContext(options)
+public class ChatBotDbContext(DbContextOptions<ChatBotDbContext> options) : DbContext(options)
 {
     public DbSet<ChatContext> ChatContexts { get; set; }
     public DbSet<Prompt> Prompts { get; set; }

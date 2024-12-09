@@ -41,6 +41,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_project-files", "_project-
 		global.json = global.json
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChatBot.Api.IntegrationTests", "tests\ChatBot.Api.IntegrationTests\ChatBot.Api.IntegrationTests.csproj", "{8F5B24D8-7679-458D-BA9A-064A442815E6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -91,6 +93,10 @@ Global
 		{9C21F919-89A0-4703-9F55-C7375A72899F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9C21F919-89A0-4703-9F55-C7375A72899F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9C21F919-89A0-4703-9F55-C7375A72899F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8F5B24D8-7679-458D-BA9A-064A442815E6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8F5B24D8-7679-458D-BA9A-064A442815E6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8F5B24D8-7679-458D-BA9A-064A442815E6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8F5B24D8-7679-458D-BA9A-064A442815E6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -107,5 +113,6 @@ Global
 		{3DFE874B-DDD8-411C-B297-3FE79FC175F8} = {F02AE784-F8D6-451C-BEDE-362A2408FB88}
 		{CDEF0D1A-5BC0-481B-8E8C-2B79A1B0ED6E} = {4453207F-ACC2-4BA2-8248-50F522CF46CD}
 		{9C21F919-89A0-4703-9F55-C7375A72899F} = {4453207F-ACC2-4BA2-8248-50F522CF46CD}
+		{8F5B24D8-7679-458D-BA9A-064A442815E6} = {CC14550A-5AB0-4102-B454-FD2F88EA313C}
 	EndGlobalSection
 EndGlobal

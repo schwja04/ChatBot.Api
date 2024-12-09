@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace ChatBot.Api.EntityFrameworkCore.Postgresql.Migrations
 {
-    [DbContext(typeof(ChatBotContext))]
+    [DbContext(typeof(ChatBotDbContext))]
     [Migration("20241102203126_Init")]
     partial class Init
     {

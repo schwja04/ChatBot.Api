@@ -1,5 +1,5 @@
 ﻿using ChatBot.Api.Domain.ChatContextEntity;
-using ChatBot.Api.Domain.Exceptions;
+using ChatBot.Api.Domain.Exceptions.ChatContextExceptions;
 using MediatR;
 
 namespace ChatBot.Api.Application.Commands.DeleteChatContext;
@@ -15,12 +15,12 @@ internal class DeleteChatContextCommandHandler(IChatContextRepository chatContex
 
         if (chatContext is null)
         {
-            return;
+            throw new ChatContextNotFoundException(request.ContextId);
         }
 
         if (!string.Equals(chatContext.Username, request.Username, StringComparison.OrdinalIgnoreCase))
         {
-            throw new ChatContextAuthorizationException(request);
+            throw new ChatContextAuthorizationException(request.ContextId, request.Username);
         }
 
         await _chatContextRepository.DeleteAsync(request.ContextId, cancellationToken);

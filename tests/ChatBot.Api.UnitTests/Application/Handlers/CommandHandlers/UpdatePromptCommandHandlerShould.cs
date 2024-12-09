@@ -1,5 +1,6 @@
 ﻿using AutoFixture;
 using ChatBot.Api.Application.Commands.UpdatePrompt;
+using ChatBot.Api.Domain.Exceptions.PromptExceptions;
 using ChatBot.Api.Domain.PromptEntity;
 using FluentAssertions;
 using NSubstitute;
@@ -30,6 +31,16 @@ public class UpdatePromptCommandHandlerShould
 		var cmd = _fixture.Create<UpdatePromptCommand>();
 		var cancellationToken = CancellationToken.None;
 
+		var prompt = Prompt.CreateExisting(
+			cmd.PromptId, 
+			key: _fixture.Create<string>(), 
+			value: _fixture.Create<string>(), 
+			cmd.Owner);
+		
+		_promptRepository
+			.GetAsync(cmd.PromptId, cancellationToken)
+			.Returns(prompt);
+		
 		// Act
 		var act = () => _sut.Handle(cmd, cancellationToken);
 
@@ -38,13 +49,85 @@ public class UpdatePromptCommandHandlerShould
 
 		await _promptRepository
 			.Received(1)
-			.SaveAsync(
+			.UpdateAsync(
 				Arg.Is<Prompt>(x =>
 					x.PromptId == cmd.PromptId
 					&& x.Key == cmd.Key
 					&& x.Value == cmd.Value
 					&& x.Owner == cmd.Owner),
 				Arg.Any<CancellationToken>());
+	}
+	
+	[Fact]
+	public async Task Handle_ShouldThrowException_WhenPromptNotFound()
+	{
+		// Arrange
+		var cmd = _fixture.Create<UpdatePromptCommand>();
+		var cancellationToken = CancellationToken.None;
+		
+		// Act
+		var act = () => _sut.Handle(cmd, cancellationToken);
+
+		// Assert
+		await act.Should().ThrowAsync<PromptNotFoundException>();
+	}
+	
+	[Fact]
+	public async Task Handle_ShouldThrowException_WhenPromptOwnerIsDifferent()
+	{
+		// Arrange
+		var cmd = _fixture.Create<UpdatePromptCommand>();
+		var cancellationToken = CancellationToken.None;
+
+		var prompt = Prompt.CreateExisting(
+			cmd.PromptId, 
+			key: _fixture.Create<string>(), 
+			value: _fixture.Create<string>(), 
+			_fixture.Create<string>());
+		
+		_promptRepository
+			.GetAsync(cmd.PromptId, cancellationToken)
+			.Returns(prompt);
+		
+		// Act
+		var act = () => _sut.Handle(cmd, cancellationToken);
+
+		// Assert
+		await act.Should().ThrowAsync<PromptAuthorizationException>();
+	}
+	
+	[Fact]
+	public async Task Handle_ShouldThrowException_WhenPromptKeyAlreadyExists()
+	{
+		// Arrange
+		var cmd = _fixture.Create<UpdatePromptCommand>();
+		var cancellationToken = CancellationToken.None;
+
+		var promptToUpdate = Prompt.CreateExisting(
+			cmd.PromptId, 
+			key: _fixture.Create<string>(), 
+			value: _fixture.Create<string>(), 
+			cmd.Owner);
+		
+		var existingPrompt = Prompt.CreateExisting(
+			Guid.NewGuid(), 
+			key: cmd.Key, 
+			value: _fixture.Create<string>(), 
+			cmd.Owner);
+		
+		_promptRepository
+			.GetAsync(cmd.PromptId, cancellationToken)
+			.Returns(promptToUpdate);
+		
+		_promptRepository
+			.GetAsync(cmd.Owner, cmd.Key, cancellationToken)
+			.Returns(existingPrompt);
+		
+		// Act
+		var act = () => _sut.Handle(cmd, cancellationToken);
+
+		// Assert
+		await act.Should().ThrowAsync<PromptDuplicateKeyException>();
 	}
 }
 

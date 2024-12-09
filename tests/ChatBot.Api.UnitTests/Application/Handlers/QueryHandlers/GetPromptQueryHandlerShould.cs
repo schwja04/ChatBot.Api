@@ -1,5 +1,7 @@
 ﻿using AutoFixture;
+using ChatBot.Api.Application;
 using ChatBot.Api.Application.Queries.GetPrompt;
+using ChatBot.Api.Domain.Exceptions.PromptExceptions;
 using ChatBot.Api.Domain.PromptEntity;
 using FluentAssertions;
 using NSubstitute;
@@ -24,20 +26,50 @@ public class GetPromptQueryHandlerShould
 	}
 
 	[Fact]
-	public async Task Handle_WithPromptId_ShouldReturn_Prompt()
+	public async Task Handle_ShouldThrow_WhenPromptNotFound()
 	{
 		// Arrange
 		var query = _fixture.Create<GetPromptQuery>();
+		
+		// Act
+		Func<Task> act = () => _sut.Handle(query, CancellationToken.None);
+		
+		// Assert
+		await act.Should().ThrowAsync<PromptNotFoundException>();
+	}
+	
+	[Fact]
+	public async Task Handle_ShouldThrow_WhenPromptFoundButNotOwnedByRequesterOrSystem()
+	{
+		// Arrange
+		var prompt = _fixture.Create<Prompt>();
+		var query = _fixture
+			.Build<GetPromptQuery>()
+			.With(x => x.PromptId, prompt.PromptId)
+			.Create();
 		var cancellationToken = CancellationToken.None;
 
-		var prompt = Prompt.CreateExisting(
-			query.PromptId!.Value,
-			_fixture.Create<string>(),
-			_fixture.Create<string>(),
-			query.Username);
+		_promptRepository
+			.GetAsync(Arg.Any<Guid>(), Arg.Any<CancellationToken>())
+			.Returns(prompt);
+
+		// Act
+		Func<Task> act = () => _sut.Handle(query, cancellationToken);
+
+		// Assert
+		await act.Should().ThrowAsync<PromptAuthorizationException>();
+	}
+	
+	[Fact]
+	public async Task Handle_ShouldReturn_WhenPromptFoundAndOwnedByRequester()
+	{
+		// Arrange
+		var prompt = _fixture.Create<Prompt>();
+		var query = new GetPromptQuery(prompt.Owner, prompt.PromptId);
+		var cancellationToken = CancellationToken.None;
 
 		_promptRepository
-			.GetAsync(Arg.Any<string>(), Arg.Any<Guid>(), Arg.Any<CancellationToken>())
+			.GetAsync(Arg.Any<Guid>(), Arg.Any<CancellationToken>())
 			.Returns(prompt);
 
 		// Act
@@ -46,41 +78,32 @@ public class GetPromptQueryHandlerShould
 		// Assert
 		result.Should().NotBeNull();
 		result.Should().Be(prompt);
-
-		await _promptRepository
-			.DidNotReceive()
-			.GetAsync(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<CancellationToken>());
 	}
-
-    [Fact]
-    public async Task Handle_WithPromptKey_ShouldReturn_Prompt()
-    {
+	
+	[Fact]
+	public async Task Handle_ShouldReturn_WhenPromptFoundAndOwnedBySystem()
+	{
 		// Arrange
-		var query = new GetPromptQuery(
+		var prompt = Prompt.CreateNew(
 			_fixture.Create<string>(),
-			_fixture.Create<string>());
-        var cancellationToken = CancellationToken.None;
+			_fixture.Create<string>(),
+			Constants.SystemUser);
+		var query = _fixture
+			.Build<GetPromptQuery>()
+			.With(x => x.PromptId, prompt.PromptId)
+			.Create();
+		var cancellationToken = CancellationToken.None;
 
-        var prompt = Prompt.CreateExisting(
-            _fixture.Create<Guid>(),
-            query.PromptKey!,
-            _fixture.Create<string>(),
-            query.Username);
+		_promptRepository
+			.GetAsync(Arg.Any<Guid>(), Arg.Any<CancellationToken>())
+			.Returns(prompt);
 
-        _promptRepository
-            .GetAsync(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<CancellationToken>())
-            .Returns(prompt);
+		// Act
+		var result = await _sut.Handle(query, cancellationToken);
 
-        // Act
-        var result = await _sut.Handle(query, cancellationToken);
-
-        // Assert
-        result.Should().NotBeNull();
-        result.Should().Be(prompt);
-
-        await _promptRepository
-            .DidNotReceive()
-            .GetAsync(Arg.Any<string>(), Arg.Any<Guid>(), Arg.Any<CancellationToken>());
-    }
+		// Assert
+		result.Should().NotBeNull();
+		result.Should().Be(prompt);
+	}
 }
 

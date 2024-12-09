@@ -4,9 +4,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ChatBot.Api.Infrastructure.Repositories.Persistence.EntityFrameworkCore;
 
-public class ChatContextEntityFrameworkRepository(ChatBotContext dbContext) : IChatContextRepository
+public class ChatContextEntityFrameworkRepository(ChatBotDbContext dbContext) : IChatContextRepository
 {
-    private readonly ChatBotContext _dbContext = dbContext;
+    private readonly ChatBotDbContext _dbContext = dbContext;
     public async Task<ChatContext?> GetAsync(Guid contextId, CancellationToken cancellationToken)
     {
         return await _dbContext.ChatContexts

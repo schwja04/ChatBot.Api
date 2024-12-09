@@ -1,4 +1,6 @@
-﻿namespace ChatBot.Api.Domain.PromptEntity;
+﻿using ChatBot.Api.Domain.Exceptions.PromptExceptions;
+
+namespace ChatBot.Api.Domain.PromptEntity;
 
 public record Prompt
 {
@@ -12,11 +14,36 @@ public record Prompt
 
     public Guid PromptId { get; }
 
-    public string Key { get; }
+    public string Key { get; private set; }
 
-    public string Value { get; }
+    public string Value { get; private set; }
 
     public string Owner { get; }
+    
+    public void UpdateValue(string value)
+    {
+        if (string.Equals(Value, value, StringComparison.OrdinalIgnoreCase))
+        {
+            return;
+        }
+        
+        Value = value;
+    }
+    
+    public void UpdateKey(string key)
+    {
+        if (string.IsNullOrWhiteSpace(key))
+        {
+            throw new PromptKeyCannotBeEmptyException(PromptId, Owner);
+        }
+        
+        if (string.Equals(Key, key, StringComparison.OrdinalIgnoreCase))
+        {
+            return;
+        }
+        
+        Key = key;
+    }
 
     public static Prompt CreateNew(string key, string value, string owner)
     {

@@ -1,4 +1,5 @@
 ﻿using AutoFixture;
+using ChatBot.Api.Application;
 using ChatBot.Api.Application.Queries.GetManyPrompts;
 using ChatBot.Api.Domain.PromptEntity;
 using FluentAssertions;
@@ -24,20 +25,71 @@ public class GetManyPromptQueryHandlerShould
 	}
 
 	[Fact]
-	public async Task Handle_ShouldReturn_Prompts()
+	public async Task Handle_ShouldReturnOnlyUserPrompts_WhenIncludeSystemPromptsIsFalse()
 	{
 		// Arrange
-		var query = _fixture.Create<GetManyPromptsQuery>();
+		var query = _fixture
+			.Build<GetManyPromptsQuery>()
+			.With(x => x.IncludeSystemPrompts, false)
+			.Create();
 		var cancellationToken = CancellationToken.None;
+		
+		var userPrompts = new List<Prompt>()
+		{
+			Prompt.CreateNew(
+				_fixture.Create<string>(),
+				_fixture.Create<string>(),
+				query.Username)
+		}.AsReadOnly();
 
 		_promptRepository
 			.GetManyAsync(Arg.Any<string>(), Arg.Any<CancellationToken>())
-			.Returns(Array.Empty<Prompt>().AsReadOnly());
+			.Returns(userPrompts);
 
 		// Act
 		var result = await _sut.Handle(query, cancellationToken);
 
 		// Assert
-		result.Count.Should().Be(0);
+		result.Count.Should().Be(userPrompts.Count);
+		result.All(p => string.Equals(p.Owner, query.Username)).Should().BeTrue();
+	}
+	
+	[Fact]
+	public async Task Handle_ShouldReturnUserAndSystemPrompts_WhenIncludeSystemPromptsIsTrue()
+	{
+		// Arrange
+		var query = _fixture
+			.Build<GetManyPromptsQuery>()
+			.With(x => x.IncludeSystemPrompts, true)
+			.Create();
+		var cancellationToken = CancellationToken.None;
+
+		var userPrompts = new List<Prompt>()
+		{
+			Prompt.CreateNew(
+				_fixture.Create<string>(),
+				_fixture.Create<string>(),
+				query.Username)
+		}.AsReadOnly();
+		
+		var systemPrompts = new List<Prompt>()
+		{
+			Prompt.CreateNew(
+				_fixture.Create<string>(),
+				_fixture.Create<string>(),
+				Constants.SystemUser)
+		}.AsReadOnly();
+
+		_promptRepository
+			.GetManyAsync(Arg.Any<string>(), Arg.Any<CancellationToken>())
+			.Returns(userPrompts, systemPrompts);
+
+		// Act
+		var result = await _sut.Handle(query, cancellationToken);
+
+		// Assert
+		result.Count.Should().Be(userPrompts.Count + systemPrompts.Count);
+		result.Count(p => string.Equals(p.Owner, query.Username)).Should().Be(userPrompts.Count);
+		result.Count(p => string.Equals(p.Owner, Constants.SystemUser)).Should().Be(systemPrompts.Count);
 	}
 }

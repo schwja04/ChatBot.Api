@@ -1,6 +1,6 @@
 using ChatBot.Api.Application.Abstractions.Repositories;
 using ChatBot.Api.Domain.ChatContextEntity;
-using ChatBot.Api.Domain.Exceptions;
+using ChatBot.Api.Domain.Exceptions.ChatContextExceptions;
 using ChatBot.Api.Domain.PromptEntity;
 using MediatR;
 
@@ -56,7 +56,7 @@ internal class ProcessChatMessageCommandHandler(
 
             if (!string.Equals(savedChatHistory.Username, request.Username, StringComparison.OrdinalIgnoreCase))
             {
-                throw new ChatContextAuthorizationException(request);
+                throw new ChatContextAuthorizationException(request.ContextId, request.Username);
             }
         }
 

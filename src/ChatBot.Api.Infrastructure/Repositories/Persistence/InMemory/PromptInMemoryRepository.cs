@@ -1,5 +1,4 @@
 ﻿using System.Collections.ObjectModel;
-using ChatBot.Api.Domain.Exceptions;
 using ChatBot.Api.Domain.PromptEntity;
 
 namespace ChatBot.Api.Infrastructure.Repositories.Persistence.InMemory;
@@ -30,7 +29,19 @@ internal class PromptInMemoryRepository : IPromptRepository
             owner: "schwjac"),
     };
 
-
+    public Task<Prompt?> GetAsync(Guid promptId, CancellationToken cancellationToken)
+    {
+        var prompt = _prompts.FirstOrDefault(p => p.PromptId == promptId);
+        
+        if (prompt is null)
+        {
+            return Task.FromResult<Prompt?>(null);
+        }
+        
+        // Make a copy of the prompt to avoid changing the original
+        var copiedPrompt = prompt with { };
+        return Task.FromResult<Prompt?>(copiedPrompt);
+    }
 
     public Task<Prompt?> GetAsync(string username, string promptKey, CancellationToken cancellationToken)
     {
@@ -38,74 +49,55 @@ internal class PromptInMemoryRepository : IPromptRepository
             string.Equals(prompt.Owner, username, StringComparison.OrdinalIgnoreCase)
             && string.Equals(prompt.Key, promptKey, StringComparison.OrdinalIgnoreCase));
 
-        return Task.FromResult(userPrompt);
+        if (userPrompt is null)
+        {
+            return Task.FromResult<Prompt?>(null);
+        }
+        
+        // Make a copy of the prompt to avoid changing the original
+        var copiedPrompt = userPrompt with { };
+        
+        return Task.FromResult<Prompt?>(copiedPrompt);
     }
 
     public Task<ReadOnlyCollection<Prompt>> GetManyAsync(string username, CancellationToken cancellationToken)
     {
         var userPrompts = _prompts
             .Where(prompt => string.Equals(prompt.Owner, username, StringComparison.OrdinalIgnoreCase))
+            .Select(p => p with { })
             .ToList()
             .AsReadOnly();
 
         return Task.FromResult(userPrompts);
     }
 
-    public Task DeleteAsync(string username, Guid promptId, CancellationToken cancellationToken)
+    public Task CreateAsync(Prompt prompt, CancellationToken cancellationToken)
     {
-        Prompt? prompt = _prompts.FirstOrDefault(p => p.PromptId == promptId);
-
-        if (prompt is null)
-        {
-            return Task.CompletedTask;
-        }
-
-        if (!string.Equals(prompt.Owner, username, StringComparison.OrdinalIgnoreCase))
-        {
-            throw new PromptAuthorizationException(promptId, username, prompt);
-        }
-
-        _prompts.Remove(prompt);
+        // Make a copy of the prompt to avoid changing the original
+        var copiedPrompt = prompt with { };
+        _prompts.Add(copiedPrompt);
+        
+        return Task.CompletedTask;
+    }
+    
+    public Task DeleteAsync(Prompt prompt, CancellationToken cancellationToken)
+    {
+        var persistedPrompt = _prompts.Single(p => p.PromptId == prompt.PromptId);
+        _prompts.Remove(persistedPrompt);
 
         return Task.CompletedTask;
     }
-
-    public Task SaveAsync(Prompt prompt, CancellationToken cancellationToken)
+    
+    public Task UpdateAsync(Prompt prompt, CancellationToken cancellationToken)
     {
-        Prompt? savedPrompt = _prompts.FirstOrDefault(p => p.PromptId == prompt.PromptId);
-
-        if (savedPrompt is null)
-        {
-            _prompts.Add(prompt);
-            return Task.CompletedTask;
-        }
-
-        if (!string.Equals(prompt.Owner, savedPrompt.Owner, StringComparison.OrdinalIgnoreCase))
-        {
-            throw new PromptAuthorizationException(prompt.PromptId, prompt.Owner);
-
-        }
+        var savedPrompt = _prompts.Single(p => p.PromptId == prompt.PromptId);
         _prompts.Remove(savedPrompt);
-        _prompts.Add(prompt);
+        
+        // Make a copy of the prompt to avoid changing the original
+        var copiedPrompt = prompt with { };
+        _prompts.Add(copiedPrompt);
 
         return Task.CompletedTask;
-    }
-
-    public Task<Prompt?> GetAsync(string username, Guid promptId, CancellationToken cancellationToken)
-    {
-        Prompt? prompt = _prompts.FirstOrDefault(p => p.PromptId == promptId);
-
-        if (prompt is null)
-        {
-            return Task.FromResult<Prompt?>(null);
-        }
-
-        if (!string.Equals(prompt.Owner, username, StringComparison.OrdinalIgnoreCase))
-        {
-            throw new PromptAuthorizationException(promptId, username, prompt);
-        }
-
-        return Task.FromResult<Prompt?>(prompt);
     }
 }
 

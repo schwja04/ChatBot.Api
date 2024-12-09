@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace ChatBot.Api.EntityFrameworkCore.SqlServer.Migrations
 {
-    [DbContext(typeof(ChatBotContext))]
+    [DbContext(typeof(ChatBotDbContext))]
     [Migration("20241030040232_Init")]
     partial class Init
     {

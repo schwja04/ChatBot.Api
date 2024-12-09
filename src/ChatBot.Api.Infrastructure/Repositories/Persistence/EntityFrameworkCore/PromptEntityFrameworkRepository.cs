@@ -4,20 +4,23 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ChatBot.Api.Infrastructure.Repositories.Persistence.EntityFrameworkCore;
 
-internal class PromptEntityFrameworkRepository(ChatBotContext dbContext) : IPromptRepository
+internal class PromptEntityFrameworkRepository(ChatBotDbContext dbContext) : IPromptRepository
 {
-    private readonly ChatBotContext _dbContext = dbContext;
+    private readonly ChatBotDbContext _dbContext = dbContext;
     
-    public async Task<Prompt?> GetAsync(string username, Guid promptId, CancellationToken cancellationToken)
+    public async Task<Prompt?> GetAsync(Guid promptId, CancellationToken cancellationToken)
     {
-        return await _dbContext.Prompts
-            .SingleOrDefaultAsync(p => p.PromptId == promptId && p.Owner == username, cancellationToken);
+        var prompt =await _dbContext.Prompts
+            .SingleOrDefaultAsync(p => p.PromptId == promptId, cancellationToken);
+        
+        return prompt;
     }
 
     public async Task<Prompt?> GetAsync(string username, string promptKey, CancellationToken cancellationToken)
     {
-        return await _dbContext.Prompts
+        var prompt = await _dbContext.Prompts
             .SingleOrDefaultAsync(p => p.Owner == username && p.Key == promptKey, cancellationToken);
+        return prompt;
     }
 
     public async Task<ReadOnlyCollection<Prompt>> GetManyAsync(string username, CancellationToken cancellationToken)
@@ -29,29 +32,21 @@ internal class PromptEntityFrameworkRepository(ChatBotContext dbContext) : IProm
         return prompts.AsReadOnly();
     }
 
-    public async Task DeleteAsync(string username, Guid promptId, CancellationToken cancellationToken)
+    public async Task CreateAsync(Prompt prompt, CancellationToken cancellationToken)
     {
-        Prompt? prompt = await GetAsync(username, promptId, cancellationToken);
-        if (prompt is null)
-        {
-            return;
-        }
-        
+        _dbContext.Prompts.Add(prompt);
+        await _dbContext.SaveChangesAsync(cancellationToken);
+    }
+    
+    public async Task DeleteAsync(Prompt prompt, CancellationToken cancellationToken)
+    {
         _dbContext.Prompts.Remove(prompt);
         await _dbContext.SaveChangesAsync(cancellationToken);
     }
-
-    public async Task SaveAsync(Prompt prompt, CancellationToken cancellationToken)
+    
+    public async Task UpdateAsync(Prompt prompt, CancellationToken cancellationToken)
     {
-        if (_dbContext.Prompts.Entry(prompt).State == EntityState.Detached)
-        {
-            _dbContext.Prompts.Add(prompt);
-        }
-        else
-        {
-            _dbContext.Prompts.Update(prompt);
-        }
-        
+        _dbContext.Prompts.Update(prompt);
         await _dbContext.SaveChangesAsync(cancellationToken);
     }
 }

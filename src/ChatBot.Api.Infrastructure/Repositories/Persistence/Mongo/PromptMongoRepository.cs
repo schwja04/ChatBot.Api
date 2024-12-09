@@ -1,6 +1,5 @@
 ﻿using System.Collections.ObjectModel;
 using System.Diagnostics;
-using ChatBot.Api.Domain.Exceptions;
 using ChatBot.Api.Domain.PromptEntity;
 using ChatBot.Api.Infrastructure.Repositories.Persistence.Mongo.Mappers;
 using ChatBot.Api.Infrastructure.Repositories.Persistence.Mongo.Models;
@@ -18,15 +17,13 @@ internal class PromptMongoRepository(
     private readonly ILogger<PromptMongoRepository> _logger = logger;
     private readonly IMongoClientFactory _mongoClientFactory = mongoClientFactory;
 
-    public async Task<Prompt?> GetAsync(string username, Guid promptId, CancellationToken cancellationToken)
+    public async Task<Prompt?> GetAsync(Guid promptId, CancellationToken cancellationToken)
     {
         var collection = GetCollection();
 
         var filter = Builders<PromptDal>
             .Filter
-            .Where(x =>
-                string.Equals(x.Owner, username, StringComparison.OrdinalIgnoreCase)
-                && x.PromptId == promptId);
+            .Where(x => x.PromptId == promptId);
 
         using IAsyncCursor<PromptDal> result = await collection
             .FindAsync(filter, cancellationToken: cancellationToken);
@@ -35,6 +32,7 @@ internal class PromptMongoRepository(
 
         return promptDal?.ToDomain();
     }
+    
     public async Task<Prompt?> GetAsync(string username, string promptKey, CancellationToken cancellationToken)
     {
         var collection = GetCollection();
@@ -70,8 +68,34 @@ internal class PromptMongoRepository(
 
         return promptDals.Select(x => x.ToDomain()).ToList().AsReadOnly();
     }
+    
+    public async Task CreateAsync(Prompt prompt, CancellationToken cancellationToken)
+    {
+        var collection = GetCollection();
 
-    public async Task SaveAsync(Prompt prompt, CancellationToken cancellationToken)
+        var promptToSave = prompt.ToDal();
+
+        await collection.InsertOneAsync(promptToSave, options: null, cancellationToken);
+    }
+    
+    public async Task DeleteAsync(Prompt prompt, CancellationToken cancellationToken)
+    {
+        var collection = GetCollection();
+
+        var filter = Builders<PromptDal>
+            .Filter
+            .Where(x => x.PromptId == prompt.PromptId);
+
+        var deleteResult = await collection.DeleteOneAsync(filter, cancellationToken);
+
+        if (deleteResult.DeletedCount == 0)
+        {
+            _logger.LogWarning("Prompt {PromptId} was not deleted. Only possibility is that a different caller got there first.", prompt.PromptId);
+            throw new UnreachableException();
+        }
+    }
+
+    public async Task UpdateAsync(Prompt prompt, CancellationToken cancellationToken)
     {
         var collection = GetCollection();
 
@@ -80,23 +104,7 @@ internal class PromptMongoRepository(
         var filter = Builders<PromptDal>
             .Filter
             .Where(x => x.PromptId == promptToSave.PromptId);
-
-        using IAsyncCursor<PromptDal> result = await collection
-            .FindAsync(filter, cancellationToken: cancellationToken);
-
-        PromptDal? savedPrompt = await result.FirstOrDefaultAsync(cancellationToken);
-
-        if (savedPrompt is null)
-        {
-            await collection.InsertOneAsync(promptToSave, options: null, cancellationToken);
-            return;
-        }
-
-        if (!string.Equals(promptToSave.Owner, savedPrompt.Owner, StringComparison.OrdinalIgnoreCase))
-        {
-            throw new PromptAuthorizationException(prompt.PromptId, prompt.Owner);
-        }
-
+        
         await collection.ReplaceOneAsync(
             filter,
             promptToSave,
@@ -105,40 +113,6 @@ internal class PromptMongoRepository(
                 IsUpsert = false,
             },
             cancellationToken);
-    }
-
-    public async Task DeleteAsync(string username, Guid promptId, CancellationToken cancellationToken)
-    {
-        var collection = GetCollection();
-
-        var filter = Builders<PromptDal>
-            .Filter
-            .Where(x => x.PromptId == promptId);
-
-        using IAsyncCursor<PromptDal> result = await collection
-            .FindAsync(filter, cancellationToken: cancellationToken);
-
-        PromptDal? prompt = await result.FirstOrDefaultAsync(cancellationToken);
-
-        if (prompt is null)
-        {
-            _logger.LogInformation("Prompt {PromptId} not found while attempting to delete", promptId);
-            return;
-        }
-
-        if (!string.Equals(prompt.Owner, username, StringComparison.OrdinalIgnoreCase))
-        {
-            _logger.LogWarning("Prompt {PromptId} was not deleted as it is not owned by {Username}", promptId, username);
-            throw new PromptAuthorizationException(promptId, username, prompt);
-        }
-
-        var deleteResult = await collection.DeleteOneAsync(filter, cancellationToken);
-
-        if (deleteResult.DeletedCount == 0)
-        {
-            _logger.LogWarning("Prompt {PromptId} was not deleted. Only possibility is that a different caller got there first.", promptId);
-            throw new UnreachableException();
-        }
     }
 
     private IMongoCollection<PromptDal> GetCollection()

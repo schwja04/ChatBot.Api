@@ -11,7 +11,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace ChatBot.Api.EntityFrameworkCore.Postgresql.Migrations
 {
-    [DbContext(typeof(ChatBotContext))]
+    [DbContext(typeof(ChatBotDbContext))]
     partial class ChatBotContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)

@@ -1,15 +1,13 @@
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using System.Net.Mime;
-using ChatBot.Api.Application.Commands;
 using ChatBot.Api.Application.Commands.DeleteChatContext;
 using ChatBot.Api.Application.Commands.ProcessChatMessage;
 using ChatBot.Api.Application.Commands.UpdateChatContextTitle;
-using ChatBot.Api.Application.Queries;
 using ChatBot.Api.Application.Queries.GetChatContext;
 using ChatBot.Api.Application.Queries.GetManyChatContextMetadata;
 using ChatBot.Api.Contracts;
-using ChatBot.Api.Domain.Exceptions;
+using ChatBot.Api.Domain.Exceptions.ChatContextExceptions;
 using ChatBot.Api.Mappers;
 
 namespace ChatBot.Api.Controllers;

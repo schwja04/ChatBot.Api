@@ -1,5 +1,5 @@
 using ChatBot.Api.Domain.ChatContextEntity;
-using ChatBot.Api.Domain.Exceptions;
+using ChatBot.Api.Domain.Exceptions.ChatContextExceptions;
 using MediatR;
 
 namespace ChatBot.Api.Application.Commands.UpdateChatContextTitle;
@@ -20,7 +20,7 @@ internal class UpdateChatContextTitleCommandHandler(IChatContextRepository chatC
 
         if (!string.Equals(chatContext.Username, request.Username, StringComparison.OrdinalIgnoreCase))
         {
-            throw new ChatContextAuthorizationException(request);
+            throw new ChatContextAuthorizationException(request.ContextId, request.Username);
         }
 
         chatContext.SetTitle(request.Title);

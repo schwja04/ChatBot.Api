@@ -1,10 +1,8 @@
 ﻿using System.Security.Principal;
 using AutoFixture;
-using ChatBot.Api.Application.Commands;
 using ChatBot.Api.Application.Commands.CreatePrompt;
 using ChatBot.Api.Application.Commands.DeletePrompt;
 using ChatBot.Api.Application.Commands.UpdatePrompt;
-using ChatBot.Api.Application.Queries;
 using ChatBot.Api.Application.Queries.GetManyPrompts;
 using ChatBot.Api.Application.Queries.GetPrompt;
 using ChatBot.Api.Contracts;
@@ -13,7 +11,6 @@ using ChatBot.Api.Domain.PromptEntity;
 using FluentAssertions;
 using MediatR;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using NSubstitute;
@@ -23,7 +20,6 @@ namespace ChatBot.Api.UnitTests.Api.Controllers;
 public class PromptsControllerShould
 {
 	private readonly IMediator _mediator;
-    private readonly ILogger<PromptsController> _logger;
 
 	private readonly PromptsController _sut;
 
@@ -32,8 +28,8 @@ public class PromptsControllerShould
 	public PromptsControllerShould()
 	{
 		_mediator = Substitute.For<IMediator>();
-        _logger = Substitute.For<ILogger<PromptsController>>();
-		_sut = new PromptsController(_logger, _mediator);
+        var logger = Substitute.For<ILogger<PromptsController>>();
+		_sut = new PromptsController(logger, _mediator);
 
 		_fixture = new Fixture();
 	}
@@ -52,12 +48,12 @@ public class PromptsControllerShould
 		_sut.ControllerContext = CreateTestControllerContext(username);
 
 		// Act
-		var response = await _sut.GetManyAsync(cancellationToken);
+		var response = await _sut.GetManyAsync(includeSystemPrompts: false, cancellationToken);
 
 		// Assert
 		var okResponse = (response as OkObjectResult);
 		var getPromptsResponse = (okResponse!.Value as GetManyPromptsResponse);
-        getPromptsResponse!.Prompts.Should().BeEquivalentTo(prompts!);
+        getPromptsResponse!.Prompts.Should().BeEquivalentTo(prompts);
 
 	}
 
@@ -82,30 +78,9 @@ public class PromptsControllerShould
 
         // Assert
         var okResponse = (response as OkObjectResult);
-        var getPromptResponse = (okResponse!.Value as Prompt);
-        getPromptResponse!.Should().Be(prompt);
+        var getPromptResponse = (okResponse!.Value as GetPromptResponse);
+        getPromptResponse!.Should().BeEquivalentTo(prompt);
 
-    }
-
-    [Fact]
-    public async Task GetAsync_ShouldReturn404_WhenPromptNotReturnedFromMediator()
-    {
-        // Arrange
-        var username = _fixture.Create<string>();
-        var promptId = _fixture.Create<Guid>();
-        var cancellationToken = CancellationToken.None;
-
-        _mediator.Send(Arg.Any<GetPromptQuery>(), Arg.Any<CancellationToken>())
-            .Returns((Prompt?)null);
-
-        _sut.ControllerContext = CreateTestControllerContext(username);
-
-        // Act
-        var response = await _sut.GetAsync(promptId, cancellationToken);
-
-        // Assert
-        var notFoundResponse = (response as NotFoundResult);
-        notFoundResponse.Should().NotBeNull();
     }
 
     [Fact]
@@ -132,7 +107,7 @@ public class PromptsControllerShould
         // Assert
         var createResult = (result as CreatedResult);
         var createPromptResponse = (createResult!.Value as CreatePromptResponse);
-        createPromptResponse!.Prompt.Should().Be(prompt);
+        createPromptResponse!.Should().BeEquivalentTo(prompt);
     }
 
     [Fact]
@@ -199,7 +174,7 @@ public class PromptsControllerShould
         {
             HttpContext = new DefaultHttpContext()
 			{
-				User = new GenericPrincipal(new GenericIdentity(username), (string[]?)null)
+				User = new GenericPrincipal(new GenericIdentity(username), roles: null)
             }
         };
     }

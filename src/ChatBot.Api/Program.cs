@@ -5,8 +5,7 @@ using ChatBot.Api.Domain.ChatContextEntity;
 using ChatBot.Api.Domain.PromptEntity;
 using ChatBot.Api.EntityFrameworkCore.Postgresql;
 using ChatBot.Api.EntityFrameworkCore.SqlServer;
-using ChatBot.Api.Infrastructure;
-using ChatBot.Api.Infrastructure.Repositories;
+using ChatBot.Api.ExceptionHandlers.PromptExceptionHandlers;
 using ChatBot.Api.Infrastructure.Repositories.ExternalServices.ChatCompletion;
 using ChatBot.Api.Infrastructure.Repositories.ExternalServices.ChatCompletion.Mappers;
 using ChatBot.Api.Infrastructure.Repositories.Persistence.Cached;
@@ -31,6 +30,7 @@ builder.Configuration
 
 // Add services to the container.
 RegisterServices(builder.Services, builder.Configuration);
+RegisterExceptionHandlers(builder.Services);
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -51,6 +51,8 @@ builder.Services
     });
 builder.Services.AddSwaggerGenNewtonsoftSupport();
 
+
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -66,8 +68,19 @@ app.UseCors("CorsPolicy");
 
 app.MapControllers();
 app.UseHttpsRedirection();
+app.UseExceptionHandler();
 
 app.Run();
+
+static void RegisterExceptionHandlers(IServiceCollection services)
+{
+    services.AddProblemDetails();
+    services.AddExceptionHandler<PromptAuthorizationExceptionHandler>();
+    services.AddExceptionHandler<PromptDuplicateKeyExceptionHandler>();
+    services.AddExceptionHandler<PromptKeyCannotBeEmptyExceptionHandler>();
+    services.AddExceptionHandler<PromptNotFoundExceptionHandler>();
+}
+
 static void RegisterServices(IServiceCollection services, IConfiguration configuration)
 {
     services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining<IMediatrRegistration>());
@@ -85,25 +98,24 @@ static void RegisterServices(IServiceCollection services, IConfiguration configu
         case DatabaseProviders.Postgresql:
             services.AddPostgresqlRepositories(configuration);
             break;
-        case DatabaseProviders.InMemory:
-            services.AddInMemoryRepositories();
-            break;
         case DatabaseProviders.Mongo:
             services.AddMongoRepositories(configuration);
             break;
+        case DatabaseProviders.InMemory:
         default:
-            throw new ArgumentOutOfRangeException(nameof(databaseProvider), databaseProvider, "Database provider is not supported.");
+            services.AddInMemoryRepositories();
+            break;
     }
 
     services.AddMemoryCache()
-        .Decorate<IPromptRepository, CachedUserAccessiblePromptRepository>();
+        .Decorate<IPromptRepository, CachedPromptRepository>();
 }
 
 internal static class ServiceCollectionExtensions
 {
     public static IServiceCollection AddSqlServerRepositories(this IServiceCollection services, IConfiguration configuration)
     {
-        services.AddDbContext<ChatBotContext>(builder =>
+        services.AddDbContext<ChatBotDbContext>(builder =>
         {
             builder.UseSqlServerDbContext(configuration.GetConnectionString(ConnectionStrings.ChatBotContextSqlServerConnectionString)!);
         });
@@ -116,7 +128,7 @@ internal static class ServiceCollectionExtensions
     
     public static IServiceCollection AddPostgresqlRepositories(this IServiceCollection services, IConfiguration configuration)
     {
-        services.AddDbContext<ChatBotContext>(builder =>
+        services.AddDbContext<ChatBotDbContext>(builder =>
         {
             builder.UsePostgresqlDbContext(configuration.GetConnectionString(ConnectionStrings.ChatBotContextPostgresqlConnectionString)!);
         });
@@ -158,5 +170,3 @@ internal static class ConnectionStrings
     public const string ChatBotContextPostgresqlConnectionString = nameof(ChatBotContextPostgresqlConnectionString);
     public const string ChatBotContextSqlServerConnectionString = nameof(ChatBotContextSqlServerConnectionString);
 }
-
-public partial class Program { }

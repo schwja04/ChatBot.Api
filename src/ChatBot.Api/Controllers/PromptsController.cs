@@ -1,14 +1,13 @@
 ﻿using System.Collections.ObjectModel;
 using System.Net.Mime;
-using ChatBot.Api.Application.Commands;
 using ChatBot.Api.Application.Commands.CreatePrompt;
 using ChatBot.Api.Application.Commands.DeletePrompt;
 using ChatBot.Api.Application.Commands.UpdatePrompt;
-using ChatBot.Api.Application.Queries;
 using ChatBot.Api.Application.Queries.GetManyPrompts;
 using ChatBot.Api.Application.Queries.GetPrompt;
 using ChatBot.Api.Contracts;
 using ChatBot.Api.Domain.PromptEntity;
+using ChatBot.Api.Mappers;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -25,14 +24,20 @@ public class PromptsController(ILogger<PromptsController> logger, IMediator medi
     [HttpGet(Routes.Prompts)]
     [Produces(MediaTypeNames.Application.Json)]
     [ProducesResponseType(typeof(GetManyPromptsResponse), StatusCodes.Status200OK)]
-    public async Task<IActionResult> GetManyAsync(CancellationToken cancellationToken = default)
+    public async Task<IActionResult> GetManyAsync(
+        [FromQuery] bool includeSystemPrompts = false,
+        CancellationToken cancellationToken = default)
     {
         var query = new GetManyPromptsQuery()
         {
-            Username = User.Identity?.Name ?? DefaultUsername
+            Username = User.Identity?.Name ?? DefaultUsername,
+            IncludeSystemPrompts = includeSystemPrompts
         };
 
-        _logger.LogInformation("Getting prompts for {Username}", query.Username);
+        _logger.LogInformation(
+            "Getting prompts for {Username}. Included system prompts: {IncludeSystemPrompts}",
+            query.Username,
+            query.IncludeSystemPrompts);
         ReadOnlyCollection<Prompt> prompts = await _mediator.Send(query, cancellationToken);
 
         return Ok(new GetManyPromptsResponse
@@ -49,26 +54,20 @@ public class PromptsController(ILogger<PromptsController> logger, IMediator medi
 
     [HttpGet(Routes.PromptsByPromptId)]
     [Produces(MediaTypeNames.Application.Json)]
-    [ProducesResponseType(typeof(Prompt), StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(typeof(GetPromptResponse), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetAsync(
-        [FromRoute] Guid promptId, CancellationToken cancellationToken = default)
+        [FromRoute] Guid promptId,
+        CancellationToken cancellationToken = default)
     {
         string username = User.Identity?.Name ?? DefaultUsername;
 
         var command = new GetPromptQuery(username, promptId);
 
         _logger.LogInformation("Getting prompt {PromptId} for {Username}", promptId, username);
-        Prompt? prompt = await _mediator.Send(command, cancellationToken);
+        var prompt = await _mediator.Send(command, cancellationToken);
 
-        if (prompt is not null)
-        {
-            _logger.LogInformation("Prompt {PromptId} found for {Username}", promptId, username);
-            return Ok(prompt!);
-        }
-
-        _logger.LogInformation("Prompt {PromptId} not found for {Username}", promptId, username);
-        return NotFound();
+        _logger.LogInformation("Prompt {PromptId} found for {Username}", promptId, username);
+        return Ok(prompt.ToGetPromptResponse());
     }
 
     [HttpPost(Routes.Prompts)]
@@ -94,7 +93,7 @@ public class PromptsController(ILogger<PromptsController> logger, IMediator medi
             UriKind.Relative);
 
         _logger.LogInformation("Prompt {PromptId} created for {Username}", prompt.PromptId, username);
-        return Created(uri, new CreatePromptResponse { Prompt = prompt });
+        return Created(uri, prompt.ToCreatePromptResponse());
     }
 
     [HttpDelete(Routes.PromptsByPromptId)]

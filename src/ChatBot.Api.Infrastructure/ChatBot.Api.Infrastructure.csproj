@@ -16,6 +16,7 @@
   <ItemGroup>
     <InternalsVisibleTo Include="ChatBot.Api" />
     <InternalsVisibleTo Include="ChatBot.Api.UnitTests" />
+    <InternalsVisibleTo Include="ChatBot.Api.IntegrationTests" />
     <InternalsVisibleTo Include="DynamicProxyGenAssembly2" />
   </ItemGroup>
 

@@ -1,6 +1,4 @@
-﻿using ChatBot.Api.Domain.PromptEntity;
-
-namespace ChatBot.Api.Contracts;
+﻿namespace ChatBot.Api.Contracts;
 
 public record GetManyPromptsResponse
 {

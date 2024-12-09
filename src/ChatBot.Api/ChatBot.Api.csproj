@@ -42,6 +42,10 @@
     </ProjectReference>
     <ProjectReference Include="..\ChatBot.Api.Domain\ChatBot.Api.Domain.csproj" />
   </ItemGroup>
+  
+  <ItemGroup>
+    <InternalsVisibleTo Include="ChatBot.Api.IntegrationTests" />
+  </ItemGroup>
 
   <ItemGroup>
     <None Remove="Mappers\" />
@@ -49,7 +53,6 @@
     <None Remove="Swagger\Filters\" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Mappers\" />
     <Folder Include="Swagger\" />
     <Folder Include="Swagger\Filters\" />
   </ItemGroup>
