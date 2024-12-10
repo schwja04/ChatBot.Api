@@ -1,9 +1,10 @@
 using System.Net;
 using AutoFixture;
 using ChatBot.Api.Contracts;
+using ChatBot.Api.IntegrationTests.Endpoints.TestHelpers;
 using FluentAssertions;
 
-namespace ChatBot.Api.IntegrationTests.Endpoints.Helpers;
+namespace ChatBot.Api.IntegrationTests.Endpoints.PromptEndpointTests;
 
 public static class PromptTestCases
 {

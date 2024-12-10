@@ -5,6 +5,7 @@ using ChatBot.Api.Domain.ChatContextEntity;
 using ChatBot.Api.Domain.PromptEntity;
 using ChatBot.Api.EntityFrameworkCore.Postgresql;
 using ChatBot.Api.EntityFrameworkCore.SqlServer;
+using ChatBot.Api.ExceptionHandlers.ChatContextExceptionHandlers;
 using ChatBot.Api.ExceptionHandlers.PromptExceptionHandlers;
 using ChatBot.Api.Infrastructure.Repositories.ExternalServices.ChatCompletion;
 using ChatBot.Api.Infrastructure.Repositories.ExternalServices.ChatCompletion.Mappers;
@@ -75,10 +76,17 @@ app.Run();
 static void RegisterExceptionHandlers(IServiceCollection services)
 {
     services.AddProblemDetails();
+    
+    // Prompt exception handlers
     services.AddExceptionHandler<PromptAuthorizationExceptionHandler>();
     services.AddExceptionHandler<PromptDuplicateKeyExceptionHandler>();
     services.AddExceptionHandler<PromptKeyCannotBeEmptyExceptionHandler>();
     services.AddExceptionHandler<PromptNotFoundExceptionHandler>();
+    
+    // ChatContext exception handlers
+    services.AddExceptionHandler<ChatContextAuthorizationExceptionHandler>();
+    services.AddExceptionHandler<ChatContextNotFoundExceptionHandler>();
+    services.AddExceptionHandler<ChatContextTitleCannotBeEmptyExceptionHandler>();
 }
 
 static void RegisterServices(IServiceCollection services, IConfiguration configuration)

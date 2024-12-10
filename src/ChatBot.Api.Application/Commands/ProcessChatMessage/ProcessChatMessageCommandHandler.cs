@@ -51,7 +51,7 @@ internal class ProcessChatMessageCommandHandler(
 
             if (savedChatHistory is null)
             {
-                throw new ChatContextNotFoundException(request.ContextId);
+                throw new ChatContextNotFoundException(request.ContextId, request.Username);
             }
 
             if (!string.Equals(savedChatHistory.Username, request.Username, StringComparison.OrdinalIgnoreCase))

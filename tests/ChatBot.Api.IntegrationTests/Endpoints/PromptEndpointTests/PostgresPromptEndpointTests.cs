@@ -1,11 +1,10 @@
 using AutoFixture;
-using ChatBot.Api.IntegrationTests.Endpoints.Helpers;
 using ChatBot.Api.IntegrationTests.WebApplicationFactories;
 
-namespace ChatBot.Api.IntegrationTests.Endpoints.PostgresImplementations;
+namespace ChatBot.Api.IntegrationTests.Endpoints.PromptEndpointTests;
 
-public class PromptEndpointTests(PostgresWebApplicationFactory factory) 
-    : IClassFixture<PostgresWebApplicationFactory>
+[Collection("PostgresCollection")]
+public class PostgresPromptEndpointTests(PostgresWebApplicationFactory factory)
 {
     private readonly HttpClient _client = factory.HttpClient;
     private readonly Fixture _fixture = factory.Fixture;

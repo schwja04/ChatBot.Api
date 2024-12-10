@@ -8,7 +8,7 @@ public static class Routes
     public const string ChatsByContextId = $"{Chats}/{{contextId}}";
     public const string UpdateChatTitleByContextId = $"{ChatsByContextId}:update-title";
 
-    public const string ChatMetadatas = $"{Chats}/metadatas";
+    public const string ChatMetadata = $"{Chats}/metadata";
 
     public const string Prompts = $"{ApiRoot}/prompts";
     public const string PromptsByPromptId = $"{Prompts}/{{promptId}}";

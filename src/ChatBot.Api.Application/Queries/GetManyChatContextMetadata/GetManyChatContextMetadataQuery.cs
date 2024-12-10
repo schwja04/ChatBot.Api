@@ -4,12 +4,7 @@ using MediatR;
 
 namespace ChatBot.Api.Application.Queries.GetManyChatContextMetadata;
 
-public record GetManyChatContextMetadataQuery : IRequest<GetChatHistoryMetadatasQueryResponse>
+public record GetManyChatContextMetadataQuery : IRequest<ReadOnlyCollection<ChatContextMetadata>>
 {
-    public required string UserName { get; init; }
-}
-
-public record GetChatHistoryMetadatasQueryResponse
-{
-    public required ReadOnlyCollection<ChatContextMetadata> ChatContextMetadatas { get; init; }
+    public required string Username { get; init; }
 }

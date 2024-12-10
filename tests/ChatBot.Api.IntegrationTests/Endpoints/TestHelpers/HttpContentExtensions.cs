@@ -1,6 +1,6 @@
 using Newtonsoft.Json;
 
-namespace ChatBot.Api.IntegrationTests.Endpoints.Helpers;
+namespace ChatBot.Api.IntegrationTests.Endpoints.TestHelpers;
 
 internal static class HttpContentExtensions
 {

@@ -1,10 +1,11 @@
 using System.Collections.ObjectModel;
+using ChatBot.Api.Domain.Exceptions.ChatContextExceptions;
 
 namespace ChatBot.Api.Domain.ChatContextEntity;
 
 public record ChatContext
 {
-    private readonly List<ChatMessage> _messages = new();
+    private readonly List<ChatMessage> _messages = [];
 
 #pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
     private ChatContext() {}
@@ -42,8 +43,17 @@ public record ChatContext
 
     public void SetTitle(string title)
     {
+        if (string.IsNullOrWhiteSpace(title))
+        {
+            throw new ChatContextTitleCannotBeEmptyException(ContextId, Username);
+        }
+        
+        if (string.Equals(Title, title, StringComparison.OrdinalIgnoreCase))
+        {
+            return;
+        }
+        
         UpdatedAt = DateTimeOffset.Now;
-
         Title = title;
     }
 
@@ -62,7 +72,7 @@ public record ChatContext
             contextId: Guid.NewGuid(),
             title: string.Empty,
             username: username,
-            messages: Enumerable.Empty<ChatMessage>(),
+            messages: [],
             createdAt: now,
             updatedAt: now);
     }

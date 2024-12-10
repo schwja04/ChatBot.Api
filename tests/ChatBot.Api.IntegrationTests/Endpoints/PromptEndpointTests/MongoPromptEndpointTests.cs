@@ -1,11 +1,11 @@
 using AutoFixture;
-using ChatBot.Api.IntegrationTests.Endpoints.Helpers;
 using ChatBot.Api.IntegrationTests.WebApplicationFactories;
 
-namespace ChatBot.Api.IntegrationTests.Endpoints.SqlServerImplementations;
+namespace ChatBot.Api.IntegrationTests.Endpoints.PromptEndpointTests;
 
-public class PromptEndpointTests(SqlServerWebApplicationFactory factory) 
-    : IClassFixture<SqlServerWebApplicationFactory>
+[Collection("MongoCollection")]
+public class MongoPromptEndpointTests(MongoWebApplicationFactory factory) 
+    : IClassFixture<MongoWebApplicationFactory>
 {
     private readonly HttpClient _client = factory.HttpClient;
     private readonly Fixture _fixture = factory.Fixture;

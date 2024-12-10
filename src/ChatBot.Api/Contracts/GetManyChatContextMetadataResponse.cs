@@ -1,6 +1,6 @@
 namespace ChatBot.Api.Contracts;
 
-public record GetChatContextMetadatasResponse
+public record GetManyChatContextMetadataResponse
 {
     public required IReadOnlyCollection<GetChatContextMetadataResponse> ChatHistoryMetadatas { get; init; }
 }

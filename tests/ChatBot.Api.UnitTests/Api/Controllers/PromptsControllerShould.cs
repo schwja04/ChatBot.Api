@@ -1,5 +1,4 @@
-﻿using System.Security.Principal;
-using AutoFixture;
+﻿using AutoFixture;
 using ChatBot.Api.Application.Commands.CreatePrompt;
 using ChatBot.Api.Application.Commands.DeletePrompt;
 using ChatBot.Api.Application.Commands.UpdatePrompt;
@@ -10,7 +9,6 @@ using ChatBot.Api.Controllers;
 using ChatBot.Api.Domain.PromptEntity;
 using FluentAssertions;
 using MediatR;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using NSubstitute;
@@ -45,7 +43,7 @@ public class PromptsControllerShould
 		_mediator.Send(Arg.Any<GetManyPromptsQuery>(), Arg.Any<CancellationToken>())
 			.Returns(prompts);
 
-		_sut.ControllerContext = CreateTestControllerContext(username);
+		_sut.ControllerContext = TestHelpers.CreateTestControllerContext(username);
 
 		// Act
 		var response = await _sut.GetManyAsync(includeSystemPrompts: false, cancellationToken);
@@ -71,7 +69,7 @@ public class PromptsControllerShould
         _mediator.Send(Arg.Any<GetPromptQuery>(), Arg.Any<CancellationToken>())
             .Returns(prompt);
 
-        _sut.ControllerContext = CreateTestControllerContext(prompt.Owner);
+        _sut.ControllerContext = TestHelpers.CreateTestControllerContext(prompt.Owner);
 
         // Act
         var response = await _sut.GetAsync(prompt.PromptId, cancellationToken);
@@ -99,7 +97,7 @@ public class PromptsControllerShould
         _mediator.Send(Arg.Any<CreatePromptCommand>(), Arg.Any<CancellationToken>())
             .Returns(prompt);
 
-        _sut.ControllerContext = CreateTestControllerContext(username);
+        _sut.ControllerContext = TestHelpers.CreateTestControllerContext(username);
 
         // Act
         var result = await _sut.CreateAsync(request, cancellationToken);
@@ -119,7 +117,7 @@ public class PromptsControllerShould
 
         var cancellationToken = CancellationToken.None;
 
-        _sut.ControllerContext = CreateTestControllerContext(username);
+        _sut.ControllerContext = TestHelpers.CreateTestControllerContext(username);
 
         // Act
         var result = await _sut.DeleteAsync(promptId, cancellationToken);
@@ -148,7 +146,7 @@ public class PromptsControllerShould
 
         var cancellationToken = CancellationToken.None;
 
-        _sut.ControllerContext = CreateTestControllerContext(username);
+        _sut.ControllerContext = TestHelpers.CreateTestControllerContext(username);
 
         // Act
         var result = await _sut.UpdateAsync(promptId, request, cancellationToken);
@@ -166,16 +164,5 @@ public class PromptsControllerShould
                     && x.Value == request.Value
                     && x.Owner == username),
                 Arg.Any<CancellationToken>());
-    }
-
-    private static ControllerContext CreateTestControllerContext(string username)
-	{
-		return new ControllerContext
-        {
-            HttpContext = new DefaultHttpContext()
-			{
-				User = new GenericPrincipal(new GenericIdentity(username), roles: null)
-            }
-        };
     }
 }

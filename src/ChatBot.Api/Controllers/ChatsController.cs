@@ -7,7 +7,6 @@ using ChatBot.Api.Application.Commands.UpdateChatContextTitle;
 using ChatBot.Api.Application.Queries.GetChatContext;
 using ChatBot.Api.Application.Queries.GetManyChatContextMetadata;
 using ChatBot.Api.Contracts;
-using ChatBot.Api.Domain.Exceptions.ChatContextExceptions;
 using ChatBot.Api.Mappers;
 
 namespace ChatBot.Api.Controllers;
@@ -17,12 +16,11 @@ public class ChatsController(IMediator mediator) : ControllerBase
 {
     private readonly IMediator _mediator = mediator;
 
-    private static readonly string DefaultUsername = "Unknown";
-    
+    private const string DefaultUsername = "Unknown";
+
     [HttpPost(Routes.Chats)]
     [Produces(MediaTypeNames.Application.Json)]
     [ProducesResponseType(typeof(ProcessChatMessageResponse), StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> PostAsync([FromBody] ProcessChatMessageRequest request, CancellationToken cancellationToken = default)
     {
         var command = new ProcessChatMessageCommand
@@ -32,37 +30,30 @@ public class ChatsController(IMediator mediator) : ControllerBase
             PromptKey = request.PromptKey,
             Username = User.Identity?.Name ?? DefaultUsername
         };
-
-        try
+        
+        var response = await _mediator.Send(command, cancellationToken);
+        return Ok(new ProcessChatMessageResponse
         {
-            var response = await _mediator.Send(command, cancellationToken);
-            return Ok(new ProcessChatMessageResponse
-            {
-                ContextId = response.ContextId,
-                ChatMessage = response.ChatMessage.ToChatMessageResponse()
-            });
-        }
-        catch (ChatContextNotFoundException)
-        {
-            return NotFound();
-        }
+            ContextId = response.ContextId,
+            ChatMessage = response.ChatMessage.ToChatMessageResponse()
+        });
     }
 
-    [HttpGet(Routes.ChatMetadatas)]
+    [HttpGet(Routes.ChatMetadata)]
     [Produces(MediaTypeNames.Application.Json)]
-    [ProducesResponseType(typeof(GetChatContextMetadatasResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(GetManyChatContextMetadataResponse), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetManyChatContextMetadataAsync(CancellationToken cancellationToken = default)
     {
         var query = new GetManyChatContextMetadataQuery()
         {
-            UserName = User.Identity?.Name ?? DefaultUsername,
+            Username = User.Identity?.Name ?? DefaultUsername,
         };
 
-        var response = await _mediator.Send(query, cancellationToken);
+        var chatContextMetadatas = await _mediator.Send(query, cancellationToken);
 
-        return Ok(new GetChatContextMetadatasResponse
+        return Ok(new GetManyChatContextMetadataResponse
         {
-            ChatHistoryMetadatas = response.ChatContextMetadatas.Select(x => new GetChatContextMetadataResponse
+            ChatHistoryMetadatas = chatContextMetadatas.Select(x => new GetChatContextMetadataResponse
             {
                 ContextId = x.ContextId,
                 Title = x.Title,
@@ -76,7 +67,6 @@ public class ChatsController(IMediator mediator) : ControllerBase
     [HttpGet(Routes.ChatsByContextId)]
     [Produces(MediaTypeNames.Application.Json)]
     [ProducesResponseType(typeof(GetChatContextResponse), StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetAsync([FromRoute] Guid contextId, CancellationToken cancellationToken = default)
     {
         var query = new GetChatContextQuery
@@ -87,19 +77,14 @@ public class ChatsController(IMediator mediator) : ControllerBase
 
         var response = await _mediator.Send(query, cancellationToken);
 
-        if (response is null)
-        {
-            return NotFound();
-        }
-
         return Ok(new GetChatContextResponse
         {
-            ContextId = response.ChatContext.ContextId,
-            Title = response.ChatContext.Title,
-            Username = response.ChatContext.Username,
-            ChatMessages = response.ChatContext.Messages.ToChatMessageResponses(),
-            CreatedAt = response.ChatContext.CreatedAt,
-            UpdatedAt = response.ChatContext.UpdatedAt
+            ContextId = response.ContextId,
+            Title = response.Title,
+            Username = response.Username,
+            ChatMessages = response.Messages.ToChatMessageResponses(),
+            CreatedAt = response.CreatedAt,
+            UpdatedAt = response.UpdatedAt
         });
     }
 
@@ -107,7 +92,7 @@ public class ChatsController(IMediator mediator) : ControllerBase
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     public async Task<IActionResult> UpdateTitleAsync(
         [FromRoute] Guid contextId,
-        [FromBody] ProcessChatContextTitleRequest request,
+        [FromBody] UpdateChatContextTitleRequest request,
         CancellationToken cancellationToken = default)
     {
         var command = new UpdateChatContextTitleCommand

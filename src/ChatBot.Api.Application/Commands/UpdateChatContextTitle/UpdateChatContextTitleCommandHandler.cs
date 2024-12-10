@@ -15,7 +15,7 @@ internal class UpdateChatContextTitleCommandHandler(IChatContextRepository chatC
 
         if (chatContext is null)
         {
-            throw new ChatContextNotFoundException(request.ContextId);
+            throw new ChatContextNotFoundException(request.ContextId, request.Username);
         }
 
         if (!string.Equals(chatContext.Username, request.Username, StringComparison.OrdinalIgnoreCase))

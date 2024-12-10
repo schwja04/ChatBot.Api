@@ -4,27 +4,24 @@ using MediatR;
 
 namespace ChatBot.Api.Application.Queries.GetChatContext;
 
-internal class GetChatContextQueryHandler(IChatContextRepository chatContextRepository) : IRequestHandler<GetChatContextQuery, GetChatContextQueryResponse?>
+internal class GetChatContextQueryHandler(IChatContextRepository chatContextRepository) : IRequestHandler<GetChatContextQuery, ChatContext>
 {
     private readonly IChatContextRepository _chatContextRepository = chatContextRepository;
 
-    public async Task<GetChatContextQueryResponse?> Handle(GetChatContextQuery request, CancellationToken cancellationToken)
+    public async Task<ChatContext> Handle(GetChatContextQuery request, CancellationToken cancellationToken)
     {
         var chatContext = await _chatContextRepository.GetAsync(request.ContextId, cancellationToken);
 
         if (chatContext is null)
         {
-            return null;
+            throw new ChatContextNotFoundException(request.ContextId, request.Username);
         }
 
-        if (string.Equals(chatContext.Username, request.Username, StringComparison.OrdinalIgnoreCase))
+        if (!string.Equals(chatContext.Username, request.Username, StringComparison.OrdinalIgnoreCase))
         {
-            return new GetChatContextQueryResponse
-            {
-                ChatContext = chatContext
-            };
+            throw new ChatContextAuthorizationException(request.ContextId, request.Username);
         }
 
-        throw new ChatContextAuthorizationException(request.ContextId, request.Username);
+        return chatContext;
     }
 }
