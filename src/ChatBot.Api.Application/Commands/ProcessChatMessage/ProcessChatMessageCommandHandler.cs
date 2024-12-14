@@ -42,26 +42,24 @@ internal class ProcessChatMessageCommandHandler(
 
     private async Task<ChatContext> GetChatHistoryAsync(ProcessChatMessageCommand request, CancellationToken cancellationToken)
     {
-        ChatContext? savedChatHistory = null;
-
-        // Check if the context already exists
-        if (request.ContextId != Guid.Empty)
+        if (request.ContextId == Guid.Empty)
         {
-            savedChatHistory = await _chatContextRepository.GetAsync(request.ContextId, cancellationToken);
-
-            if (savedChatHistory is null)
-            {
-                throw new ChatContextNotFoundException(request.ContextId, request.Username);
-            }
-
-            if (!string.Equals(savedChatHistory.Username, request.Username, StringComparison.OrdinalIgnoreCase))
-            {
-                throw new ChatContextAuthorizationException(request.ContextId, request.Username);
-            }
+            return ChatContext.CreateNew(request.Username);
         }
 
-        // This will create a new context if the ContextId is Guid.Empty
-        return savedChatHistory ?? ChatContext.CreateNew(request.Username);
+        var savedChatHistory = await _chatContextRepository.GetAsync(request.ContextId, cancellationToken);
+
+        if (savedChatHistory is null)
+        {
+            throw new ChatContextNotFoundException(request.ContextId, request.Username);
+        }
+
+        if (!string.Equals(savedChatHistory.Username, request.Username, StringComparison.OrdinalIgnoreCase))
+        {
+            throw new ChatContextAuthorizationException(request.ContextId, request.Username);
+        }
+        
+        return savedChatHistory;
     }
 
     private async Task<string> GenerateTitleAsync(ProcessChatMessageCommand request, CancellationToken cancellationToken)
