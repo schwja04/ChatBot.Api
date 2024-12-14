@@ -39,6 +39,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_project-files", "_project-
 		docker-compose.yml = docker-compose.yml
 		Dockerfile = Dockerfile
 		global.json = global.json
+		README.md = README.md
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChatBot.Api.IntegrationTests", "tests\ChatBot.Api.IntegrationTests\ChatBot.Api.IntegrationTests.csproj", "{8F5B24D8-7679-458D-BA9A-064A442815E6}"
