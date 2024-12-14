@@ -2,6 +2,8 @@ using AutoFixture;
 using ChatBot.Api.Abstractions;
 using ChatBot.Api.Domain.ChatContextEntity;
 using ChatBot.Api.Domain.PromptEntity;
+using ChatBot.Api.IntegrationTests.WebApplicationFactories.MockImplementations;
+using Common.OpenAI.Clients;
 using DotNet.Testcontainers.Builders;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.AspNetCore.TestHost;
@@ -24,7 +26,6 @@ public sealed class MongoWebApplicationFactory
         .Build();
 
     public Fixture Fixture { get; } = new();
-    
     public HttpClient HttpClient { get; private set; } = null!;
     
     protected override void ConfigureWebHost(IWebHostBuilder builder)
@@ -39,7 +40,8 @@ public sealed class MongoWebApplicationFactory
                 ["Mongo:ConnectionString"] = mongoConnString,
                 ["Mongo:Username"] = mongoSettings.Credential!.Username,
                 ["Mongo:Password"] = MongoPassword,
-                ["Mongo:DatabaseName"] = "ChatBot"
+                ["Mongo:DatabaseName"] = "ChatBot",
+                // ["Services:OpenAIClient:BaseAddress"] = OpenAIServer.BaseAddress,
             })
             .Build();
         
@@ -52,10 +54,13 @@ public sealed class MongoWebApplicationFactory
         
         builder.ConfigureTestServices(services =>
         {
-            services.RemoveAll(typeof(IPromptRepository));
-            services.RemoveAll(typeof(IChatContextRepository));
+            services.RemoveAll<IPromptRepository>();
+            services.RemoveAll<IChatContextRepository>();
+            services.RemoveAll<OpenAIClient>();
+            
             services.AddMongoRepositories(config);
             // services.Decorate<IPromptRepository, CachedPromptRepository>();
+            services.AddSingleton<IOpenAIClient, SubstituteOpenAIClient>();
         });
     }
 

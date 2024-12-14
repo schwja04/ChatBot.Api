@@ -4,6 +4,8 @@ using ChatBot.Api.Domain.ChatContextEntity;
 using ChatBot.Api.Domain.PromptEntity;
 using ChatBot.Api.EntityFrameworkCore.SqlServer;
 using ChatBot.Api.Infrastructure.Repositories.Persistence.EntityFrameworkCore;
+using ChatBot.Api.IntegrationTests.WebApplicationFactories.MockImplementations;
+using Common.OpenAI.Clients;
 using DotNet.Testcontainers.Builders;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.AspNetCore.TestHost;
@@ -24,7 +26,6 @@ public class SqlServerWebApplicationFactory :
         .Build();
     
     public Fixture Fixture { get; } = new();
-    
     public HttpClient HttpClient { get; private set; } = null!;
     
     protected override void ConfigureWebHost(IWebHostBuilder builder)
@@ -35,7 +36,8 @@ public class SqlServerWebApplicationFactory :
             .AddInMemoryCollection(new Dictionary<string, string?>()
             {
                 ["DatabaseProvider"] = "SqlServer",
-                ["ConnectionStrings:ChatBotContextSqlServerConnectionString"] = connectionString
+                ["ConnectionStrings:ChatBotContextSqlServerConnectionString"] = connectionString,
+                // ["Services:OpenAIClient:BaseAddress"] = OpenAIServer.BaseAddress,
             })
             .Build();
         
@@ -58,12 +60,14 @@ public class SqlServerWebApplicationFactory :
         builder.ConfigureLogging(loggerBuilder => loggerBuilder.ClearProviders());
         builder.ConfigureTestServices(services =>
         {
-            services.RemoveAll(typeof(IPromptRepository));
-            services.RemoveAll(typeof(IChatContextRepository));
+            services.RemoveAll<IPromptRepository>();
+            services.RemoveAll<IChatContextRepository>();
+            services.RemoveAll<IOpenAIClient>();
             
             services.AddScoped<IChatContextRepository, ChatContextEntityFrameworkRepository>();
             services.AddScoped<IPromptRepository, PromptEntityFrameworkRepository>();
             // services.Decorate<IPromptRepository, CachedPromptRepository>();
+            services.AddSingleton<IOpenAIClient, SubstituteOpenAIClient>();
         });
     }
     

@@ -4,6 +4,8 @@ using ChatBot.Api.Domain.ChatContextEntity;
 using ChatBot.Api.Domain.PromptEntity;
 using ChatBot.Api.EntityFrameworkCore.Postgresql;
 using ChatBot.Api.Infrastructure.Repositories.Persistence.EntityFrameworkCore;
+using ChatBot.Api.IntegrationTests.WebApplicationFactories.MockImplementations;
+using Common.OpenAI.Clients;
 using DotNet.Testcontainers.Builders;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.AspNetCore.TestHost;
@@ -13,6 +15,7 @@ using Testcontainers.PostgreSql;
 
 namespace ChatBot.Api.IntegrationTests.WebApplicationFactories;
 
+// ReSharper disable ClassNeverInstantiated.Global
 public class PostgresWebApplicationFactory : WebApplicationFactory<IApiMarker>, IAsyncLifetime
 {
     private readonly PostgreSqlContainer _postgresContainer = new PostgreSqlBuilder()
@@ -24,7 +27,6 @@ public class PostgresWebApplicationFactory : WebApplicationFactory<IApiMarker>, 
         .Build();
     
     public Fixture Fixture { get; } = new();
-    
     public HttpClient HttpClient { get; private set; } = null!;
     
     protected override void ConfigureWebHost(IWebHostBuilder builder)
@@ -35,7 +37,8 @@ public class PostgresWebApplicationFactory : WebApplicationFactory<IApiMarker>, 
             .AddInMemoryCollection(new Dictionary<string, string?>()
             {
                 ["DatabaseProvider"] = "Postgres",
-                ["ConnectionStrings:ChatBotContextPostgresqlConnectionString"] = connectionString
+                ["ConnectionStrings:ChatBotContextPostgresqlConnectionString"] = connectionString,
+                // ["Services:OpenAIClient:BaseAddress"] = OpenAIServer.BaseAddress,
             })
             .Build();
         
@@ -58,12 +61,14 @@ public class PostgresWebApplicationFactory : WebApplicationFactory<IApiMarker>, 
         builder.ConfigureLogging(loggerBuilder => loggerBuilder.ClearProviders());
         builder.ConfigureTestServices(services =>
         {
-            services.RemoveAll(typeof(IPromptRepository));
-            services.RemoveAll(typeof(IChatContextRepository));
+            services.RemoveAll<IPromptRepository>();
+            services.RemoveAll<IChatContextRepository>();
+            services.RemoveAll<OpenAIClient>();
             
             services.AddScoped<IPromptRepository, PromptEntityFrameworkRepository>();
             services.AddScoped<IChatContextRepository, ChatContextEntityFrameworkRepository>();
             // services.Decorate<IPromptRepository, CachedPromptRepository>();
+            services.AddSingleton<IOpenAIClient, SubstituteOpenAIClient>();
         });
     }
     

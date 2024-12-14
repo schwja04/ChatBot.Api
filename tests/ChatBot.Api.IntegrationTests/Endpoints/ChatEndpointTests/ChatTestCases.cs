@@ -1,13 +1,15 @@
 using AutoFixture;
 using ChatBot.Api.Contracts;
 using ChatBot.Api.IntegrationTests.Endpoints.TestHelpers;
+using ChatBot.Api.IntegrationTests.WebApplicationFactories;
+using ChatBot.Api.IntegrationTests.WebApplicationFactories.MockImplementations;
 using FluentAssertions;
 
 namespace ChatBot.Api.IntegrationTests.Endpoints.ChatEndpointTests;
 
 public static class ChatTestCases
 {
-    public static async Task RunAsync(HttpClient client, Fixture fixture)
+    public static async Task RunAsync(HttpClient client)
     {
         Guid contextId = Guid.Empty;
         
