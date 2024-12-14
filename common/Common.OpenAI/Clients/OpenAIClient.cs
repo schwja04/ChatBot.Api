@@ -7,14 +7,14 @@ namespace Common.OpenAI.Clients;
 
 public class OpenAIClient(HttpClient httpClient) : IOpenAIClient
 {
-    private static readonly Uri _chatCompletionUri = new Uri("chat/completions", UriKind.Relative);
+    private static readonly Uri ChatCompletionUri = new Uri("chat/completions", UriKind.Relative);
     private readonly HttpClient _httpClient = httpClient;
     
     public async Task<CreateChatCompletionResponse> CreateChatCompletionAsync(
             CreateChatCompletionRequest request,
             CancellationToken cancellationToken = default)
     {
-        using HttpResponseMessage response = await _httpClient.PostAsJsonAsync(_chatCompletionUri, request, cancellationToken);
+        using HttpResponseMessage response = await _httpClient.PostAsJsonAsync(ChatCompletionUri, request, cancellationToken);
 
         if (!response.IsSuccessStatusCode)
         {
