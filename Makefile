@@ -12,6 +12,7 @@ run:
 
 test:
 	dotnet test ./tests/ChatBot.Api.UnitTests/ChatBot.Api.UnitTests.csproj
+	dotnet test ./tests/ChatBot.Api.IntegrationTests/ChatBot.Api.IntegrationTests.csproj
 
 clean-build:
 	dotnet clean && dotnet build
