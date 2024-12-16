@@ -1,4 +1,4 @@
-using ChatBot.Api.Domain.Exceptions.PromptExceptions;
+using ChatBot.Domain.Exceptions.PromptExceptions;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 

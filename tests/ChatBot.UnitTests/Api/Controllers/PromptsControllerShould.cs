@@ -1,19 +1,19 @@
 ﻿using AutoFixture;
-using ChatBot.Api.Application.Commands.CreatePrompt;
-using ChatBot.Api.Application.Commands.DeletePrompt;
-using ChatBot.Api.Application.Commands.UpdatePrompt;
-using ChatBot.Api.Application.Queries.GetManyPrompts;
-using ChatBot.Api.Application.Queries.GetPrompt;
 using ChatBot.Api.Contracts;
 using ChatBot.Api.Controllers;
-using ChatBot.Api.Domain.PromptEntity;
+using ChatBot.Application.Commands.CreatePrompt;
+using ChatBot.Application.Commands.DeletePrompt;
+using ChatBot.Application.Commands.UpdatePrompt;
+using ChatBot.Application.Queries.GetManyPrompts;
+using ChatBot.Application.Queries.GetPrompt;
+using ChatBot.Domain.PromptEntity;
 using FluentAssertions;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using NSubstitute;
 
-namespace ChatBot.Api.UnitTests.Api.Controllers;
+namespace ChatBot.UnitTests.Api.Controllers;
 
 public class PromptsControllerShould
 {

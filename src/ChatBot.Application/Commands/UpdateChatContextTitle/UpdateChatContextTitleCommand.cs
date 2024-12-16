@@ -1,6 +1,6 @@
 using MediatR;
 
-namespace ChatBot.Api.Application.Commands.UpdateChatContextTitle;
+namespace ChatBot.Application.Commands.UpdateChatContextTitle;
 
 public record UpdateChatContextTitleCommand : IRequest
 {

@@ -1,10 +1,10 @@
 using AutoFixture;
-using ChatBot.Api.Application.Queries.GetChatContext;
-using ChatBot.Api.Domain.ChatContextEntity;
+using ChatBot.Application.Queries.GetChatContext;
+using ChatBot.Domain.ChatContextEntity;
 using FluentAssertions;
 using NSubstitute;
 
-namespace ChatBot.Api.UnitTests.Application.Handlers.QueryHandlers;
+namespace ChatBot.UnitTests.Application.Handlers.QueryHandlers;
 
 public class GetChatContextQueryHandlerShould
 {

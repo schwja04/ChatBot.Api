@@ -1,6 +1,6 @@
-﻿using ChatBot.Api.Domain.ChatContextEntity;
+﻿using ChatBot.Domain.ChatContextEntity;
 
-namespace ChatBot.Api.Infrastructure.Repositories.ExternalServices.ChatCompletion.Mappers;
+namespace ChatBot.Infrastructure.Repositories.ExternalServices.ChatCompletion.Mappers;
 
 internal interface IPromptMessageMapper
 {

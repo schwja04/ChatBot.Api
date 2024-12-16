@@ -1,7 +1,7 @@
 ﻿using System.Collections.ObjectModel;
-using ChatBot.Api.Domain.PromptEntity;
+using ChatBot.Domain.PromptEntity;
 
-namespace ChatBot.Api.Infrastructure.Repositories.Persistence.InMemory;
+namespace ChatBot.Infrastructure.Repositories.Persistence.InMemory;
 
 internal class PromptInMemoryRepository : IPromptRepository
 {

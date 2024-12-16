@@ -1,8 +1,8 @@
-﻿using ChatBot.Api.Domain.Exceptions.PromptExceptions;
-using ChatBot.Api.Domain.PromptEntity;
+﻿using ChatBot.Domain.Exceptions.PromptExceptions;
+using ChatBot.Domain.PromptEntity;
 using MediatR;
 
-namespace ChatBot.Api.Application.Commands.DeletePrompt;
+namespace ChatBot.Application.Commands.DeletePrompt;
 
 internal class DeletePromptCommandHandler(IPromptRepository promptRepository)
     : IRequestHandler<DeletePromptCommand>

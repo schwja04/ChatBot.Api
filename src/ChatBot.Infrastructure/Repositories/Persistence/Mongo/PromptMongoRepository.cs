@@ -1,13 +1,13 @@
 ﻿using System.Collections.ObjectModel;
 using System.Diagnostics;
-using ChatBot.Api.Domain.PromptEntity;
-using ChatBot.Api.Infrastructure.Repositories.Persistence.Mongo.Mappers;
-using ChatBot.Api.Infrastructure.Repositories.Persistence.Mongo.Models;
+using ChatBot.Domain.PromptEntity;
+using ChatBot.Infrastructure.Repositories.Persistence.Mongo.Mappers;
+using ChatBot.Infrastructure.Repositories.Persistence.Mongo.Models;
 using Common.Mongo;
 using Microsoft.Extensions.Logging;
 using MongoDB.Driver;
 
-namespace ChatBot.Api.Infrastructure.Repositories.Persistence.Mongo;
+namespace ChatBot.Infrastructure.Repositories.Persistence.Mongo;
 
 internal class PromptMongoRepository(
     ILogger<PromptMongoRepository> logger, 
@@ -57,9 +57,7 @@ internal class PromptMongoRepository(
 
         var filter = Builders<PromptDal>
             .Filter
-            .Where(x =>
-                string.Equals(x.Owner, "System", StringComparison.OrdinalIgnoreCase)
-                || string.Equals(x.Owner, username, StringComparison.OrdinalIgnoreCase));
+            .Where(x => string.Equals(x.Owner, username, StringComparison.OrdinalIgnoreCase));
 
         using IAsyncCursor<PromptDal> result = await collection
             .FindAsync(filter, cancellationToken: cancellationToken);

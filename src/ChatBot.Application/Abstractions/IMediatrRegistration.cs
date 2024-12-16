@@ -1,4 +1,4 @@
-namespace ChatBot.Api.Application.Abstractions;
+namespace ChatBot.Application.Abstractions;
 
 public interface IMediatrRegistration
 {

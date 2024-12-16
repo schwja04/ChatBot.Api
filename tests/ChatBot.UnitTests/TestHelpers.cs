@@ -2,7 +2,7 @@ using System.Security.Principal;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
-namespace ChatBot.Api.UnitTests;
+namespace ChatBot.UnitTests;
 
 public static class TestHelpers
 {

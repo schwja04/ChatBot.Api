@@ -1,8 +1,8 @@
 using AutoFixture;
-using ChatBot.Api.Domain.PromptEntity;
-using ChatBot.Api.Infrastructure.Repositories.Persistence.Mongo;
-using ChatBot.Api.Infrastructure.Repositories.Persistence.Mongo.Mappers;
-using ChatBot.Api.Infrastructure.Repositories.Persistence.Mongo.Models;
+using ChatBot.Domain.PromptEntity;
+using ChatBot.Infrastructure.Repositories.Persistence.Mongo;
+using ChatBot.Infrastructure.Repositories.Persistence.Mongo.Mappers;
+using ChatBot.Infrastructure.Repositories.Persistence.Mongo.Models;
 using Common.Mongo;
 using Common.Mongo.Models;
 using FluentAssertions;
@@ -10,7 +10,7 @@ using Microsoft.Extensions.Logging;
 using MongoDB.Driver;
 using NSubstitute;
 
-namespace ChatBot.Api.UnitTests.Infrastructure.Repositories;
+namespace ChatBot.UnitTests.Infrastructure.Repositories;
 
 public class PromptMongoRepositoryShould
 {

@@ -1,11 +1,11 @@
 ﻿using AutoFixture;
-using ChatBot.Api.Application.Commands.UpdatePrompt;
-using ChatBot.Api.Domain.Exceptions.PromptExceptions;
-using ChatBot.Api.Domain.PromptEntity;
+using ChatBot.Application.Commands.UpdatePrompt;
+using ChatBot.Domain.Exceptions.PromptExceptions;
+using ChatBot.Domain.PromptEntity;
 using FluentAssertions;
 using NSubstitute;
 
-namespace ChatBot.Api.UnitTests.Application.Handlers.CommandHandlers;
+namespace ChatBot.UnitTests.Application.Handlers.CommandHandlers;
 
 public class UpdatePromptCommandHandlerShould
 {

@@ -1,6 +1,6 @@
 using System.Collections.ObjectModel;
 
-namespace ChatBot.Api.Domain.PromptEntity;
+namespace ChatBot.Domain.PromptEntity;
 
 public interface IPromptRepository : IReadPromptRepository, IWritePromptRepository
 {

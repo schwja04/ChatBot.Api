@@ -1,4 +1,4 @@
-namespace ChatBot.Api.Application;
+namespace ChatBot.Application;
 
 public static class Constants
 {

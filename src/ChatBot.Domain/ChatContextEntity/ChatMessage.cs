@@ -1,4 +1,4 @@
-namespace ChatBot.Api.Domain.ChatContextEntity;
+namespace ChatBot.Domain.ChatContextEntity;
 public record ChatMessage
 {
     private ChatMessage(

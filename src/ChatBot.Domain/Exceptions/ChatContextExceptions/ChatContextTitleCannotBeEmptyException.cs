@@ -1,4 +1,4 @@
-namespace ChatBot.Api.Domain.Exceptions.ChatContextExceptions;
+namespace ChatBot.Domain.Exceptions.ChatContextExceptions;
 
 public sealed class ChatContextTitleCannotBeEmptyException(Guid contextId, string owner)
     : DomainException("Chat context title cannot be empty")

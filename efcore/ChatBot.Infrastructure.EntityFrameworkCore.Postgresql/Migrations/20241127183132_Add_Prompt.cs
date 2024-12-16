@@ -4,7 +4,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
-namespace ChatBot.Api.EntityFrameworkCore.Postgresql.Migrations
+namespace ChatBot.Infrastructure.EntityFrameworkCore.Postgresql.Migrations
 {
     /// <inheritdoc />
     public partial class Add_Prompt : Migration

@@ -1,7 +1,7 @@
-﻿using ChatBot.Api.Domain.ChatContextEntity;
-using ChatBot.Api.Domain.PromptEntity;
+﻿using ChatBot.Domain.ChatContextEntity;
+using ChatBot.Domain.PromptEntity;
 
-namespace ChatBot.Api.Infrastructure.Repositories.ExternalServices.ChatCompletion.Mappers;
+namespace ChatBot.Infrastructure.Repositories.ExternalServices.ChatCompletion.Mappers;
 
 internal class PromptMessageMapper(IPromptRepository promptRepository) : IPromptMessageMapper
 {

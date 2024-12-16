@@ -1,10 +1,10 @@
 using System.Reflection;
-using ChatBot.Api.Infrastructure.Repositories.Persistence.EntityFrameworkCore;
+using ChatBot.Infrastructure.Repositories.Persistence.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Configuration;
 
-namespace ChatBot.Api.EntityFrameworkCore.SqlServer;
+namespace ChatBot.Infrastructure.EntityFrameworkCore.SqlServer;
 
 public class ChatBotContextSqlServerFactory : IDesignTimeDbContextFactory<ChatBotDbContext>
 {

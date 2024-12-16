@@ -1,10 +1,10 @@
 ﻿using AutoFixture;
-using ChatBot.Api.Domain.PromptEntity;
-using ChatBot.Api.Infrastructure.Repositories.Persistence.Mongo.Mappers;
-using ChatBot.Api.Infrastructure.Repositories.Persistence.Mongo.Models;
+using ChatBot.Domain.PromptEntity;
+using ChatBot.Infrastructure.Repositories.Persistence.Mongo.Mappers;
+using ChatBot.Infrastructure.Repositories.Persistence.Mongo.Models;
 using FluentAssertions;
 
-namespace ChatBot.Api.UnitTests.Intrastructure.Repositories.Mappers;
+namespace ChatBot.UnitTests.Infrastructure.Repositories.Mappers;
 
 public class PromptMapperShould
 {

@@ -1,7 +1,7 @@
-﻿using ChatBot.Api.Domain.PromptEntity;
+﻿using ChatBot.Domain.PromptEntity;
 using MediatR;
 
-namespace ChatBot.Api.Application.Commands.CreatePrompt;
+namespace ChatBot.Application.Commands.CreatePrompt;
 
 public record CreatePromptCommand : IRequest<Prompt>
 {

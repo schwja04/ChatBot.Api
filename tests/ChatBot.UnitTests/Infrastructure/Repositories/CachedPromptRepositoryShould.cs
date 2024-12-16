@@ -1,11 +1,11 @@
 using AutoFixture;
+using ChatBot.Domain.PromptEntity;
+using ChatBot.Infrastructure.Repositories.Persistence.Cached;
 using FluentAssertions;
 using Microsoft.Extensions.Caching.Memory;
 using NSubstitute;
-using ChatBot.Api.Domain.PromptEntity;
-using ChatBot.Api.Infrastructure.Repositories.Persistence.Cached;
 
-namespace ChatBot.Api.UnitTests.Infrastructure.Repositories;
+namespace ChatBot.UnitTests.Infrastructure.Repositories;
 
 public class CachedPromptRepositoryShould
 {

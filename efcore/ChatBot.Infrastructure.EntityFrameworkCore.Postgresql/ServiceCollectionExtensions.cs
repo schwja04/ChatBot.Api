@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 
-namespace ChatBot.Api.EntityFrameworkCore.Postgresql;
+namespace ChatBot.Infrastructure.EntityFrameworkCore.Postgresql;
 
 public static class ServiceCollectionExtensions
 {

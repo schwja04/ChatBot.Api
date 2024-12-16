@@ -1,9 +1,9 @@
-using ChatBot.Api.Domain.ChatContextEntity;
-using ChatBot.Api.Domain.PromptEntity;
+using ChatBot.Domain.ChatContextEntity;
+using ChatBot.Domain.PromptEntity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace ChatBot.Api.Infrastructure.Repositories.Persistence.EntityFrameworkCore;
+namespace ChatBot.Infrastructure.Repositories.Persistence.EntityFrameworkCore;
 
 public class ChatBotDbContext(DbContextOptions<ChatBotDbContext> options) : DbContext(options)
 {

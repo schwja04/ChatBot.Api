@@ -1,12 +1,12 @@
 ﻿using AutoFixture;
-using ChatBot.Api.Application;
-using ChatBot.Api.Application.Queries.GetPrompt;
-using ChatBot.Api.Domain.Exceptions.PromptExceptions;
-using ChatBot.Api.Domain.PromptEntity;
+using ChatBot.Application;
+using ChatBot.Application.Queries.GetPrompt;
+using ChatBot.Domain.Exceptions.PromptExceptions;
+using ChatBot.Domain.PromptEntity;
 using FluentAssertions;
 using NSubstitute;
 
-namespace ChatBot.Api.UnitTests.Application.Handlers.QueryHandlers;
+namespace ChatBot.UnitTests.Application.Handlers.QueryHandlers;
 
 public class GetPromptQueryHandlerShould
 {

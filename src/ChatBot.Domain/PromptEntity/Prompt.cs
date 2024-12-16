@@ -1,6 +1,6 @@
-﻿using ChatBot.Api.Domain.Exceptions.PromptExceptions;
+﻿using ChatBot.Domain.Exceptions.PromptExceptions;
 
-namespace ChatBot.Api.Domain.PromptEntity;
+namespace ChatBot.Domain.PromptEntity;
 
 public record Prompt
 {

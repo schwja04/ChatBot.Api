@@ -1,12 +1,12 @@
 using System.Collections.ObjectModel;
-using ChatBot.Api.Application.Abstractions.Repositories;
-using ChatBot.Api.Domain.ChatContextEntity;
-using ChatBot.Api.Infrastructure.Repositories.ExternalServices.ChatCompletion.Builders;
-using ChatBot.Api.Infrastructure.Repositories.ExternalServices.ChatCompletion.Mappers;
+using ChatBot.Application.Abstractions.Repositories;
+using ChatBot.Domain.ChatContextEntity;
+using ChatBot.Infrastructure.Repositories.ExternalServices.ChatCompletion.Builders;
+using ChatBot.Infrastructure.Repositories.ExternalServices.ChatCompletion.Mappers;
 using Common.OpenAI.Clients;
 using Common.OpenAI.Models;
 
-namespace ChatBot.Api.Infrastructure.Repositories.ExternalServices.ChatCompletion;
+namespace ChatBot.Infrastructure.Repositories.ExternalServices.ChatCompletion;
 
 internal class ChatCompletionRepository(IOpenAIClient openAIClient, IPromptMessageMapper promptMapper)
     : IChatCompletionRepository

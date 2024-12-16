@@ -1,13 +1,13 @@
 using AutoFixture;
-using ChatBot.Api.Application.Abstractions.Repositories;
-using ChatBot.Api.Application.Commands.ProcessChatMessage;
-using ChatBot.Api.Domain.ChatContextEntity;
-using ChatBot.Api.Domain.Exceptions.ChatContextExceptions;
+using ChatBot.Application.Abstractions.Repositories;
+using ChatBot.Application.Commands.ProcessChatMessage;
+using ChatBot.Domain.ChatContextEntity;
+using ChatBot.Domain.Exceptions.ChatContextExceptions;
 using FluentAssertions;
 using NSubstitute;
 using NSubstitute.ReturnsExtensions;
 
-namespace ChatBot.Api.UnitTests.Application.Handlers.CommandHandlers;
+namespace ChatBot.UnitTests.Application.Handlers.CommandHandlers;
 
 public class ProcessChatMessageCommandHandlerShould
 {

@@ -1,6 +1,6 @@
 ﻿using MediatR;
 
-namespace ChatBot.Api.Application.Commands.UpdatePrompt;
+namespace ChatBot.Application.Commands.UpdatePrompt;
 
 public record UpdatePromptCommand : IRequest
 {

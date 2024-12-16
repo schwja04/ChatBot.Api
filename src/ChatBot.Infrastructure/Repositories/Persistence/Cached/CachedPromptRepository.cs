@@ -1,8 +1,8 @@
 ﻿using System.Collections.ObjectModel;
-using ChatBot.Api.Domain.PromptEntity;
+using ChatBot.Domain.PromptEntity;
 using Microsoft.Extensions.Caching.Memory;
 
-namespace ChatBot.Api.Infrastructure.Repositories.Persistence.Cached;
+namespace ChatBot.Infrastructure.Repositories.Persistence.Cached;
 
 internal class CachedPromptRepository(
     IMemoryCache memoryCache,

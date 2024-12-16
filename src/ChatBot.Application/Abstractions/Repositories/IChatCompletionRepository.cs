@@ -1,6 +1,6 @@
-using ChatBot.Api.Domain.ChatContextEntity;
+using ChatBot.Domain.ChatContextEntity;
 
-namespace ChatBot.Api.Application.Abstractions.Repositories;
+namespace ChatBot.Application.Abstractions.Repositories;
 
 public interface IChatCompletionRepository
 {

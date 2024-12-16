@@ -1,4 +1,4 @@
-﻿namespace ChatBot.Api.Domain.Exceptions.ChatContextExceptions;
+﻿namespace ChatBot.Domain.Exceptions.ChatContextExceptions;
 
 public sealed class ChatContextAuthorizationException : ApplicationException
 {

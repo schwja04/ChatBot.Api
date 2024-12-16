@@ -1,7 +1,7 @@
 ﻿using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 
-namespace ChatBot.Api.Infrastructure.Repositories.Persistence.Mongo.Models;
+namespace ChatBot.Infrastructure.Repositories.Persistence.Mongo.Models;
 
 internal record PromptDal
 {

@@ -1,8 +1,8 @@
 ﻿using System.Collections.ObjectModel;
-using ChatBot.Api.Domain.PromptEntity;
+using ChatBot.Domain.PromptEntity;
 using MediatR;
 
-namespace ChatBot.Api.Application.Queries.GetManyPrompts;
+namespace ChatBot.Application.Queries.GetManyPrompts;
 
 public record GetManyPromptsQuery : IRequest<ReadOnlyCollection<Prompt>>
 {

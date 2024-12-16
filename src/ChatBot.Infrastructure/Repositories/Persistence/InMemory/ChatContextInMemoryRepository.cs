@@ -1,7 +1,7 @@
 using System.Collections.ObjectModel;
-using ChatBot.Api.Domain.ChatContextEntity;
+using ChatBot.Domain.ChatContextEntity;
 
-namespace ChatBot.Api.Infrastructure.Repositories.Persistence.InMemory;
+namespace ChatBot.Infrastructure.Repositories.Persistence.InMemory;
 
 internal class ChatContextInMemoryRepository : IChatContextRepository
 {

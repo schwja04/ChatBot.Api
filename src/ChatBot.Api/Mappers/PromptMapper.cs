@@ -1,5 +1,5 @@
 using ChatBot.Api.Contracts;
-using ChatBot.Api.Domain.PromptEntity;
+using ChatBot.Domain.PromptEntity;
 
 namespace ChatBot.Api.Mappers;
 

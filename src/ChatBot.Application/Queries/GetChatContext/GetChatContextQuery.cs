@@ -1,7 +1,7 @@
-using ChatBot.Api.Domain.ChatContextEntity;
+using ChatBot.Domain.ChatContextEntity;
 using MediatR;
 
-namespace ChatBot.Api.Application.Queries.GetChatContext;
+namespace ChatBot.Application.Queries.GetChatContext;
 
 public record GetChatContextQuery : IRequest<ChatContext>
 {

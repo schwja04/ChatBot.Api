@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace ChatBot.Api.EntityFrameworkCore.SqlServer.Migrations
+namespace ChatBot.Infrastructure.EntityFrameworkCore.SqlServer.Migrations
 {
     /// <inheritdoc />
     public partial class Add_Prompt : Migration

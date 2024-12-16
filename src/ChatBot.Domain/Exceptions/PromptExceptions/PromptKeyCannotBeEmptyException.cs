@@ -1,4 +1,4 @@
-namespace ChatBot.Api.Domain.Exceptions.PromptExceptions;
+namespace ChatBot.Domain.Exceptions.PromptExceptions;
 
 public sealed class PromptKeyCannotBeEmptyException : DomainException
 {

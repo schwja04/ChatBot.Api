@@ -1,6 +1,6 @@
 using System.Collections.ObjectModel;
 
-namespace ChatBot.Api.Domain.ChatContextEntity;
+namespace ChatBot.Domain.ChatContextEntity;
 
 public interface IChatContextRepository
 {

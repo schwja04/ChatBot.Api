@@ -1,11 +1,11 @@
 using System.Collections.ObjectModel;
-using ChatBot.Api.Domain.ChatContextEntity;
-using ChatBot.Api.Infrastructure.Repositories.Persistence.Mongo.Mappers;
-using ChatBot.Api.Infrastructure.Repositories.Persistence.Mongo.Models;
+using ChatBot.Domain.ChatContextEntity;
+using ChatBot.Infrastructure.Repositories.Persistence.Mongo.Mappers;
+using ChatBot.Infrastructure.Repositories.Persistence.Mongo.Models;
 using Common.Mongo;
 using MongoDB.Driver;
 
-namespace ChatBot.Api.Infrastructure.Repositories.Persistence.Mongo;
+namespace ChatBot.Infrastructure.Repositories.Persistence.Mongo;
 
 internal class ChatContextMongoRepository(IMongoClientFactory mongoClientFactory) : IChatContextRepository
 {

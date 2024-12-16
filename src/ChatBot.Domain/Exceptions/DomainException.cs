@@ -1,4 +1,4 @@
-namespace ChatBot.Api.Domain.Exceptions;
+namespace ChatBot.Domain.Exceptions;
 
 public abstract class DomainException : ApplicationException
 {

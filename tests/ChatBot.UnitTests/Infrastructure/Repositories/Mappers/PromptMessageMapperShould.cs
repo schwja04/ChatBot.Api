@@ -1,11 +1,11 @@
 ﻿using AutoFixture;
-using ChatBot.Api.Domain.ChatContextEntity;
-using ChatBot.Api.Domain.PromptEntity;
-using ChatBot.Api.Infrastructure.Repositories.ExternalServices.ChatCompletion.Mappers;
+using ChatBot.Domain.ChatContextEntity;
+using ChatBot.Domain.PromptEntity;
+using ChatBot.Infrastructure.Repositories.ExternalServices.ChatCompletion.Mappers;
 using FluentAssertions;
 using NSubstitute;
 
-namespace ChatBot.Api.UnitTests.Intrastructure.Repositories.Mappers;
+namespace ChatBot.UnitTests.Infrastructure.Repositories.Mappers;
 
 public class PromptMessageMapperShould
 {

@@ -1,16 +1,16 @@
 using AutoFixture;
-using ChatBot.Api.Application.Commands.ProcessChatMessage;
-using ChatBot.Api.Application.Queries.GetChatContext;
-using ChatBot.Api.Application.Queries.GetManyChatContextMetadata;
 using ChatBot.Api.Contracts;
 using ChatBot.Api.Controllers;
-using ChatBot.Api.Domain.ChatContextEntity;
+using ChatBot.Application.Commands.ProcessChatMessage;
+using ChatBot.Application.Queries.GetChatContext;
+using ChatBot.Application.Queries.GetManyChatContextMetadata;
+using ChatBot.Domain.ChatContextEntity;
 using FluentAssertions;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using NSubstitute;
 
-namespace ChatBot.Api.UnitTests.Api.Controllers;
+namespace ChatBot.UnitTests.Api.Controllers;
 
 public class ChatsControllerShould
 {

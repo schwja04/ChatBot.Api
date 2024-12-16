@@ -1,8 +1,8 @@
-using ChatBot.Api.Domain.ChatContextEntity;
-using ChatBot.Api.Domain.Exceptions.ChatContextExceptions;
+using ChatBot.Domain.ChatContextEntity;
+using ChatBot.Domain.Exceptions.ChatContextExceptions;
 using MediatR;
 
-namespace ChatBot.Api.Application.Commands.UpdateChatContextTitle;
+namespace ChatBot.Application.Commands.UpdateChatContextTitle;
 
 internal class UpdateChatContextTitleCommandHandler(IChatContextRepository chatContextRepository) 
     : IRequestHandler<UpdateChatContextTitleCommand>

@@ -1,6 +1,6 @@
-﻿using ChatBot.Api.Domain.ChatContextEntity;
+﻿using ChatBot.Domain.ChatContextEntity;
 
-namespace ChatBot.Api.Domain.Exceptions.ChatContextExceptions;
+namespace ChatBot.Domain.Exceptions.ChatContextExceptions;
 
 public sealed class ChatContextNotFoundException : ApplicationException
 {

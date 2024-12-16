@@ -1,7 +1,7 @@
 using System.Collections.ObjectModel;
-using ChatBot.Api.Domain.Exceptions.ChatContextExceptions;
+using ChatBot.Domain.Exceptions.ChatContextExceptions;
 
-namespace ChatBot.Api.Domain.ChatContextEntity;
+namespace ChatBot.Domain.ChatContextEntity;
 
 public record ChatContext
 {

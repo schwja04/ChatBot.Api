@@ -1,6 +1,6 @@
 ﻿using MediatR;
 
-namespace ChatBot.Api.Application.Commands.DeletePrompt;
+namespace ChatBot.Application.Commands.DeletePrompt;
 
 public record DeletePromptCommand : IRequest
 {

@@ -1,11 +1,11 @@
 ﻿using AutoFixture;
-using ChatBot.Api.Application;
-using ChatBot.Api.Application.Queries.GetManyPrompts;
-using ChatBot.Api.Domain.PromptEntity;
+using ChatBot.Application;
+using ChatBot.Application.Queries.GetManyPrompts;
+using ChatBot.Domain.PromptEntity;
 using FluentAssertions;
 using NSubstitute;
 
-namespace ChatBot.Api.UnitTests.Application.Handlers.QueryHandlers;
+namespace ChatBot.UnitTests.Application.Handlers.QueryHandlers;
 
 public class GetManyPromptQueryHandlerShould
 {

@@ -1,10 +1,10 @@
-using ChatBot.Api.Application.Abstractions.Repositories;
-using ChatBot.Api.Domain.ChatContextEntity;
-using ChatBot.Api.Domain.Exceptions.ChatContextExceptions;
-using ChatBot.Api.Domain.PromptEntity;
+using ChatBot.Application.Abstractions.Repositories;
+using ChatBot.Domain.ChatContextEntity;
+using ChatBot.Domain.Exceptions.ChatContextExceptions;
+using ChatBot.Domain.PromptEntity;
 using MediatR;
 
-namespace ChatBot.Api.Application.Commands.ProcessChatMessage;
+namespace ChatBot.Application.Commands.ProcessChatMessage;
 
 internal class ProcessChatMessageCommandHandler(
     IChatCompletionRepository chatCompletionRepository,

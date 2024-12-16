@@ -1,12 +1,12 @@
 using AutoFixture;
-using ChatBot.Api.Application.Commands.UpdateChatContextTitle;
-using ChatBot.Api.Domain.ChatContextEntity;
-using ChatBot.Api.Domain.Exceptions.ChatContextExceptions;
+using ChatBot.Application.Commands.UpdateChatContextTitle;
+using ChatBot.Domain.ChatContextEntity;
+using ChatBot.Domain.Exceptions.ChatContextExceptions;
 using FluentAssertions;
 using NSubstitute;
 using NSubstitute.ReturnsExtensions;
 
-namespace ChatBot.Api.UnitTests.Application.Handlers.CommandHandlers;
+namespace ChatBot.UnitTests.Application.Handlers.CommandHandlers;
 
 public class UpdateChatContextTitleCommandHandlerShould
 {

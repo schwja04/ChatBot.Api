@@ -1,8 +1,8 @@
-using ChatBot.Api.Domain.ChatContextEntity;
-using ChatBot.Api.Domain.PromptEntity;
-using ChatBot.Api.Infrastructure.Repositories.Persistence.Mongo.Models;
+using ChatBot.Domain.ChatContextEntity;
+using ChatBot.Domain.PromptEntity;
+using ChatBot.Infrastructure.Repositories.Persistence.Mongo.Models;
 
-namespace ChatBot.Api.Infrastructure.Repositories.Persistence.Mongo.Mappers;
+namespace ChatBot.Infrastructure.Repositories.Persistence.Mongo.Mappers;
 
 internal static class ChatMessageMapper
 {

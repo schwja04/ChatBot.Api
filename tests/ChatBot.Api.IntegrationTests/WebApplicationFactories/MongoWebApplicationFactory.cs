@@ -1,8 +1,8 @@
 using AutoFixture;
 using ChatBot.Api.Abstractions;
-using ChatBot.Api.Domain.ChatContextEntity;
-using ChatBot.Api.Domain.PromptEntity;
 using ChatBot.Api.IntegrationTests.WebApplicationFactories.MockImplementations;
+using ChatBot.Domain.ChatContextEntity;
+using ChatBot.Domain.PromptEntity;
 using Common.OpenAI.Clients;
 using DotNet.Testcontainers.Builders;
 using Microsoft.AspNetCore.Mvc.Testing;

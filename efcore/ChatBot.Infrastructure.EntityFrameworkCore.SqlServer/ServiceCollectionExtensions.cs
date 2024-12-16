@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 
-namespace ChatBot.Api.EntityFrameworkCore.SqlServer;
+namespace ChatBot.Infrastructure.EntityFrameworkCore.SqlServer;
 
 public static class ServiceCollectionExtensions
 {
