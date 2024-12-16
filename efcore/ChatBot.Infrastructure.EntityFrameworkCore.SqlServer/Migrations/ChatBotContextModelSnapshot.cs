@@ -23,7 +23,7 @@ namespace ChatBot.Api.EntityFrameworkCore.SqlServer.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("ChatBot.Api.Domain.ChatContextEntity.ChatContext", b =>
+            modelBuilder.Entity("ChatBot.Domain.ChatContextEntity.ChatContext", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -56,7 +56,7 @@ namespace ChatBot.Api.EntityFrameworkCore.SqlServer.Migrations
                     b.ToTable("ChatContexts");
                 });
 
-            modelBuilder.Entity("ChatBot.Api.Domain.PromptEntity.Prompt", b =>
+            modelBuilder.Entity("ChatBot.Domain.PromptEntity.Prompt", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -90,9 +90,9 @@ namespace ChatBot.Api.EntityFrameworkCore.SqlServer.Migrations
                     b.ToTable("Prompts");
                 });
 
-            modelBuilder.Entity("ChatBot.Api.Domain.ChatContextEntity.ChatContext", b =>
+            modelBuilder.Entity("ChatBot.Domain.ChatContextEntity.ChatContext", b =>
                 {
-                    b.OwnsMany("ChatBot.Api.Domain.ChatContextEntity.ChatMessage", "_messages", b1 =>
+                    b.OwnsMany("ChatBot.Domain.ChatContextEntity.ChatMessage", "_messages", b1 =>
                         {
                             b1.Property<long>("Id")
                                 .ValueGeneratedOnAdd()

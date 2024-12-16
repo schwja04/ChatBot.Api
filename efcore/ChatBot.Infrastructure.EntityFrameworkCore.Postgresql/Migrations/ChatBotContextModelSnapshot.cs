@@ -4,7 +4,6 @@ using ChatBot.Api.Infrastructure;
 using ChatBot.Api.Infrastructure.Repositories.Persistence.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -13,11 +12,9 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace ChatBot.Api.EntityFrameworkCore.Postgresql.Migrations
 {
     [DbContext(typeof(ChatBotDbContext))]
-    [Migration("20241127183132_Add_Prompt")]
-    partial class Add_Prompt
+    partial class ChatBotContextModelSnapshot : ModelSnapshot
     {
-        /// <inheritdoc />
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -26,7 +23,7 @@ namespace ChatBot.Api.EntityFrameworkCore.Postgresql.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("ChatBot.Api.Domain.ChatContextEntity.ChatContext", b =>
+            modelBuilder.Entity("ChatBot.Domain.ChatContextEntity.ChatContext", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -59,7 +56,7 @@ namespace ChatBot.Api.EntityFrameworkCore.Postgresql.Migrations
                     b.ToTable("ChatContexts");
                 });
 
-            modelBuilder.Entity("ChatBot.Api.Domain.PromptEntity.Prompt", b =>
+            modelBuilder.Entity("ChatBot.Domain.PromptEntity.Prompt", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -93,9 +90,9 @@ namespace ChatBot.Api.EntityFrameworkCore.Postgresql.Migrations
                     b.ToTable("Prompts");
                 });
 
-            modelBuilder.Entity("ChatBot.Api.Domain.ChatContextEntity.ChatContext", b =>
+            modelBuilder.Entity("ChatBot.Domain.ChatContextEntity.ChatContext", b =>
                 {
-                    b.OwnsMany("ChatBot.Api.Domain.ChatContextEntity.ChatMessage", "_messages", b1 =>
+                    b.OwnsMany("ChatBot.Domain.ChatContextEntity.ChatMessage", "_messages", b1 =>
                         {
                             b1.Property<long>("Id")
                                 .ValueGeneratedOnAdd()

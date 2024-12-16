@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build-env
+FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build-env
 
 # Set the working directory inside the container
 WORKDIR /src
@@ -16,7 +16,7 @@ RUN dotnet build -c Release -o /app/build
 RUN dotnet publish src/ChatBot.Api/ChatBot.Api.csproj -c Release -o /app/publish
 
 # Use the official .NET runtime image for the final stage
-FROM mcr.microsoft.com/dotnet/aspnet:8.0 as runtime
+FROM mcr.microsoft.com/dotnet/aspnet:9.0 as runtime
 
 # Set the working directory inside the container
 WORKDIR /app

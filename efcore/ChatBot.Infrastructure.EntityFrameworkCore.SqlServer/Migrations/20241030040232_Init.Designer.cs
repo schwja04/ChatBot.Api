@@ -4,16 +4,16 @@ using ChatBot.Api.Infrastructure;
 using ChatBot.Api.Infrastructure.Repositories.Persistence.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
-namespace ChatBot.Api.EntityFrameworkCore.Postgresql.Migrations
+namespace ChatBot.Api.EntityFrameworkCore.SqlServer.Migrations
 {
     [DbContext(typeof(ChatBotDbContext))]
-    [Migration("20241102203126_Init")]
+    [Migration("20241030040232_Init")]
     partial class Init
     {
         /// <inheritdoc />
@@ -22,34 +22,34 @@ namespace ChatBot.Api.EntityFrameworkCore.Postgresql.Migrations
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("ProductVersion", "8.0.10")
-                .HasAnnotation("Relational:MaxIdentifierLength", 63);
+                .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
-            NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
+            SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("ChatBot.Api.Domain.ChatContextEntity.ChatContext", b =>
+            modelBuilder.Entity("ChatBot.Domain.ChatContextEntity.ChatContext", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bigint");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
 
                     b.Property<Guid>("ContextId")
-                        .HasColumnType("uuid");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTimeOffset>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("datetimeoffset");
 
                     b.Property<string>("Title")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTimeOffset>("UpdatedAt")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("datetimeoffset");
 
                     b.Property<string>("Username")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -59,35 +59,35 @@ namespace ChatBot.Api.EntityFrameworkCore.Postgresql.Migrations
                     b.ToTable("ChatContexts");
                 });
 
-            modelBuilder.Entity("ChatBot.Api.Domain.ChatContextEntity.ChatContext", b =>
+            modelBuilder.Entity("ChatBot.Domain.ChatContextEntity.ChatContext", b =>
                 {
-                    b.OwnsMany("ChatBot.Api.Domain.ChatContextEntity.ChatMessage", "_messages", b1 =>
+                    b.OwnsMany("ChatBot.Domain.ChatContextEntity.ChatMessage", "_messages", b1 =>
                         {
                             b1.Property<long>("Id")
                                 .ValueGeneratedOnAdd()
                                 .HasColumnType("bigint");
 
-                            NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b1.Property<long>("Id"));
+                            SqlServerPropertyBuilderExtensions.UseIdentityColumn(b1.Property<long>("Id"));
 
                             b1.Property<Guid>("ChatContextContextId")
-                                .HasColumnType("uuid");
+                                .HasColumnType("uniqueidentifier");
 
                             b1.Property<string>("Content")
                                 .IsRequired()
-                                .HasColumnType("text");
+                                .HasColumnType("nvarchar(max)");
 
                             b1.Property<DateTimeOffset>("CreatedAt")
-                                .HasColumnType("timestamp with time zone");
+                                .HasColumnType("datetimeoffset");
 
                             b1.Property<Guid>("MessageId")
-                                .HasColumnType("uuid");
+                                .HasColumnType("uniqueidentifier");
 
                             b1.Property<string>("PromptKey")
                                 .IsRequired()
-                                .HasColumnType("text");
+                                .HasColumnType("nvarchar(max)");
 
                             b1.Property<int>("Role")
-                                .HasColumnType("integer");
+                                .HasColumnType("int");
 
                             b1.HasKey("Id");
 

@@ -4,6 +4,7 @@
         <TargetFramework>net9.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
+        <RootNamespace>ChatBot.Infrastructure.EntityFrameworkCore.Postgresql</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup>
@@ -14,7 +15,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\..\src\ChatBot.Api.Infrastructure\ChatBot.Api.Infrastructure.csproj" />
+      <ProjectReference Include="..\..\src\ChatBot.Infrastructure\ChatBot.Infrastructure.csproj" />
     </ItemGroup>
 
 </Project>

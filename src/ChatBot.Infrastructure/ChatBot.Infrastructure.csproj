@@ -1,22 +1,23 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <ItemGroup>
-    <ProjectReference Include="..\ChatBot.Api.Application\ChatBot.Api.Application.csproj" />
+    <ProjectReference Include="..\ChatBot.Application\ChatBot.Application.csproj" />
     <ProjectReference Include="..\..\common\Common.OpenAI\Common.OpenAI.csproj" />
     <ProjectReference Include="..\..\common\Common.Mongo\Common.Mongo.csproj" />
-    <ProjectReference Include="..\ChatBot.Api.Domain\ChatBot.Api.Domain.csproj" />
+    <ProjectReference Include="..\ChatBot.Domain\ChatBot.Domain.csproj" />
   </ItemGroup>
 
   <PropertyGroup>
     <TargetFramework>net9.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <RootNamespace>ChatBot.Infrastructure</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
     <InternalsVisibleTo Include="ChatBot.Api" />
-    <InternalsVisibleTo Include="ChatBot.Api.UnitTests" />
     <InternalsVisibleTo Include="ChatBot.Api.IntegrationTests" />
+    <InternalsVisibleTo Include="ChatBot.UnitTests" />
     <InternalsVisibleTo Include="DynamicProxyGenAssembly2" />
   </ItemGroup>
 

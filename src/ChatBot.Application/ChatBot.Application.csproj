@@ -4,6 +4,7 @@
     <TargetFramework>net9.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <RootNamespace>ChatBot.Application</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
@@ -11,10 +12,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <InternalsVisibleTo Include="ChatBot.Api.UnitTests" />
+    <InternalsVisibleTo Include="ChatBot.UnitTests" />
     <InternalsVisibleTo Include="DynamicProxyGenAssembly2" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\ChatBot.Api.Domain\ChatBot.Api.Domain.csproj" />
+    <ProjectReference Include="..\ChatBot.Domain\ChatBot.Domain.csproj" />
   </ItemGroup>
 </Project>

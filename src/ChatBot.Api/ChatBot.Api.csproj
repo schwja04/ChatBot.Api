@@ -24,10 +24,11 @@
     <PackageReference Include="Scrutor" Version="5.0.2" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\efcore\ChatBot.Api.EntityFrameworkCore.Postgresql\ChatBot.Api.EntityFrameworkCore.Postgresql.csproj" />
-    <ProjectReference Include="..\..\efcore\ChatBot.Api.EntityFrameworkCore.SqlServer\ChatBot.Api.EntityFrameworkCore.SqlServer.csproj" />
-    <ProjectReference Include="..\ChatBot.Api.Application\ChatBot.Api.Application.csproj" />
-    <ProjectReference Include="..\ChatBot.Api.Infrastructure\ChatBot.Api.Infrastructure.csproj" />
+    <ProjectReference Include="..\..\common\Common.ServiceDefaults\Common.ServiceDefaults.csproj" />
+    <ProjectReference Include="..\..\efcore\ChatBot.Infrastructure.EntityFrameworkCore.Postgresql\ChatBot.Infrastructure.EntityFrameworkCore.Postgresql.csproj" />
+    <ProjectReference Include="..\..\efcore\ChatBot.Infrastructure.EntityFrameworkCore.SqlServer\ChatBot.Infrastructure.EntityFrameworkCore.SqlServer.csproj" />
+    <ProjectReference Include="..\ChatBot.Application\ChatBot.Application.csproj" />
+    <ProjectReference Include="..\ChatBot.Infrastructure\ChatBot.Infrastructure.csproj" />
     <ProjectReference Include="..\..\common\Common.Cors\Common.Cors.csproj">
       <GlobalPropertiesToRemove></GlobalPropertiesToRemove>
     </ProjectReference>
@@ -40,7 +41,7 @@
     <ProjectReference Include="..\..\common\Common.OpenAI\Common.OpenAI.csproj">
       <GlobalPropertiesToRemove></GlobalPropertiesToRemove>
     </ProjectReference>
-    <ProjectReference Include="..\ChatBot.Api.Domain\ChatBot.Api.Domain.csproj" />
+    <ProjectReference Include="..\ChatBot.Domain\ChatBot.Domain.csproj" />
   </ItemGroup>
   
   <ItemGroup>

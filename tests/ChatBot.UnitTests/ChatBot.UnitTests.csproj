@@ -7,6 +7,7 @@
 
     <IsPackable>false</IsPackable>
     <IsTestProject>true</IsTestProject>
+    <RootNamespace>ChatBot.UnitTests</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
@@ -32,10 +33,10 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\common\Common.Mongo\Common.Mongo.csproj" />
-    <ProjectReference Include="..\..\src\ChatBot.Api.Infrastructure\ChatBot.Api.Infrastructure.csproj" />
-    <ProjectReference Include="..\..\src\ChatBot.Api.Application\ChatBot.Api.Application.csproj" />
+    <ProjectReference Include="..\..\src\ChatBot.Infrastructure\ChatBot.Infrastructure.csproj" />
+    <ProjectReference Include="..\..\src\ChatBot.Application\ChatBot.Application.csproj" />
     <ProjectReference Include="..\..\src\ChatBot.Api\ChatBot.Api.csproj" />
-    <ProjectReference Include="..\..\src\ChatBot.Api.Domain\ChatBot.Api.Domain.csproj" />
+    <ProjectReference Include="..\..\src\ChatBot.Domain\ChatBot.Domain.csproj" />
   </ItemGroup>
 
   <ItemGroup>

@@ -4,10 +4,11 @@
         <TargetFramework>net9.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
+        <RootNamespace>ChatBot.Infrastructure.EntityFrameworkCore.SqlServer</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\..\src\ChatBot.Api.Infrastructure\ChatBot.Api.Infrastructure.csproj" />
+      <ProjectReference Include="..\..\src\ChatBot.Infrastructure\ChatBot.Infrastructure.csproj" />
     </ItemGroup>
 
     <ItemGroup>

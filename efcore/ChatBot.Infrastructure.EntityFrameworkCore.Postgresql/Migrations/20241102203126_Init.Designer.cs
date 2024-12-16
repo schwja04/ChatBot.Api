@@ -4,6 +4,7 @@ using ChatBot.Api.Infrastructure;
 using ChatBot.Api.Infrastructure.Repositories.Persistence.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -12,9 +13,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace ChatBot.Api.EntityFrameworkCore.Postgresql.Migrations
 {
     [DbContext(typeof(ChatBotDbContext))]
-    partial class ChatBotContextModelSnapshot : ModelSnapshot
+    [Migration("20241102203126_Init")]
+    partial class Init
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -23,7 +26,7 @@ namespace ChatBot.Api.EntityFrameworkCore.Postgresql.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("ChatBot.Api.Domain.ChatContextEntity.ChatContext", b =>
+            modelBuilder.Entity("ChatBot.Domain.ChatContextEntity.ChatContext", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -34,14 +37,14 @@ namespace ChatBot.Api.EntityFrameworkCore.Postgresql.Migrations
                     b.Property<Guid>("ContextId")
                         .HasColumnType("uuid");
 
-                    b.Property<DateTime>("CreatedAt")
+                    b.Property<DateTimeOffset>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<DateTime>("UpdatedAt")
+                    b.Property<DateTimeOffset>("UpdatedAt")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Username")
@@ -56,43 +59,9 @@ namespace ChatBot.Api.EntityFrameworkCore.Postgresql.Migrations
                     b.ToTable("ChatContexts");
                 });
 
-            modelBuilder.Entity("ChatBot.Api.Domain.PromptEntity.Prompt", b =>
+            modelBuilder.Entity("ChatBot.Domain.ChatContextEntity.ChatContext", b =>
                 {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
-
-                    b.Property<string>("Key")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("Owner")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<Guid>("PromptId")
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("Value")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("PromptId")
-                        .IsUnique();
-
-                    b.HasIndex("Owner", "Key")
-                        .IsUnique();
-
-                    b.ToTable("Prompts");
-                });
-
-            modelBuilder.Entity("ChatBot.Api.Domain.ChatContextEntity.ChatContext", b =>
-                {
-                    b.OwnsMany("ChatBot.Api.Domain.ChatContextEntity.ChatMessage", "_messages", b1 =>
+                    b.OwnsMany("ChatBot.Domain.ChatContextEntity.ChatMessage", "_messages", b1 =>
                         {
                             b1.Property<long>("Id")
                                 .ValueGeneratedOnAdd()
@@ -107,7 +76,7 @@ namespace ChatBot.Api.EntityFrameworkCore.Postgresql.Migrations
                                 .IsRequired()
                                 .HasColumnType("text");
 
-                            b1.Property<DateTime>("CreatedAt")
+                            b1.Property<DateTimeOffset>("CreatedAt")
                                 .HasColumnType("timestamp with time zone");
 
                             b1.Property<Guid>("MessageId")

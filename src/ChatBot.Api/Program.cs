@@ -22,6 +22,8 @@ using Common.OpenAI.Clients;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.AddServiceDefaults();
+
 builder.Services.AddCorsConfiguration(builder.Configuration);
 
 builder.Configuration
