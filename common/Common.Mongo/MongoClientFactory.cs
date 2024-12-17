@@ -35,8 +35,11 @@ public class MongoClientFactory(IMongoConfigManager mongoConfigManger, IX509Mana
             lock (_lock)
             {
                 var settings = MongoClientSettings.FromConnectionString(_configuration.ConnectionString);
-                // settings.Credential = MongoCredential.CreateCredential(
-                //         _configuration.DatabaseName, _configuration.Username, _configuration.Password);
+                
+                settings.Credential = new MongoCredential(
+                    mechanism: settings.Credential.Mechanism,
+                    identity: new MongoInternalIdentity(settings.Credential.Identity.Source, _configuration.Username),
+                    evidence: new PasswordEvidence(_configuration.Password));
 
                 _cachedMongoClient = new MongoClient(settings);
 
