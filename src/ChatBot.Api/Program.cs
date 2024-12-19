@@ -29,11 +29,6 @@ builder.AddServiceDefaults();
 
 builder.Services.AddCorsConfiguration(builder.Configuration);
 
-builder.Configuration
-    .AddJsonFile("appsettings.json", optional: true)
-    .AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json", optional: true);
-
-
 // Add services to the container.
 RegisterServices(builder.Services, builder.Configuration);
 RegisterExceptionHandlers(builder.Services);
