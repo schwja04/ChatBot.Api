@@ -1,7 +1,7 @@
-using MongoDB.Driver;
-using System.Security.Cryptography.X509Certificates;
-
 using Common.Mongo.Models;
+using MongoDB.Driver;
+using MongoDB.Driver.Core.Extensions.DiagnosticSources;
+using System.Security.Cryptography.X509Certificates;
 
 namespace Common.Mongo;
 
@@ -41,6 +41,11 @@ public class MongoClientFactory(IMongoConfigManager mongoConfigManger, IX509Mana
                     identity: new MongoInternalIdentity(settings.Credential.Identity.Source, _configuration.Username),
                     evidence: new PasswordEvidence(_configuration.Password));
 
+                if (_configuration.EnableTracing)
+                {
+                    ApplyTracing(settings);
+                }
+                
                 _cachedMongoClient = new MongoClient(settings);
 
                 return _cachedMongoClient;
@@ -57,6 +62,11 @@ public class MongoClientFactory(IMongoConfigManager mongoConfigManger, IX509Mana
             {
                 ClientCertificates = new[] { certificate }
             };
+            
+            if (_configuration.EnableTracing)
+            {
+                ApplyTracing(pkiSettings);
+            }
 
             _cachedMongoClient = new MongoClient(pkiSettings);
 
@@ -70,5 +80,15 @@ public class MongoClientFactory(IMongoConfigManager mongoConfigManger, IX509Mana
     public MongoConfigurationRecord GetMongoConfigurationRecord()
     {
         return _configuration;
+    }
+    
+    private static void ApplyTracing(MongoClientSettings settings)
+    {
+        var options = new InstrumentationOptions()
+        {
+            CaptureCommandText = true
+        };
+        
+        settings.ClusterConfigurator = cb => cb.Subscribe(new DiagnosticsActivityEventSubscriber(options));
     }
 }
