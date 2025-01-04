@@ -86,7 +86,8 @@ public class MongoClientFactory(IMongoConfigManager mongoConfigManger, IX509Mana
     {
         var options = new InstrumentationOptions()
         {
-            CaptureCommandText = true
+            CaptureCommandText = true,
+            ShouldStartActivity = @event => !string.Equals(@event.DatabaseNamespace?.DatabaseName, "admin", StringComparison.OrdinalIgnoreCase),
         };
         
         settings.ClusterConfigurator = cb => cb.Subscribe(new DiagnosticsActivityEventSubscriber(options));
