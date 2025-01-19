@@ -33,6 +33,11 @@ This is where I began stretching to get as much out of this project as possible.
 - Redis Cache for Prompts to replace the in-memory cache
   - Potentially use Hybrid Cache
 - More Logging and Tracing
+- Move to using a unit of work pattern
+  - Easily done with EF Core
+    - An opportunity to learn more about transactions in MongoDB
+  - Would allow for more complex transactions
 - Eventing
+  - Use of a message broker
 - Dotnet Aspire
 - Blazor Frontend
