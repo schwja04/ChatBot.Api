@@ -7,13 +7,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{F02AE784-F8D
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChatBot.Api", "src\ChatBot.Api\ChatBot.Api.csproj", "{BB061529-C824-44A2-B877-2852C0FEFEAC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChatBot.Api.Application", "src\ChatBot.Api.Application\ChatBot.Api.Application.csproj", "{7278D108-CDF1-4565-8ABB-DCB7E932CB04}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChatBot.Application", "src\ChatBot.Application\ChatBot.Application.csproj", "{7278D108-CDF1-4565-8ABB-DCB7E932CB04}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common.OpenAI", "common\Common.OpenAI\Common.OpenAI.csproj", "{54A83D0A-A16F-43F1-9689-8DA0E42633E4}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common.HttpClient", "common\Common.HttpClient\Common.HttpClient.csproj", "{F69951C8-A5BE-4E70-93E0-F9383F97B879}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChatBot.Api.Infrastructure", "src\ChatBot.Api.Infrastructure\ChatBot.Api.Infrastructure.csproj", "{1366E496-2DCA-45D8-BE09-FAC76FF6BB95}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChatBot.Infrastructure", "src\ChatBot.Infrastructure\ChatBot.Infrastructure.csproj", "{1366E496-2DCA-45D8-BE09-FAC76FF6BB95}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common.Mongo", "common\Common.Mongo\Common.Mongo.csproj", "{196BCA59-D5D5-4A18-A80B-1F2043DBE7A0}"
 EndProject
@@ -23,15 +23,15 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "common", "common", "{8270AE
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{CC14550A-5AB0-4102-B454-FD2F88EA313C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChatBot.Api.UnitTests", "tests\ChatBot.Api.UnitTests\ChatBot.Api.UnitTests.csproj", "{B41D5FBA-208D-424A-916C-CBF6DB826D8F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChatBot.UnitTests", "tests\ChatBot.UnitTests\ChatBot.UnitTests.csproj", "{B41D5FBA-208D-424A-916C-CBF6DB826D8F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChatBot.Api.Domain", "src\ChatBot.Api.Domain\ChatBot.Api.Domain.csproj", "{3DFE874B-DDD8-411C-B297-3FE79FC175F8}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChatBot.Domain", "src\ChatBot.Domain\ChatBot.Domain.csproj", "{3DFE874B-DDD8-411C-B297-3FE79FC175F8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChatBot.Api.EntityFrameworkCore.SqlServer", "efcore\ChatBot.Api.EntityFrameworkCore.SqlServer\ChatBot.Api.EntityFrameworkCore.SqlServer.csproj", "{CDEF0D1A-5BC0-481B-8E8C-2B79A1B0ED6E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChatBot.Infrastructure.EntityFrameworkCore.SqlServer", "efcore\ChatBot.Infrastructure.EntityFrameworkCore.SqlServer\ChatBot.Infrastructure.EntityFrameworkCore.SqlServer.csproj", "{CDEF0D1A-5BC0-481B-8E8C-2B79A1B0ED6E}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "efcore", "efcore", "{4453207F-ACC2-4BA2-8248-50F522CF46CD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChatBot.Api.EntityFrameworkCore.Postgresql", "efcore\ChatBot.Api.EntityFrameworkCore.Postgresql\ChatBot.Api.EntityFrameworkCore.Postgresql.csproj", "{9C21F919-89A0-4703-9F55-C7375A72899F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChatBot.Infrastructure.EntityFrameworkCore.Postgresql", "efcore\ChatBot.Infrastructure.EntityFrameworkCore.Postgresql\ChatBot.Infrastructure.EntityFrameworkCore.Postgresql.csproj", "{9C21F919-89A0-4703-9F55-C7375A72899F}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_project-files", "_project-files", "{B877FF1F-7B68-41AD-9B53-A3EE191C36DA}"
 	ProjectSection(SolutionItems) = preProject
@@ -43,6 +43,12 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_project-files", "_project-
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChatBot.Api.IntegrationTests", "tests\ChatBot.Api.IntegrationTests\ChatBot.Api.IntegrationTests.csproj", "{8F5B24D8-7679-458D-BA9A-064A442815E6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common.ServiceDefaults", "common\Common.ServiceDefaults\Common.ServiceDefaults.csproj", "{A0F300DB-6DDC-45F7-8915-7110BE80F5F2}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "aspire", "aspire", "{F420BCFB-0772-4BAF-BBD8-A66FC1BF601A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChatBot.Aspire.AppHost", "aspire\ChatBot.Aspire.AppHost\ChatBot.Aspire.AppHost.csproj", "{1F8B5F8F-76BB-4671-9FA8-E5C6A37F69BB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -98,6 +104,14 @@ Global
 		{8F5B24D8-7679-458D-BA9A-064A442815E6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8F5B24D8-7679-458D-BA9A-064A442815E6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8F5B24D8-7679-458D-BA9A-064A442815E6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A0F300DB-6DDC-45F7-8915-7110BE80F5F2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A0F300DB-6DDC-45F7-8915-7110BE80F5F2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A0F300DB-6DDC-45F7-8915-7110BE80F5F2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A0F300DB-6DDC-45F7-8915-7110BE80F5F2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1F8B5F8F-76BB-4671-9FA8-E5C6A37F69BB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1F8B5F8F-76BB-4671-9FA8-E5C6A37F69BB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1F8B5F8F-76BB-4671-9FA8-E5C6A37F69BB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1F8B5F8F-76BB-4671-9FA8-E5C6A37F69BB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -115,5 +129,7 @@ Global
 		{CDEF0D1A-5BC0-481B-8E8C-2B79A1B0ED6E} = {4453207F-ACC2-4BA2-8248-50F522CF46CD}
 		{9C21F919-89A0-4703-9F55-C7375A72899F} = {4453207F-ACC2-4BA2-8248-50F522CF46CD}
 		{8F5B24D8-7679-458D-BA9A-064A442815E6} = {CC14550A-5AB0-4102-B454-FD2F88EA313C}
+		{A0F300DB-6DDC-45F7-8915-7110BE80F5F2} = {8270AEA0-A37B-4465-9848-3F9DA449E34C}
+		{1F8B5F8F-76BB-4671-9FA8-E5C6A37F69BB} = {F420BCFB-0772-4BAF-BBD8-A66FC1BF601A}
 	EndGlobalSection
 EndGlobal

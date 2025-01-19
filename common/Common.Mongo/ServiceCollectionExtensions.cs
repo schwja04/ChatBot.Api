@@ -8,6 +8,8 @@ namespace Common.Mongo;
 
 public static class ServiceCollectionExtensions
 {
+    private const string ActivityNameSource = "MongoDB.Driver.Core.Extensions.DiagnosticSources";
+    
     public static IServiceCollection AddSingletonMongoClientFactory(
         this IServiceCollection services,
         IConfiguration configuration,
@@ -24,6 +26,9 @@ public static class ServiceCollectionExtensions
             .AddSingleton<IMongoConfigManager, MongoConfigManager>()
             .AddSingleton<IX509Manager, X509Manager>()
             .AddSingleton<IMongoClientFactory, MongoClientFactory>();
+        
+        services.AddOpenTelemetry()
+            .WithTracing(tracer => tracer.AddSource(ActivityNameSource));
 
         return services;
     }
