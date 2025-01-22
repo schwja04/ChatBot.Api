@@ -22,7 +22,7 @@ public static class ServiceCollectionExtensions
 
     public static IHttpClientBuilder AddTransientWithHttpClient<TInterfaceType, TImplementationType>(
         this IServiceCollection services,
-        HttpClientConfiguration<TImplementationType> configuration,
+        HttpClientConfiguration configuration,
         Action<MS.HttpClient>? configureClient = null)
         where TInterfaceType : class
         where TImplementationType : class, TInterfaceType
