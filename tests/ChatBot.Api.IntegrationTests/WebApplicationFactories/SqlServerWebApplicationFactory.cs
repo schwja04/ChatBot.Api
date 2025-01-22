@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection.Extensions;
+using Microsoft.Extensions.Logging.Abstractions;
 using Testcontainers.MsSql;
 
 namespace ChatBot.Api.IntegrationTests.WebApplicationFactories;
@@ -23,6 +24,7 @@ public class SqlServerWebApplicationFactory :
         .WithImage("mcr.microsoft.com/azure-sql-edge")
         .WithWaitStrategy(Wait.ForUnixContainer().UntilPortIsAvailable(1433))
         .WithPortBinding(1433, true)
+        .WithLogger(NullLogger.Instance)
         .Build();
     
     public Fixture Fixture { get; } = new();

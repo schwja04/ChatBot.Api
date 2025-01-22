@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection.Extensions;
+using Microsoft.Extensions.Logging.Abstractions;
 using Testcontainers.PostgreSql;
 
 namespace ChatBot.Api.IntegrationTests.WebApplicationFactories;
@@ -24,6 +25,7 @@ public class PostgresWebApplicationFactory : WebApplicationFactory<IApiMarker>, 
         .WithPassword("chatbot")
         .WithPortBinding(5432, true)
         .WithWaitStrategy(Wait.ForUnixContainer().UntilPortIsAvailable(5432))
+        .WithLogger(NullLogger.Instance)
         .Build();
     
     public Fixture Fixture { get; } = new();

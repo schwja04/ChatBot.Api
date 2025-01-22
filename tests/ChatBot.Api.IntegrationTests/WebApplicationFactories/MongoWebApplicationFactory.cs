@@ -8,6 +8,7 @@ using DotNet.Testcontainers.Builders;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.DependencyInjection.Extensions;
+using Microsoft.Extensions.Logging.Abstractions;
 using MongoDB.Driver;
 using Testcontainers.MongoDb;
 
@@ -23,6 +24,7 @@ public sealed class MongoWebApplicationFactory
         .WithPassword(MongoPassword)
         .WithPortBinding(27017, true)
         .WithWaitStrategy(Wait.ForUnixContainer().UntilPortIsAvailable(27017))
+        .WithLogger(NullLogger.Instance)
         .Build();
 
     public Fixture Fixture { get; } = new();
@@ -52,6 +54,7 @@ public sealed class MongoWebApplicationFactory
             configBuilder.AddConfiguration(config);
         });
         
+        builder.ConfigureLogging(loggerBuilder => loggerBuilder.ClearProviders());
         builder.ConfigureTestServices(services =>
         {
             services.RemoveAll<IPromptRepository>();
