@@ -37,7 +37,7 @@ public class SqlServerWebApplicationFactory :
             {
                 ["DatabaseProvider"] = "SqlServer",
                 ["ConnectionStrings:ChatBotContextSqlServerConnectionString"] = connectionString,
-                // ["Services:OpenAIClient:BaseAddress"] = OpenAIServer.BaseAddress,
+                //["Services:OpenAIService:http"] = OpenAIServer.BaseAddress,
             })
             .Build();
         

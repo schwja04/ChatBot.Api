@@ -38,7 +38,7 @@ public class PostgresWebApplicationFactory : WebApplicationFactory<IApiMarker>, 
             {
                 ["DatabaseProvider"] = "Postgres",
                 ["ConnectionStrings:ChatBotContextPostgresqlConnectionString"] = connectionString,
-                // ["Services:OpenAIClient:BaseAddress"] = OpenAIServer.BaseAddress,
+                //["Services:OpenAIService:http"] = OpenAIServer.BaseAddress,
             })
             .Build();
         
