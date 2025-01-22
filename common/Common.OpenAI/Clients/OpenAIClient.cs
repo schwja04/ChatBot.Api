@@ -7,7 +7,7 @@ namespace Common.OpenAI.Clients;
 
 public class OpenAIClient(HttpClient httpClient) : IOpenAIClient
 {
-    private static readonly Uri ChatCompletionUri = new Uri("chat/completions", UriKind.Relative);
+    private static readonly Uri ChatCompletionUri = new Uri("v1/chat/completions", UriKind.Relative);
     private readonly HttpClient _httpClient = httpClient;
     
     public async Task<CreateChatCompletionResponse> CreateChatCompletionAsync(
