@@ -93,7 +93,8 @@ static void RegisterServices(IServiceCollection services, IConfiguration configu
 {
     services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining<IMediatrRegistration>());
 
-    services.AddTransientWithHttpClient<IOpenAIClient, OpenAIClient>(configuration);
+    services.AddTransientWithHttpClient<IOpenAIClient, OpenAIClient>(configuration)
+        .AddServiceDiscovery();
     services.AddTransient<IChatCompletionRepository, ChatCompletionRepository>();
     services.AddSingleton<IPromptMessageMapper, PromptMessageMapper>();
     
