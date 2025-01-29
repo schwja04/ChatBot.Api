@@ -50,6 +50,12 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "aspire", "aspire", "{F420BC
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChatBot.Aspire.AppHost", "aspire\ChatBot.Aspire.AppHost\ChatBot.Aspire.AppHost.csproj", "{1F8B5F8F-76BB-4671-9FA8-E5C6A37F69BB}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_other-services", "_other-services", "{1639DFA8-A40F-4FEF-96F8-901A675A24D6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProxyOpenAIService", "_other-services\ProxyOpenAIService\ProxyOpenAIService.csproj", "{F5671DB2-E342-4E26-949A-55007731BDD8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IdentityService", "_other-services\IdentityService\IdentityService.csproj", "{AD440DEA-49C0-46A0-9148-62C6E844B10C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -112,6 +118,14 @@ Global
 		{1F8B5F8F-76BB-4671-9FA8-E5C6A37F69BB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1F8B5F8F-76BB-4671-9FA8-E5C6A37F69BB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1F8B5F8F-76BB-4671-9FA8-E5C6A37F69BB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F5671DB2-E342-4E26-949A-55007731BDD8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F5671DB2-E342-4E26-949A-55007731BDD8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F5671DB2-E342-4E26-949A-55007731BDD8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F5671DB2-E342-4E26-949A-55007731BDD8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AD440DEA-49C0-46A0-9148-62C6E844B10C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AD440DEA-49C0-46A0-9148-62C6E844B10C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AD440DEA-49C0-46A0-9148-62C6E844B10C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AD440DEA-49C0-46A0-9148-62C6E844B10C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -131,5 +145,7 @@ Global
 		{8F5B24D8-7679-458D-BA9A-064A442815E6} = {CC14550A-5AB0-4102-B454-FD2F88EA313C}
 		{A0F300DB-6DDC-45F7-8915-7110BE80F5F2} = {8270AEA0-A37B-4465-9848-3F9DA449E34C}
 		{1F8B5F8F-76BB-4671-9FA8-E5C6A37F69BB} = {F420BCFB-0772-4BAF-BBD8-A66FC1BF601A}
+		{F5671DB2-E342-4E26-949A-55007731BDD8} = {1639DFA8-A40F-4FEF-96F8-901A675A24D6}
+		{AD440DEA-49C0-46A0-9148-62C6E844B10C} = {1639DFA8-A40F-4FEF-96F8-901A675A24D6}
 	EndGlobalSection
 EndGlobal

@@ -18,6 +18,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\ChatBot.Api\ChatBot.Api.csproj" />
+    <ProjectReference Include="..\..\_other-services\IdentityService\IdentityService.csproj" />
+    <ProjectReference Include="..\..\_other-services\ProxyOpenAIService\ProxyOpenAIService.csproj" />
   </ItemGroup>
 
 </Project>
