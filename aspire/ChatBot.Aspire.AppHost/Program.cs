@@ -21,8 +21,7 @@ var mongo = builder
     .WithMongoExpress();
 var mongoDb = mongo.AddDatabase(databaseName);
 
-var openAIServiceConfig = builder.Configuration.GetRequiredSection("Services:OpenAIService");
-var openAIServiceHttp = openAIServiceConfig["http"]!;
+var openAIServiceHttp = builder.Configuration.GetValue<string>("Services:OpenAIService:http:0")!;
 
 builder.AddProject<Projects.ChatBot_Api>("chatbot-api")
     .WithReference(mongoDb)
@@ -31,6 +30,6 @@ builder.AddProject<Projects.ChatBot_Api>("chatbot-api")
     .WithEnvironment("Mongo__Username", username.Resource.Value)
     .WithEnvironment("Mongo__Password", password.Resource.Value)
     .WithEnvironment("Mongo__DatabaseName", databaseName)
-    .WithEnvironment("Services__OpenAIService__http", openAIServiceHttp);
+    .WithEnvironment("Services__OpenAIService__http__0", openAIServiceHttp);
 
 builder.Build().Run();
