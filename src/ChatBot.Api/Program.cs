@@ -19,6 +19,7 @@ using Common.Cors;
 using Common.HttpClient;
 using Common.Mongo;
 using Common.OpenAI.Clients;
+using Common.OpenAI.Models;
 using Common.ServiceDefaults;
 
 // ReSharper disable ClassNeverInstantiated.Global
@@ -93,10 +94,14 @@ static void RegisterServices(IServiceCollection services, IConfiguration configu
 {
     services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining<IMediatrRegistration>());
 
-    services.AddTransientWithHttpClient<IOpenAIClient, OpenAIClient>(configuration)
+    services
+        .AddTransient<IChatCompletionRepository, ChatCompletionRepository>()
+        .AddSingleton<IPromptMessageMapper, PromptMessageMapper>()
+        .AddTransientWithHttpClient<IOpenAIClient, OpenAIClient>(configuration)
         .AddServiceDiscovery();
-    services.AddTransient<IChatCompletionRepository, ChatCompletionRepository>();
-    services.AddSingleton<IPromptMessageMapper, PromptMessageMapper>();
+    services
+        .AddOptions<ChatCompletionOptions>()
+        .Bind(configuration.GetSection(nameof(ChatCompletionOptions)));
     
     var databaseProvider = configuration.GetValue<string>("DatabaseProvider");
     switch (databaseProvider)

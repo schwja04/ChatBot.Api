@@ -5,20 +5,32 @@ using ChatBot.Infrastructure.Repositories.ExternalServices.ChatCompletion.Builde
 using ChatBot.Infrastructure.Repositories.ExternalServices.ChatCompletion.Mappers;
 using Common.OpenAI.Clients;
 using Common.OpenAI.Models;
+using Microsoft.Extensions.Options;
 
 namespace ChatBot.Infrastructure.Repositories.ExternalServices.ChatCompletion;
 
-internal class ChatCompletionRepository(IOpenAIClient openAIClient, IPromptMessageMapper promptMapper)
+internal class ChatCompletionRepository
     : IChatCompletionRepository
 {
-    private readonly IOpenAIClient _openAIClient = openAIClient;
-    private readonly IPromptMessageMapper _promptMapper = promptMapper;
+    private readonly IOpenAIClient _openAIClient;
+    private readonly IPromptMessageMapper _promptMapper;
 
+    private ChatCompletionOptions _options;
+
+    public ChatCompletionRepository(
+        IOptionsMonitor<ChatCompletionOptions> chatCompletionOptions,
+        IOpenAIClient openAIClient,
+        IPromptMessageMapper promptMapper)
+    {
+        _openAIClient = openAIClient;
+        _promptMapper = promptMapper;
+        _options = chatCompletionOptions.CurrentValue;
+        
+        chatCompletionOptions.OnChange(OnOptionsChange);
+    }
+    
     // TODO: ADD ILogger<ChatCompletionRepository>
     // This will allow me to log information about the chat completion
-
-    // TODO: ADD IOptionsMonitor<OpenAIOptions>
-    // This will allow me to dynamically change the model on the fly
     
     public async Task<ChatMessage> GetChatCompletionAsync(ChatContext chatContext, CancellationToken cancellationToken)
     {
@@ -27,7 +39,7 @@ internal class ChatCompletionRepository(IOpenAIClient openAIClient, IPromptMessa
 
         CreateChatCompletionRequest request = new CreateChatCompletionRequestBuilder()
             .UseAllDefaults()
-            .WithModel("llama3")
+            .WithModel(_options.Model)
             .WithMessages(messages)
             .Build();
 
@@ -39,6 +51,11 @@ internal class ChatCompletionRepository(IOpenAIClient openAIClient, IPromptMessa
         ChatMessage chatMessage = ChatMessage.CreateAssistantMessage(choice.Message.Content);
 
         return chatMessage;
+    }
+    
+    private void OnOptionsChange(ChatCompletionOptions options)
+    {
+        _options = options;
     }
 
     private async Task<ReadOnlyCollection<ChatCompletionRequestMessage>> MapMessagesAsync(ChatContext chatContext, CancellationToken cancellationToken)
