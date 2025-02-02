@@ -2,6 +2,7 @@ using AutoFixture;
 using ChatBot.Application.Queries.GetChatContext;
 using ChatBot.Domain.ChatContextEntity;
 using FluentAssertions;
+using Microsoft.Extensions.Logging.Abstractions;
 using NSubstitute;
 
 namespace ChatBot.UnitTests.Application.Handlers.QueryHandlers;
@@ -16,7 +17,8 @@ public class GetChatContextQueryHandlerShould
     public GetChatContextQueryHandlerShould()
     {
         _chatContextRepository = Substitute.For<IChatContextRepository>();
-        _sut = new GetChatContextQueryHandler(_chatContextRepository);
+        var logger = NullLogger<GetChatContextQueryHandler>.Instance;
+        _sut = new GetChatContextQueryHandler(logger, _chatContextRepository);
         
         _fixture = new Fixture();
     }
