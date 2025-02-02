@@ -3,6 +3,7 @@ using ChatBot.Domain.PromptEntity;
 using ChatBot.Infrastructure.Repositories.Persistence.Cached;
 using FluentAssertions;
 using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.Logging.Abstractions;
 using NSubstitute;
 
 namespace ChatBot.UnitTests.Infrastructure.Repositories;
@@ -19,8 +20,9 @@ public class CachedPromptRepositoryShould
     {
         _memoryCache = Substitute.For<IMemoryCache>();
         _innerPromptRepository = Substitute.For<IPromptRepository>();
+        var logger = NullLogger<CachedPromptRepository>.Instance;
 
-        _sut = new CachedPromptRepository(_memoryCache, _innerPromptRepository);
+        _sut = new CachedPromptRepository(logger, _memoryCache, _innerPromptRepository);
         _fixture = new Fixture();
     }
     

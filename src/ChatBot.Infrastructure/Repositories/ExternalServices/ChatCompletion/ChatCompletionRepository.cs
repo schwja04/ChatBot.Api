@@ -5,6 +5,7 @@ using ChatBot.Infrastructure.Repositories.ExternalServices.ChatCompletion.Builde
 using ChatBot.Infrastructure.Repositories.ExternalServices.ChatCompletion.Mappers;
 using Common.OpenAI.Clients;
 using Common.OpenAI.Models;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
 namespace ChatBot.Infrastructure.Repositories.ExternalServices.ChatCompletion;
@@ -12,16 +13,19 @@ namespace ChatBot.Infrastructure.Repositories.ExternalServices.ChatCompletion;
 internal class ChatCompletionRepository
     : IChatCompletionRepository
 {
+    private readonly ILogger _logger;
     private readonly IOpenAIClient _openAIClient;
     private readonly IPromptMessageMapper _promptMapper;
 
     private ChatCompletionOptions _options;
 
     public ChatCompletionRepository(
+        ILogger<ChatCompletionRepository> logger,
         IOptionsMonitor<ChatCompletionOptions> chatCompletionOptions,
         IOpenAIClient openAIClient,
         IPromptMessageMapper promptMapper)
     {
+        _logger = logger;
         _openAIClient = openAIClient;
         _promptMapper = promptMapper;
         _options = chatCompletionOptions.CurrentValue;
@@ -29,14 +33,15 @@ internal class ChatCompletionRepository
         chatCompletionOptions.OnChange(OnOptionsChange);
     }
     
-    // TODO: ADD ILogger<ChatCompletionRepository>
-    // This will allow me to log information about the chat completion
-    
     public async Task<ChatMessage> GetChatCompletionAsync(ChatContext chatContext, CancellationToken cancellationToken)
     {
         // Convert ChatHistory to CreateChatCompletionRequest
         var messages = await MapMessagesAsync(chatContext, cancellationToken);
 
+        _logger.LogInformation("Sending chatContext ({ContextId}) to openai for user {Username}, using model {Model}",
+            chatContext.ContextId,
+            chatContext.Username,
+            _options.Model);
         CreateChatCompletionRequest request = new CreateChatCompletionRequestBuilder()
             .UseAllDefaults()
             .WithModel(_options.Model)
@@ -45,7 +50,13 @@ internal class ChatCompletionRepository
 
         // Call OpenAI API
         CreateChatCompletionResponse response = await _openAIClient.CreateChatCompletionAsync(request, cancellationToken);
-
+        _logger.LogInformation("Received response from openai for chatContext ({ContextId}) for user {Username}. Prompt tokens used: {PromptTokens}. Completion tokens used: {ResponseTokens}. Total tokens used: {TotalTokens}",
+            chatContext.ContextId,
+            chatContext.Username,
+            response.Usage.PromptTokens,
+            response.Usage.CompletionTokens,
+            response.Usage.TotalTokens);
+        
         // Convert CreateChatCompletionResponse to ChatMessage
         var choice = response.Choices.First();
         ChatMessage chatMessage = ChatMessage.CreateAssistantMessage(choice.Message.Content);

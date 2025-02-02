@@ -1,14 +1,17 @@
 ﻿using System.Collections.ObjectModel;
 using ChatBot.Domain.PromptEntity;
 using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.Logging;
 
 namespace ChatBot.Infrastructure.Repositories.Persistence.Cached;
 
 internal class CachedPromptRepository(
+    ILogger<CachedPromptRepository> logger,
     IMemoryCache memoryCache,
     IPromptRepository promptRepository)
     : IPromptRepository
 {
+    private readonly ILogger _logger = logger;
     private readonly IMemoryCache _cache = memoryCache;
     private readonly IPromptRepository _promptRepository = promptRepository;
 
@@ -16,15 +19,24 @@ internal class CachedPromptRepository(
     {
         if (_cache.TryGetValue(promptId, out Prompt? prompt))
         {
+            _logger.LogInformation(
+                "Retrieved prompt ({PromptId}) from cache.",
+                promptId);
             return prompt;
         }
         
+        _logger.LogInformation(
+            "Prompt ({PromptId}) not found in cache. Retrieving from repository.",
+            promptId);
         prompt = await _promptRepository.GetAsync(promptId, cancellationToken);
         if (prompt is null)
         {
+            _logger.LogInformation(
+                "Prompt ({PromptId}) not found in repository.",
+                promptId);
             return null;
         }
-
+        
         await RefreshCacheAsync(prompt.Owner, cancellationToken);
         
         return prompt;
@@ -56,10 +68,20 @@ internal class CachedPromptRepository(
         var userAllCacheKey = CacheKeys.All(username);
         if (_cache.TryGetValue(userAllCacheKey, out ReadOnlyCollection<Prompt>? userPrompts))
         {
+            _logger.LogInformation(
+                "Retrieved prompts for user {Username} from cache.",
+                username);
             return userPrompts!;
         }
         
+        _logger.LogInformation(
+            "Prompts for user {Username} not found in cache. Retrieving from repository.",
+            username);
         userPrompts = await _promptRepository.GetManyAsync(username, cancellationToken);
+        
+        _logger.LogInformation(
+            "Caching prompts for user {Username}.",
+            username);
         foreach (var prompt in userPrompts)
         {
             var singleCacheKey = CacheKeys.Single(prompt.Owner, prompt.Key);
@@ -99,6 +121,9 @@ internal class CachedPromptRepository(
     
     private void InvalidateCache(string username)
     {
+        _logger.LogInformation(
+            "Invalidating cache for user {Username}",
+            username);
         var allCacheKey = CacheKeys.All(username);
         if (!_cache.TryGetValue(allCacheKey, out ReadOnlyCollection<Prompt>? value))
         {
