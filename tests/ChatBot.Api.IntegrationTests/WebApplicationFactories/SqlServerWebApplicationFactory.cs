@@ -39,6 +39,7 @@ public class SqlServerWebApplicationFactory :
             {
                 ["DatabaseProvider"] = "SqlServer",
                 ["ConnectionStrings:ChatBotContextSqlServerConnectionString"] = connectionString,
+                ["ChatCompletionOptions:Model"] = "llama3.2"
                 //["Services:OpenAIService:http"] = OpenAIServer.BaseAddress,
             })
             .Build();

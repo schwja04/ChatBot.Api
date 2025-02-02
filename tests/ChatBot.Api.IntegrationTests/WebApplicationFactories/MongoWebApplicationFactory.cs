@@ -43,6 +43,7 @@ public sealed class MongoWebApplicationFactory
                 ["Mongo:Username"] = mongoSettings.Credential!.Username,
                 ["Mongo:Password"] = MongoPassword,
                 ["Mongo:DatabaseName"] = "ChatBot",
+                ["ChatCompletionOptions:Model"] = "llama3.2"
                 //["Services:OpenAIService:http"] = OpenAIServer.BaseAddress,
             })
             .Build();
