@@ -3,6 +3,7 @@ using ChatBot.Application.Commands.DeletePrompt;
 using ChatBot.Domain.Exceptions.PromptExceptions;
 using ChatBot.Domain.PromptEntity;
 using FluentAssertions;
+using Microsoft.Extensions.Logging.Abstractions;
 using NSubstitute;
 
 namespace ChatBot.UnitTests.Application.Handlers.CommandHandlers;
@@ -17,7 +18,8 @@ public class DeletePromptCommandHandlerShould
 	{
 		_promptRepository = Substitute.For<IPromptRepository>();
 
-		_sut = new DeletePromptCommandHandler(_promptRepository);
+		var logger = NullLogger<DeletePromptCommandHandler>.Instance;
+		_sut = new DeletePromptCommandHandler(logger, _promptRepository);
 
 		_fixture = new Fixture();
 	}
@@ -40,7 +42,7 @@ public class DeletePromptCommandHandlerShould
 	}
 	
 	[Fact]
-	public async Task Handle_ShouldDelete_WhenPromptExistsAndOwnedByRequestor()
+	public async Task Handle_ShouldDelete_WhenPromptExistsAndOwnedByRequester()
 	{
 		// Arrange
 		var prompt = _fixture.Create<Prompt>();

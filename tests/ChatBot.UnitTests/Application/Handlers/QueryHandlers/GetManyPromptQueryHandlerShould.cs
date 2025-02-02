@@ -3,6 +3,7 @@ using ChatBot.Application;
 using ChatBot.Application.Queries.GetManyPrompts;
 using ChatBot.Domain.PromptEntity;
 using FluentAssertions;
+using Microsoft.Extensions.Logging.Abstractions;
 using NSubstitute;
 
 namespace ChatBot.UnitTests.Application.Handlers.QueryHandlers;
@@ -10,7 +11,7 @@ namespace ChatBot.UnitTests.Application.Handlers.QueryHandlers;
 public class GetManyPromptQueryHandlerShould
 {
 	private readonly IPromptRepository _promptRepository;
-
+	
 	private readonly GetManyPromptsQueryHandler _sut;
 
 	private readonly IFixture _fixture;
@@ -18,8 +19,9 @@ public class GetManyPromptQueryHandlerShould
 	public GetManyPromptQueryHandlerShould()
 	{
 		_promptRepository = Substitute.For<IPromptRepository>();
+		var logger = NullLogger<GetManyPromptsQueryHandler>.Instance;
 
-		_sut = new GetManyPromptsQueryHandler(_promptRepository);
+		_sut = new GetManyPromptsQueryHandler(logger, _promptRepository);
 
 		_fixture = new Fixture();
 	}

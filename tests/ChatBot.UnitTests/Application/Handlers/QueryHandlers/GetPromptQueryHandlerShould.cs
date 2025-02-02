@@ -4,6 +4,7 @@ using ChatBot.Application.Queries.GetPrompt;
 using ChatBot.Domain.Exceptions.PromptExceptions;
 using ChatBot.Domain.PromptEntity;
 using FluentAssertions;
+using Microsoft.Extensions.Logging.Abstractions;
 using NSubstitute;
 
 namespace ChatBot.UnitTests.Application.Handlers.QueryHandlers;
@@ -19,8 +20,9 @@ public class GetPromptQueryHandlerShould
 	public GetPromptQueryHandlerShould()
 	{
 		_promptRepository = Substitute.For<IPromptRepository>();
-
-		_sut = new GetPromptQueryHandler(_promptRepository);
+		var logger = NullLogger<GetPromptQueryHandler>.Instance;
+		
+		_sut = new GetPromptQueryHandler(logger, _promptRepository);
 
 		_fixture = new Fixture();
 	}

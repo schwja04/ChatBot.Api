@@ -3,6 +3,7 @@ using ChatBot.Application.Commands.CreatePrompt;
 using ChatBot.Domain.Exceptions.PromptExceptions;
 using ChatBot.Domain.PromptEntity;
 using FluentAssertions;
+using Microsoft.Extensions.Logging.Abstractions;
 using NSubstitute;
 
 namespace ChatBot.UnitTests.Application.Handlers.CommandHandlers;
@@ -18,8 +19,8 @@ public class CreatePromptCommandHandlerShould
 	public CreatePromptCommandHandlerShould()
 	{
 		_promptRepository = Substitute.For<IPromptRepository>();
-
-		_sut = new CreatePromptCommandHandler(_promptRepository);
+		var logger = NullLogger<CreatePromptCommandHandler>.Instance;
+		_sut = new CreatePromptCommandHandler(logger, _promptRepository);
 
 		_fixture = new Fixture();
 	}
