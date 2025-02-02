@@ -8,6 +8,8 @@ using ChatBot.Domain.ChatContextEntity;
 using FluentAssertions;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Abstractions;
 using NSubstitute;
 
 namespace ChatBot.UnitTests.Api.Controllers;
@@ -22,7 +24,8 @@ public class ChatsControllerShould
     public ChatsControllerShould()
     {
         _mediator = Substitute.For<IMediator>();
-        _sut = new ChatsController(_mediator);
+        ILogger<ChatsController> logger = NullLogger<ChatsController>.Instance;
+        _sut = new ChatsController(logger, _mediator);
         
         _fixture = new Fixture();
     }

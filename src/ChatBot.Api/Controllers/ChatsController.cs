@@ -12,8 +12,9 @@ using ChatBot.Application.Queries.GetManyChatContextMetadata;
 namespace ChatBot.Api.Controllers;
 
 [ApiController]
-public class ChatsController(IMediator mediator) : ControllerBase
+public class ChatsController(ILogger<ChatsController> logger, IMediator mediator) : ControllerBase
 {
+    private readonly ILogger _logger = logger;
     private readonly IMediator _mediator = mediator;
 
     private const string DefaultUsername = "Unknown";
@@ -31,6 +32,10 @@ public class ChatsController(IMediator mediator) : ControllerBase
             Username = User.Identity?.Name ?? DefaultUsername
         };
         
+        _logger.LogInformation(
+            "Processing chat message for {Username} in context {ContextId}.",
+            command.Username, 
+            command.ContextId);
         var response = await _mediator.Send(command, cancellationToken);
         return Ok(new ProcessChatMessageResponse
         {
@@ -49,6 +54,7 @@ public class ChatsController(IMediator mediator) : ControllerBase
             Username = User.Identity?.Name ?? DefaultUsername,
         };
 
+        _logger.LogInformation("Getting chat context metadata records for {Username}.", query.Username);
         var chatContextMetadatas = await _mediator.Send(query, cancellationToken);
 
         return Ok(new GetManyChatContextMetadataResponse
@@ -75,6 +81,7 @@ public class ChatsController(IMediator mediator) : ControllerBase
             Username = User.Identity?.Name ?? DefaultUsername
         };
 
+        _logger.LogInformation("Getting chat context {ContextId} for {Username}.", query.ContextId, query.Username);
         var response = await _mediator.Send(query, cancellationToken);
 
         return Ok(new GetChatContextResponse
@@ -102,6 +109,10 @@ public class ChatsController(IMediator mediator) : ControllerBase
             Username = User.Identity?.Name ?? DefaultUsername
         };
 
+        _logger.LogInformation(
+            "Updating chat context title for {Username} in context {ContextId}.",
+            command.Username,
+            command.ContextId);
         await _mediator.Send(command, cancellationToken);
 
         return NoContent();
@@ -118,6 +129,10 @@ public class ChatsController(IMediator mediator) : ControllerBase
             Username = User.Identity?.Name ?? DefaultUsername
         };
 
+        _logger.LogInformation(
+            "Deleting chat context {ContextId} for {Username}.",
+            command.ContextId,
+            command.Username);
         await _mediator.Send(command, cancellationToken);
 
         return NoContent();

@@ -39,5 +39,4 @@ This is where I began stretching to get as much out of this project as possible.
   - Would allow for more complex transactions
 - Eventing
   - Use of a message broker
-- Dotnet Aspire
 - Blazor Frontend
