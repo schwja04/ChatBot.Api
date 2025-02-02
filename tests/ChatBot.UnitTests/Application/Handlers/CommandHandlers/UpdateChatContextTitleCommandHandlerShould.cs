@@ -3,6 +3,7 @@ using ChatBot.Application.Commands.UpdateChatContextTitle;
 using ChatBot.Domain.ChatContextEntity;
 using ChatBot.Domain.Exceptions.ChatContextExceptions;
 using FluentAssertions;
+using Microsoft.Extensions.Logging.Abstractions;
 using NSubstitute;
 using NSubstitute.ReturnsExtensions;
 
@@ -18,7 +19,8 @@ public class UpdateChatContextTitleCommandHandlerShould
     public UpdateChatContextTitleCommandHandlerShould()
     {
         _chatContextRepository = Substitute.For<IChatContextRepository>();
-        _sut = new UpdateChatContextTitleCommandHandler(_chatContextRepository);
+        var logger = NullLogger<UpdateChatContextTitleCommandHandler>.Instance;
+        _sut = new UpdateChatContextTitleCommandHandler(logger, _chatContextRepository);
         _fixture = new Fixture();
     }
     

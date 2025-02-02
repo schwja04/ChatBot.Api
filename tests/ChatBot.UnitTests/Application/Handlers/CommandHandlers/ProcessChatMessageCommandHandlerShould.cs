@@ -4,6 +4,7 @@ using ChatBot.Application.Commands.ProcessChatMessage;
 using ChatBot.Domain.ChatContextEntity;
 using ChatBot.Domain.Exceptions.ChatContextExceptions;
 using FluentAssertions;
+using Microsoft.Extensions.Logging.Abstractions;
 using NSubstitute;
 using NSubstitute.ReturnsExtensions;
 
@@ -21,7 +22,8 @@ public class ProcessChatMessageCommandHandlerShould
     {
         _chatCompletionRepository = Substitute.For<IChatCompletionRepository>();
         _chatContextRepository = Substitute.For<IChatContextRepository>();
-        _sut = new ProcessChatMessageCommandHandler(_chatCompletionRepository, _chatContextRepository);
+        var logger = NullLogger<ProcessChatMessageCommandHandler>.Instance;
+        _sut = new ProcessChatMessageCommandHandler(logger, _chatCompletionRepository, _chatContextRepository);
         
         _fixture = new Fixture();
     }
