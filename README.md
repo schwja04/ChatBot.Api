@@ -30,6 +30,7 @@ This is where I began stretching to get as much out of this project as possible.
 - `WireMock.Net` (Still in testing) - This is used to mock the OpenAI API. This will allow me to test the chatbot functionality without actually hitting the API. This would be more ideal than an NSubstitute mock of the OpenAIClient, as it would be a true test of the solution.
 
 ## Future
+- Migrate to Microsoft.Extensions.AI
 - Redis Cache for Prompts to replace the in-memory cache
   - Potentially use Hybrid Cache
 - More Logging and Tracing
