@@ -40,7 +40,7 @@ public class SubstituteChatClient : IChatClient
     
     public void Dispose()
     {
-        throw new NotImplementedException();
+        _openAIClient.Dispose();
     }
 
     public async Task<ChatResponse> GetResponseAsync(
