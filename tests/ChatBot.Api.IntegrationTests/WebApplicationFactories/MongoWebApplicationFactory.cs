@@ -3,10 +3,10 @@ using ChatBot.Api.Abstractions;
 using ChatBot.Api.IntegrationTests.WebApplicationFactories.MockImplementations;
 using ChatBot.Domain.ChatContextEntity;
 using ChatBot.Domain.PromptEntity;
-using Common.OpenAI.Clients;
 using DotNet.Testcontainers.Builders;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.AspNetCore.TestHost;
+using Microsoft.Extensions.AI;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Logging.Abstractions;
 using MongoDB.Driver;
@@ -60,11 +60,11 @@ public sealed class MongoWebApplicationFactory
         {
             services.RemoveAll<IPromptRepository>();
             services.RemoveAll<IChatContextRepository>();
-            services.RemoveAll<OpenAIClient>();
+            services.RemoveAll<IChatClient>();
             
             services.AddMongoRepositories(config);
             // services.Decorate<IPromptRepository, CachedPromptRepository>();
-            services.AddSingleton<IOpenAIClient, SubstituteOpenAIClient>();
+            services.AddSingleton<IChatClient, SubstituteChatClient>();
         });
     }
 

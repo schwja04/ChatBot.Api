@@ -18,9 +18,9 @@ using ChatBot.Infrastructure.Repositories.Persistence.Mongo;
 using Common.Cors;
 using Common.HttpClient;
 using Common.Mongo;
-using Common.OpenAI.Clients;
-using Common.OpenAI.Models;
 using Common.ServiceDefaults;
+using Microsoft.Extensions.AI;
+using Microsoft.Extensions.Options;
 
 // ReSharper disable ClassNeverInstantiated.Global
 
@@ -95,13 +95,21 @@ static void RegisterServices(IServiceCollection services, IConfiguration configu
     services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining<IMediatrRegistration>());
 
     services
-        .AddTransient<IChatCompletionRepository, ChatCompletionRepository>()
-        .AddSingleton<IPromptMessageMapper, PromptMessageMapper>()
-        .AddTransientWithHttpClient<IOpenAIClient, OpenAIClient>(configuration)
-        .AddServiceDiscovery();
-    services
         .AddOptions<ChatCompletionOptions>()
         .Bind(configuration.GetSection(nameof(ChatCompletionOptions)));
+
+    services
+        .AddTransient<IChatCompletionRepository, ChatCompletionRepository>()
+        .AddSingleton<IPromptMessageMapper, PromptMessageMapper>()
+        .AddSingleton<IChatMessageMapper, ChatMessageMapper>()
+        .AddTransientWithHttpClient<IChatClient, OllamaChatClient>(configuration, (httpClient, sp) =>
+        {
+            var chatCompletionOptions = sp.GetRequiredService<IOptions<ChatCompletionOptions>>().Value;
+            
+            return new OllamaChatClient(httpClient.BaseAddress!, chatCompletionOptions.DefaultModel, httpClient);
+        })
+        .AddServiceDiscovery();
+
     
     var databaseProvider = configuration.GetValue<string>("DatabaseProvider");
     switch (databaseProvider)

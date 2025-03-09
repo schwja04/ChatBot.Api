@@ -4,5 +4,6 @@ namespace ChatBot.Infrastructure.Repositories.ExternalServices.ChatCompletion.Ma
 
 internal interface IPromptMessageMapper
 {
-    Task<string> BuildMessageContentAsync(ChatMessage message, string username, CancellationToken cancellationToken);
+    Task<string> BuildMessageContentAsync(
+        ChatMessage message, string username, CancellationToken cancellationToken);
 }

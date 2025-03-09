@@ -49,7 +49,6 @@
     <None Remove="Api\Controllers\" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Infrastructure\Repositories\Mappers\" />
     <Folder Include="Application\" />
     <Folder Include="Application\Handlers\" />
     <Folder Include="Api\" />

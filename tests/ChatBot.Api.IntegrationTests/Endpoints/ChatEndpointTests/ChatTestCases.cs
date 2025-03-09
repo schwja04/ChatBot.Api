@@ -1,8 +1,5 @@
-using AutoFixture;
 using ChatBot.Api.Contracts;
 using ChatBot.Api.IntegrationTests.Endpoints.TestHelpers;
-using ChatBot.Api.IntegrationTests.WebApplicationFactories;
-using ChatBot.Api.IntegrationTests.WebApplicationFactories.MockImplementations;
 using FluentAssertions;
 
 namespace ChatBot.Api.IntegrationTests.Endpoints.ChatEndpointTests;

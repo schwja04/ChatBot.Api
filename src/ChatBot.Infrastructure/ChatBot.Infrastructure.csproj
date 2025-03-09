@@ -2,7 +2,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\ChatBot.Application\ChatBot.Application.csproj" />
-    <ProjectReference Include="..\..\common\Common.OpenAI\Common.OpenAI.csproj" />
     <ProjectReference Include="..\..\common\Common.Mongo\Common.Mongo.csproj" />
     <ProjectReference Include="..\ChatBot.Domain\ChatBot.Domain.csproj" />
   </ItemGroup>
@@ -23,6 +22,7 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.1" />
+    <PackageReference Include="Microsoft.Extensions.AI.Abstractions" Version="9.3.0-preview.1.25114.11" />
     <PackageReference Include="MongoDB.Driver" Version="3.1.0" />
     <PackageReference Include="Microsoft.Extensions.Caching.Abstractions" Version="9.0.1" />
   </ItemGroup>

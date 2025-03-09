@@ -34,4 +34,34 @@ public static class ServiceCollectionExtensions
             client.BaseAddress = configuration.BaseAddress;
         });
     }
+    
+    public static IHttpClientBuilder AddTransientWithHttpClient<TInterfaceType, TImplementationType>(
+        this IServiceCollection services,
+        IConfiguration configuration,
+        Func<MS.HttpClient, IServiceProvider, TImplementationType> implementationFactory,
+        Action<MS.HttpClient>? configureClient = null)
+        where TInterfaceType : class
+        where TImplementationType : class, TInterfaceType
+    {
+        HttpClientConfiguration<TImplementationType> httpClientConfiguration = new(configuration);
+
+        return services.AddTransientWithHttpClient<TInterfaceType, TImplementationType>(httpClientConfiguration, implementationFactory);
+    }
+    
+    public static IHttpClientBuilder AddTransientWithHttpClient<TInterfaceType, TImplementationType>(
+        this IServiceCollection services,
+        HttpClientConfiguration configuration,
+        Func<MS.HttpClient, IServiceProvider, TImplementationType> implementationFactory)
+        where TInterfaceType : class
+        where TImplementationType : class, TInterfaceType
+    {
+        return services.AddHttpClient<TInterfaceType, TImplementationType>(
+            configuration.ClientName, 
+            (client, serviceProvider) =>
+            {
+                client.BaseAddress = configuration.BaseAddress;
+                
+                return implementationFactory(client, serviceProvider);
+            });
+    }
 }
