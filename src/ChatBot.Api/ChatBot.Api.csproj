@@ -39,9 +39,6 @@
     <ProjectReference Include="..\..\common\Common.Mongo\Common.Mongo.csproj">
       <GlobalPropertiesToRemove></GlobalPropertiesToRemove>
     </ProjectReference>
-    <ProjectReference Include="..\..\common\Common.OpenAI\Common.OpenAI.csproj">
-      <GlobalPropertiesToRemove></GlobalPropertiesToRemove>
-    </ProjectReference>
     <ProjectReference Include="..\ChatBot.Domain\ChatBot.Domain.csproj" />
   </ItemGroup>
   
