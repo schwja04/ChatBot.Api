@@ -9,7 +9,7 @@ internal class ChatMessageMapper(IPromptMessageMapper promptMapper)
 {
     private readonly IPromptMessageMapper _promptMapper = promptMapper;
     
-    public async Task<ReadOnlyCollection<ChatMessage>> ToOpenAIChatMessagesAsync(
+    public async Task<ReadOnlyCollection<ChatMessage>> ToLLMChatMessagesAsync(
         ChatContext chatContext,
         CancellationToken cancellationToken)
     {
@@ -21,7 +21,7 @@ internal class ChatMessageMapper(IPromptMessageMapper promptMapper)
             currentMessage = chatContext.Messages[i];
             reqMessages.Add(new ChatMessage
             {
-                Role = currentMessage.Role.ToChatterRole(),
+                Role = currentMessage.Role.ToLLMChatRole(),
                 Text = currentMessage.Content
             });
         }
@@ -29,7 +29,7 @@ internal class ChatMessageMapper(IPromptMessageMapper promptMapper)
         currentMessage = chatContext.Messages[^1];
         reqMessages.Add(new ChatMessage
         {
-            Role = currentMessage.Role.ToChatterRole(),
+            Role = currentMessage.Role.ToLLMChatRole(),
             Text = await _promptMapper.BuildMessageContentAsync(
                 currentMessage, chatContext.Username, cancellationToken)
         });

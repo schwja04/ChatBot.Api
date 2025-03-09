@@ -6,7 +6,7 @@ namespace ChatBot.Infrastructure.Repositories.ExternalServices.ChatCompletion.Ma
 
 internal interface IChatMessageMapper
 {
-    Task<ReadOnlyCollection<ChatMessage>> ToOpenAIChatMessagesAsync(
+    Task<ReadOnlyCollection<ChatMessage>> ToLLMChatMessagesAsync(
         ChatContext chatContext,
         CancellationToken cancellationToken);
 }

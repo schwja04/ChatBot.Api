@@ -6,7 +6,7 @@ namespace ChatBot.Infrastructure.Repositories.ExternalServices.ChatCompletion.Ma
 
 internal static class ChatterRoleMapper
 {
-    public static ChatRole ToChatterRole(this ChatterRole role)
+    public static ChatRole ToLLMChatRole(this ChatterRole role)
     {
         return role switch
         {

@@ -33,7 +33,7 @@ internal class ChatCompletionRepository : IChatCompletionRepository
     public async Task<ChatBotChatMessage> GetChatCompletionAsync(ChatContext chatContext, CancellationToken cancellationToken)
     {
         var  messages = await _chatMessageMapper
-            .ToOpenAIChatMessagesAsync(chatContext, cancellationToken);
+            .ToLLMChatMessagesAsync(chatContext, cancellationToken);
         
         _logger.LogInformation("Sending chatContext ({ContextId}) to llm for user {Username}, using model {Model}",
             chatContext.ContextId,
