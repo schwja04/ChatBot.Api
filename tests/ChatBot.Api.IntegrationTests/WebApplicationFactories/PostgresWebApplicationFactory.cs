@@ -5,11 +5,11 @@ using ChatBot.Domain.ChatContextEntity;
 using ChatBot.Domain.PromptEntity;
 using ChatBot.Infrastructure.EntityFrameworkCore.Postgresql;
 using ChatBot.Infrastructure.Repositories.Persistence.EntityFrameworkCore;
-using Common.OpenAI.Clients;
 using DotNet.Testcontainers.Builders;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.AI;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Logging.Abstractions;
 using Testcontainers.PostgreSql;
@@ -66,12 +66,12 @@ public class PostgresWebApplicationFactory : WebApplicationFactory<IApiMarker>, 
         {
             services.RemoveAll<IPromptRepository>();
             services.RemoveAll<IChatContextRepository>();
-            services.RemoveAll<OpenAIClient>();
+            services.RemoveAll<IChatClient>();
             
             services.AddScoped<IPromptRepository, PromptEntityFrameworkRepository>();
             services.AddScoped<IChatContextRepository, ChatContextEntityFrameworkRepository>();
             // services.Decorate<IPromptRepository, CachedPromptRepository>();
-            services.AddSingleton<IOpenAIClient, SubstituteOpenAIClient>();
+            services.AddSingleton<IChatClient, SubstituteChatClient>();
         });
     }
     
