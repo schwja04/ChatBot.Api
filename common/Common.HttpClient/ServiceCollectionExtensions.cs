@@ -1,8 +1,7 @@
+using Common.HttpClient.Models;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using MS = System.Net.Http;
-
-using Common.HttpClient.Models;
 
 namespace Common.HttpClient;
 

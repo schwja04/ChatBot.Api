@@ -1,8 +1,7 @@
+using Common.Cors.Models;
 using Microsoft.AspNetCore.Cors.Infrastructure;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-
-using Common.Cors.Models;
 
 namespace Common.Cors;
 

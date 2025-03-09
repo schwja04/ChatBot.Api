@@ -1,7 +1,6 @@
-using Microsoft.Extensions.Options;
 using System.Security.Cryptography.X509Certificates;
-
 using Common.Mongo.Models;
+using Microsoft.Extensions.Options;
 
 namespace Common.Mongo;
 

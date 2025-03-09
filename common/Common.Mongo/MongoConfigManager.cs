@@ -1,6 +1,5 @@
-using Microsoft.Extensions.Options;
-
 using Common.Mongo.Models;
+using Microsoft.Extensions.Options;
 
 namespace Common.Mongo;
 

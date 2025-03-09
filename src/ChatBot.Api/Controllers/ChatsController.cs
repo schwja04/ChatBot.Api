@@ -1,5 +1,3 @@
-using MediatR;
-using Microsoft.AspNetCore.Mvc;
 using System.Net.Mime;
 using ChatBot.Api.Contracts;
 using ChatBot.Api.Mappers;
@@ -8,6 +6,8 @@ using ChatBot.Application.Commands.ProcessChatMessage;
 using ChatBot.Application.Commands.UpdateChatContextTitle;
 using ChatBot.Application.Queries.GetChatContext;
 using ChatBot.Application.Queries.GetManyChatContextMetadata;
+using MediatR;
+using Microsoft.AspNetCore.Mvc;
 
 namespace ChatBot.Api.Controllers;
 

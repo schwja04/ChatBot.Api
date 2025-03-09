@@ -1,7 +1,7 @@
+using System.Security.Cryptography.X509Certificates;
 using Common.Mongo.Models;
 using MongoDB.Driver;
 using MongoDB.Driver.Core.Extensions.DiagnosticSources;
-using System.Security.Cryptography.X509Certificates;
 
 namespace Common.Mongo;
 

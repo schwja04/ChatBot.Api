@@ -1,4 +1,5 @@
 using Microsoft.Extensions.Configuration;
+using Projects;
 
 var builder = DistributedApplication.CreateBuilder(args);
 
@@ -23,7 +24,7 @@ var mongoDb = mongo.AddDatabase(databaseName);
 
 var openAIServiceHttp = builder.Configuration.GetValue<string>("Services:OpenAIService:http:0")!;
 
-builder.AddProject<Projects.ChatBot_Api>("chatbot-api")
+builder.AddProject<ChatBot_Api>("chatbot-api")
     .WithReference(mongoDb)
     .WaitFor(mongoDb)
     .WithEnvironment("Mongo__ConnectionString", mongoDb.Resource.ConnectionStringExpression)

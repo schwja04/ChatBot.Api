@@ -1,5 +1,5 @@
-using MongoDB.Driver;
 using Common.Mongo.Models;
+using MongoDB.Driver;
 
 namespace Common.Mongo;
 
