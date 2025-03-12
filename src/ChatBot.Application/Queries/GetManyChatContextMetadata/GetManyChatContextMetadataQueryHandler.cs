@@ -16,8 +16,8 @@ internal class GetManyChatContextMetadataQueryHandler(
     public async Task<ReadOnlyCollection<ChatContextMetadata>> Handle(GetManyChatContextMetadataQuery request, CancellationToken cancellationToken)
     {
         _logger.LogInformation(
-            "Retrieving chat context metadata records for user {Username}",
-            request.Username);
-        return await _chatContextRepository.GetManyMetadataAsync(request.Username, cancellationToken);
+            "Retrieving chat context metadata records for user {UserId}",
+            request.UserId);
+        return await _chatContextRepository.GetManyMetadataAsync(request.UserId, cancellationToken);
     }
 }

@@ -35,9 +35,9 @@ internal class ChatCompletionRepository : IChatCompletionRepository
         var  messages = await _chatMessageMapper
             .ToLLMChatMessagesAsync(chatContext, cancellationToken);
         
-        _logger.LogInformation("Sending chatContext ({ContextId}) to llm for user {Username}, using model {Model}",
+        _logger.LogInformation("Sending chatContext ({ContextId}) to llm for user {UserId}, using model {Model}",
             chatContext.ContextId,
-            chatContext.Username,
+            chatContext.UserId,
             _options.DefaultModel);
         
         var response = await _chatClient.GetResponseAsync(messages, options: new ChatOptions
@@ -51,9 +51,9 @@ internal class ChatCompletionRepository : IChatCompletionRepository
             
         }, cancellationToken);
         
-        _logger.LogInformation("Received response from llm for chatContext ({ContextId}) for user {Username}. Prompt tokens used: {PromptTokens}. Completion tokens used: {ResponseTokens}. Total tokens used: {TotalTokens}",
+        _logger.LogInformation("Received response from llm for chatContext ({ContextId}) for user {UserId}. Prompt tokens used: {PromptTokens}. Completion tokens used: {ResponseTokens}. Total tokens used: {TotalTokens}",
             chatContext.ContextId,
-            chatContext.Username,
+            chatContext.UserId,
             response.Usage!.InputTokenCount,
             response.Usage.OutputTokenCount,
             response.Usage.TotalTokenCount);

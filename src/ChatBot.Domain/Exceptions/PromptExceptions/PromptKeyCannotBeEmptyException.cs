@@ -2,15 +2,15 @@ namespace ChatBot.Domain.Exceptions.PromptExceptions;
 
 public sealed class PromptKeyCannotBeEmptyException : DomainException
 {
-    public PromptKeyCannotBeEmptyException(Guid promptId, string owner) : base("Prompt key cannot be empty.")
+    public PromptKeyCannotBeEmptyException(Guid promptId, Guid ownerId) : base("Prompt key cannot be empty.")
     {
         PromptId = promptId;
-        Owner = owner;
+        OwnerId = ownerId;
         Data.Add(nameof(promptId), promptId);
-        Data.Add(nameof(owner), owner);
+        Data.Add(nameof(ownerId), ownerId);
     }
     
     public Guid PromptId { get; }
     
-    public string Owner { get; }
+    public Guid OwnerId { get; }
 }

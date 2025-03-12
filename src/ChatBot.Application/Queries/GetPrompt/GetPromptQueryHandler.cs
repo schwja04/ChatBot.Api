@@ -20,26 +20,26 @@ internal class GetPromptQueryHandler(
         if (prompt is null)
         {
             _logger.LogError(
-                "Attempted to get prompt with id ({PromptId}) for owner ({Owner}), but prompt was not found.",
+                "Attempted to get prompt with id ({PromptId}) for owner ({OwnerId}), but prompt was not found.",
                 request.PromptId,
-                request.Username);
-            throw new PromptNotFoundException(request.PromptId, request.Username);
+                request.UserId);
+            throw new PromptNotFoundException(request.PromptId, request.UserId);
         }
 
-        if (!string.Equals(prompt.Owner, request.Username, StringComparison.OrdinalIgnoreCase)
-            && !string.Equals(prompt.Owner, Constants.SystemUser, StringComparison.OrdinalIgnoreCase))
+        if (prompt.OwnerId != request.UserId
+            && prompt.OwnerId != Constants.SystemUser)
         {
             _logger.LogError(
                 "Attempted to get prompt with id ({PromptId}) for user ({User}), but user is not authorized.",
                 request.PromptId,
-                request.Username);
-            throw new PromptAuthorizationException(request.PromptId, request.Username);
+                request.UserId);
+            throw new PromptAuthorizationException(request.PromptId, request.UserId);
         }
         
         _logger.LogInformation(
             "Getting prompt with id ({PromptId}) for owner ({Owner}).",
             request.PromptId,
-            request.Username);
+            request.UserId);
         return prompt;
     }
 }

@@ -28,11 +28,11 @@ public class UpdateChatContextTitleCommandHandlerShould
     public async Task Handle_WithValidContextId_ShouldUpdateTitle()
     {
         // Arrange
-        var chatContext = ChatContext.CreateNew(username: _fixture.Create<string>());
+        var chatContext = ChatContext.CreateNew(userId: _fixture.Create<Guid>());
         
         var cmd = _fixture.Build<UpdateChatContextTitleCommand>()
             .With(x => x.ContextId, chatContext.ContextId)
-            .With(x => x.Username, chatContext.Username)
+            .With(x => x.UserId, chatContext.UserId)
             .Create();
         
         _chatContextRepository.GetAsync(cmd.ContextId, Arg.Any<CancellationToken>()).Returns(chatContext);
@@ -64,11 +64,11 @@ public class UpdateChatContextTitleCommandHandlerShould
     public async Task Handle_WithInvalidUsername_ShouldThrowChatContextAuthorizationException()
     {
         // Arrange
-        var chatContext = ChatContext.CreateNew(username: _fixture.Create<string>());
+        var chatContext = ChatContext.CreateNew(userId: _fixture.Create<Guid>());
         
         var cmd = _fixture.Build<UpdateChatContextTitleCommand>()
             .With(x => x.ContextId, chatContext.ContextId)
-            .With(x => x.Username, _fixture.Create<string>())
+            .With(x => x.UserId, _fixture.Create<Guid>())
             .Create();
         
         _chatContextRepository.GetAsync(cmd.ContextId, Arg.Any<CancellationToken>()).Returns(chatContext);

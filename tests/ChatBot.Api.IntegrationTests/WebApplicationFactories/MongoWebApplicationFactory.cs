@@ -4,6 +4,7 @@ using ChatBot.Api.IntegrationTests.WebApplicationFactories.MockImplementations;
 using ChatBot.Domain.ChatContextEntity;
 using ChatBot.Domain.PromptEntity;
 using DotNet.Testcontainers.Builders;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.AI;
@@ -65,6 +66,10 @@ public sealed class MongoWebApplicationFactory
             services.AddMongoRepositories(config);
             // services.Decorate<IPromptRepository, CachedPromptRepository>();
             services.AddSingleton<IChatClient, SubstituteChatClient>();
+            
+            services.AddAuthentication(defaultScheme: "TestScheme")
+                .AddScheme<AuthenticationSchemeOptions, TestAuthHandler>(
+                    "TestScheme", options => { });
         });
     }
 

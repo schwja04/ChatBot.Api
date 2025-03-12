@@ -3,11 +3,11 @@ namespace ChatBot.Domain.ChatContextEntity;
 public record ChatContextMetadata
 {
     private ChatContextMetadata(
-        Guid contextId, string title, string username, DateTimeOffset createdAt, DateTimeOffset updatedAt)
+        Guid contextId, string title, Guid userId, DateTimeOffset createdAt, DateTimeOffset updatedAt)
     {
         ContextId = contextId;
         Title = title;
-        Username = username;
+        UserId = userId;
         CreatedAt = createdAt;
         UpdatedAt = updatedAt;
     }
@@ -16,19 +16,19 @@ public record ChatContextMetadata
 
     public string Title { get; }
 
-    public string Username { get; }
+    public Guid UserId { get; }
 
     public DateTimeOffset CreatedAt { get; }
 
     public DateTimeOffset UpdatedAt { get; }
 
     public static ChatContextMetadata CreateExisting(
-        Guid contextId, string title, string username, DateTimeOffset createdAt, DateTimeOffset updatedAt)
+        Guid contextId, string title, Guid userId, DateTimeOffset createdAt, DateTimeOffset updatedAt)
     {
         return new ChatContextMetadata(
             contextId: contextId,
             title: title,
-            username: username,
+            userId: userId,
             createdAt: createdAt,
             updatedAt: updatedAt);
     }

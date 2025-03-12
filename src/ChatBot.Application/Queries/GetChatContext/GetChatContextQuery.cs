@@ -7,5 +7,5 @@ public record GetChatContextQuery : IRequest<ChatContext>
 {
     public required Guid ContextId { get; init; }
 
-    public required string Username { get; init; }
+    public required Guid UserId { get; init; }
 }

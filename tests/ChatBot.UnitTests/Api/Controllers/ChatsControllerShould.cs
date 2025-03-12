@@ -36,12 +36,12 @@ public class ChatsControllerShould
         // Arrange
         var request = _fixture.Create<ProcessChatMessageRequest>();
         var cmdResponse = _fixture.Create<ProcessChatMessageCommandResponse>();
-        var username = _fixture.Create<string>();
+        var userId = _fixture.Create<Guid>();
         
         _mediator.Send(Arg.Any<ProcessChatMessageCommand>(), Arg.Any<CancellationToken>())
             .Returns(cmdResponse);
         
-        _sut.ControllerContext = TestHelpers.CreateTestControllerContext(username);
+        _sut.ControllerContext = TestHelpers.CreateTestControllerContext(userId);
         
         // Act
         var result = await _sut.PostAsync(request, CancellationToken.None);
@@ -59,12 +59,12 @@ public class ChatsControllerShould
             .CreateMany<ChatContextMetadata>(3)
             .ToList()
             .AsReadOnly();
-        var username = _fixture.Create<string>();
+        var userId = _fixture.Create<Guid>();
         
         _mediator.Send(Arg.Any<GetManyChatContextMetadataQuery>(), Arg.Any<CancellationToken>())
             .Returns(chatContextMetadatas);
         
-        _sut.ControllerContext = TestHelpers.CreateTestControllerContext(username);
+        _sut.ControllerContext = TestHelpers.CreateTestControllerContext(userId);
         
         // Act
         var result = await _sut.GetManyChatContextMetadataAsync(CancellationToken.None);
@@ -80,12 +80,12 @@ public class ChatsControllerShould
         // Arrange
         var chatContext = _fixture.Create<ChatContext>();
         var contextId = chatContext.ContextId;
-        var username = chatContext.Username;
+        var userId = chatContext.UserId;
         
         _mediator.Send(Arg.Any<GetChatContextQuery>(), Arg.Any<CancellationToken>())
             .Returns(chatContext);
         
-        _sut.ControllerContext = TestHelpers.CreateTestControllerContext(username);
+        _sut.ControllerContext = TestHelpers.CreateTestControllerContext(userId);
         
         // Act
         var result = await _sut.GetAsync(contextId, CancellationToken.None);
@@ -101,10 +101,10 @@ public class ChatsControllerShould
         // Arrange
         var chatContext = _fixture.Create<ChatContext>();
         var contextId = chatContext.ContextId;
-        var username = chatContext.Username;
+        var userId = chatContext.UserId;
         var request = _fixture.Create<UpdateChatContextTitleRequest>();
         
-        _sut.ControllerContext = TestHelpers.CreateTestControllerContext(username);
+        _sut.ControllerContext = TestHelpers.CreateTestControllerContext(userId);
         
         // Act
         var result = await _sut.UpdateTitleAsync(contextId, request, CancellationToken.None);
@@ -119,9 +119,9 @@ public class ChatsControllerShould
         // Arrange
         var chatContext = _fixture.Create<ChatContext>();
         var contextId = chatContext.ContextId;
-        var username = chatContext.Username;
+        var userId = chatContext.UserId;
         
-        _sut.ControllerContext = TestHelpers.CreateTestControllerContext(username);
+        _sut.ControllerContext = TestHelpers.CreateTestControllerContext(userId);
         
         // Act
         var result = await _sut.DeleteAsync(contextId, CancellationToken.None);

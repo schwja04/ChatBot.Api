@@ -15,5 +15,5 @@ public record CreatePromptResponse
 
     public required string Value { get; init; }
 
-    public required string Owner { get; init; }
+    public required Guid OwnerId { get; init; }
 }

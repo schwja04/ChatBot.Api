@@ -22,7 +22,7 @@ public class PromptAuthorizationExceptionHandler(ILogger<PromptAuthorizationExce
         _logger.LogError(
             ex, 
             "User ({UnauthorizedUser}) is not authorized to access Prompt ({PromptId}).", 
-            ex.UnauthorizedUser, 
+            ex.UnauthorizedUserId, 
             ex.PromptId);
         
         var problemDetails = new ProblemDetails
@@ -33,7 +33,7 @@ public class PromptAuthorizationExceptionHandler(ILogger<PromptAuthorizationExce
             Extensions = new Dictionary<string, object?>()
             {
                 ["promptId"] = ex.PromptId,
-                ["unauthorizedUser"] = ex.UnauthorizedUser
+                ["unauthorizedUser"] = ex.UnauthorizedUserId
             }
         };
 

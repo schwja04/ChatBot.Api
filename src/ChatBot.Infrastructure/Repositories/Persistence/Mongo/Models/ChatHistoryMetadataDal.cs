@@ -11,7 +11,8 @@ internal record ChatHistoryMetadataDal
 
     public required string Title { get; init; }
 
-    public required string Username { get; init; }
+    [BsonRepresentation(BsonType.String)]
+    public required Guid UserId { get; init; }
 
     [BsonRepresentation(BsonType.DateTime)]
     public required DateTimeOffset CreatedAt { get; init; }

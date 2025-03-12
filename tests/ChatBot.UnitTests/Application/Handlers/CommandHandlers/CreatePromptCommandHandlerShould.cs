@@ -50,11 +50,11 @@ public class CreatePromptCommandHandlerShould
 	{
 		// Arrange
 		var cmd = _fixture.Create<CreatePromptCommand>();
-		var prompt = Prompt.CreateNew(cmd.Key, _fixture.Create<string>(), cmd.Owner);
+		var prompt = Prompt.CreateNew(cmd.Key, _fixture.Create<string>(), cmd.OwnerId);
 		var cancellationToken = CancellationToken.None;
 
 		_promptRepository
-			.GetAsync(cmd.Owner, cmd.Key, cancellationToken)
+			.GetAsync(cmd.OwnerId, cmd.Key, cancellationToken)
 			.Returns(prompt);
 
 		// Act

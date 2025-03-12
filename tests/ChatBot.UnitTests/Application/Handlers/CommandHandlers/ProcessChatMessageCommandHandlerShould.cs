@@ -35,14 +35,14 @@ public class ProcessChatMessageCommandHandlerShould
         var chatContext = ChatContext.CreateExisting(
             contextId: _fixture.Create<Guid>(),
             title: _fixture.Create<string>(),
-            username: _fixture.Create<string>(),
+            userId: _fixture.Create<Guid>(),
             messages: new List<ChatMessage>(),
             createdAt: _fixture.Create<DateTimeOffset>(),
             updatedAt: _fixture.Create<DateTimeOffset>());
         var request = _fixture
             .Build<ProcessChatMessageCommand>()
             .With(x => x.ContextId, chatContext.ContextId)
-            .With(x => x.Username, chatContext.Username)
+            .With(x => x.UserId, chatContext.UserId)
             .Create();
         var cancellationToken = CancellationToken.None;
         
@@ -108,14 +108,14 @@ public class ProcessChatMessageCommandHandlerShould
         var chatContext = ChatContext.CreateExisting(
             contextId: _fixture.Create<Guid>(),
             title: _fixture.Create<string>(),
-            username: _fixture.Create<string>(),
+            userId: _fixture.Create<Guid>(),
             messages: new List<ChatMessage>(),
             createdAt: _fixture.Create<DateTimeOffset>(),
             updatedAt: _fixture.Create<DateTimeOffset>());
         var request = _fixture
             .Build<ProcessChatMessageCommand>()
             .With(x => x.ContextId, chatContext.ContextId)
-            .With(x => x.Username, _fixture.Create<string>())
+            .With(x => x.UserId, _fixture.Create<Guid>())
             .Create();
         var cancellationToken = CancellationToken.None;
         

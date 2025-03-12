@@ -2,6 +2,7 @@ using System.Net;
 using AutoFixture;
 using ChatBot.Api.Contracts;
 using ChatBot.Api.IntegrationTests.Endpoints.TestHelpers;
+using ChatBot.Api.IntegrationTests.WebApplicationFactories.MockImplementations;
 using FluentAssertions;
 
 namespace ChatBot.Api.IntegrationTests.Endpoints.PromptEndpointTests;
@@ -29,7 +30,7 @@ public static class PromptTestCases
         createPromptHttpResponse.Headers.Location.Should().NotBeNull();
         createPromptResponse!.Key.Should().Be(createPromptRequest.Key);
         createPromptResponse.Value.Should().Be(createPromptRequest.Value);
-        createPromptResponse.Owner.Should().NotBeNullOrEmpty();
+        createPromptResponse.OwnerId.Should().Be(TestAuthHandler.UserId);
 
         Guid promptId = createPromptResponse.PromptId;
         #endregion

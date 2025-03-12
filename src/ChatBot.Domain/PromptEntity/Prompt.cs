@@ -4,12 +4,12 @@ namespace ChatBot.Domain.PromptEntity;
 
 public record Prompt
 {
-    private Prompt(Guid promptId, string key, string value, string owner)
+    private Prompt(Guid promptId, string key, string value, Guid ownerId)
     {
         PromptId = promptId;
         Key = key;
         Value = value;
-        Owner = owner;
+        OwnerId = ownerId;
     }
 
     public Guid PromptId { get; }
@@ -18,7 +18,7 @@ public record Prompt
 
     public string Value { get; private set; }
 
-    public string Owner { get; }
+    public Guid OwnerId { get; }
     
     public void UpdateValue(string value)
     {
@@ -34,7 +34,7 @@ public record Prompt
     {
         if (string.IsNullOrWhiteSpace(key))
         {
-            throw new PromptKeyCannotBeEmptyException(PromptId, Owner);
+            throw new PromptKeyCannotBeEmptyException(PromptId, OwnerId);
         }
         
         if (string.Equals(Key, key, StringComparison.OrdinalIgnoreCase))
@@ -45,22 +45,22 @@ public record Prompt
         Key = key;
     }
 
-    public static Prompt CreateNew(string key, string value, string owner)
+    public static Prompt CreateNew(string key, string value, Guid ownerId)
     {
         return new Prompt(
             promptId: Guid.NewGuid(),
             key: key,
             value: value,
-            owner: owner);
+            ownerId: ownerId);
     }
 
-    public static Prompt CreateExisting(Guid promptId, string key, string value, string owner)
+    public static Prompt CreateExisting(Guid promptId, string key, string value, Guid ownerId)
     {
         return new Prompt(
             promptId: promptId,
             key: key,
             value: value,
-            owner: owner);
+            ownerId: ownerId);
     }
 }
 

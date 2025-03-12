@@ -48,7 +48,7 @@ public class DeletePromptCommandHandlerShould
 		var prompt = _fixture.Create<Prompt>();
 		var cmd = new DeletePromptCommand
 		{
-			Username = prompt.Owner,
+			UserId = prompt.OwnerId,
 			PromptId = prompt.PromptId
 		};
 		var cancellationToken = CancellationToken.None;
@@ -72,7 +72,7 @@ public class DeletePromptCommandHandlerShould
 		var prompt = _fixture.Create<Prompt>();
 		var cmd = new DeletePromptCommand
 		{
-			Username = "DifferentUser",
+			UserId = Guid.NewGuid(),
 			PromptId = prompt.PromptId
 		};
 		var cancellationToken = CancellationToken.None;

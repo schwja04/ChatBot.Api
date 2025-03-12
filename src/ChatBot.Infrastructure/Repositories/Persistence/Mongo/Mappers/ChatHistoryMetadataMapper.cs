@@ -10,7 +10,7 @@ internal static class ChatHistoryMetadataMapper
         return ChatContextMetadata.CreateExisting(
             contextId: metadata.ContextId,
             title: metadata.Title,
-            username: metadata.Username,
+            userId: metadata.UserId,
             createdAt: metadata.CreatedAt,
             updatedAt: metadata.UpdatedAt);
     }

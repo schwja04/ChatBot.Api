@@ -3,24 +3,27 @@ using System;
 using ChatBot.Infrastructure.Repositories.Persistence.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
-namespace ChatBot.Infrastructure.EntityFrameworkCore.Postgresql.Migrations
+namespace ChatBot.Infrastructure.EntityFrameworkCore.SqlServer.Migrations
 {
     [DbContext(typeof(ChatBotDbContext))]
-    partial class ChatBotContextModelSnapshot : ModelSnapshot
+    [Migration("20250312041154_UserId")]
+    partial class UserId
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("ProductVersion", "9.0.2")
-                .HasAnnotation("Relational:MaxIdentifierLength", 63);
+                .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
-            NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
+            SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
             modelBuilder.Entity("ChatBot.Domain.ChatContextEntity.ChatContext", b =>
                 {
@@ -28,23 +31,23 @@ namespace ChatBot.Infrastructure.EntityFrameworkCore.Postgresql.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bigint");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
 
                     b.Property<Guid>("ContextId")
-                        .HasColumnType("uuid");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Title")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("UpdatedAt")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("datetime2");
 
                     b.Property<Guid>("UserId")
-                        .HasColumnType("uuid");
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
@@ -60,21 +63,21 @@ namespace ChatBot.Infrastructure.EntityFrameworkCore.Postgresql.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bigint");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
 
                     b.Property<string>("Key")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<Guid>("OwnerId")
-                        .HasColumnType("uuid");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("PromptId")
-                        .HasColumnType("uuid");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Value")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -95,27 +98,27 @@ namespace ChatBot.Infrastructure.EntityFrameworkCore.Postgresql.Migrations
                                 .ValueGeneratedOnAdd()
                                 .HasColumnType("bigint");
 
-                            NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b1.Property<long>("Id"));
+                            SqlServerPropertyBuilderExtensions.UseIdentityColumn(b1.Property<long>("Id"));
 
                             b1.Property<Guid>("ChatContextContextId")
-                                .HasColumnType("uuid");
+                                .HasColumnType("uniqueidentifier");
 
                             b1.Property<string>("Content")
                                 .IsRequired()
-                                .HasColumnType("text");
+                                .HasColumnType("nvarchar(max)");
 
                             b1.Property<DateTime>("CreatedAt")
-                                .HasColumnType("timestamp with time zone");
+                                .HasColumnType("datetime2");
 
                             b1.Property<Guid>("MessageId")
-                                .HasColumnType("uuid");
+                                .HasColumnType("uniqueidentifier");
 
                             b1.Property<string>("PromptKey")
                                 .IsRequired()
-                                .HasColumnType("text");
+                                .HasColumnType("nvarchar(max)");
 
                             b1.Property<int>("Role")
-                                .HasColumnType("integer");
+                                .HasColumnType("int");
 
                             b1.HasKey("Id");
 

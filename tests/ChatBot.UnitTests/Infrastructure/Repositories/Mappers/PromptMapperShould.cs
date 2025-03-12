@@ -22,7 +22,7 @@ public class PromptMapperShould
 		Prompt prompt = Prompt.CreateNew(
 			_fixture.Create<string>(),
 			_fixture.Create<string>(),
-			_fixture.Create<string>());
+			_fixture.Create<Guid>());
 
 		// Act
 		PromptDal promptDal = prompt.ToDal();

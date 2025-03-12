@@ -9,8 +9,8 @@ public interface IPromptRepository : IReadPromptRepository, IWritePromptReposito
 public interface IReadPromptRepository
 {
     Task<Prompt?> GetAsync(Guid promptId, CancellationToken cancellationToken);
-    Task<Prompt?> GetAsync(string username, string promptKey, CancellationToken cancellationToken);
-    Task<ReadOnlyCollection<Prompt>> GetManyAsync(string username, CancellationToken cancellationToken);
+    Task<Prompt?> GetAsync(Guid userId, string promptKey, CancellationToken cancellationToken);
+    Task<ReadOnlyCollection<Prompt>> GetManyAsync(Guid userId, CancellationToken cancellationToken);
 }
 
 public interface IWritePromptRepository

@@ -11,7 +11,8 @@ internal record ChatHistoryDal
 
     public required string Title { get; init; }
 
-    public required string Username { get; init; }
+    [BsonRepresentation(BsonType.String)]
+    public required Guid UserId { get; init; }
 
     public required IEnumerable<ChatMessageDal> ChatMessages { get; init; }
 

@@ -11,7 +11,7 @@ internal static class ChatHistoryMapper
         {
             ContextId = context.ContextId,
             Title = context.Title,
-            Username = context.Username,
+            UserId = context.UserId,
             ChatMessages = context.Messages.Select(message => message.ToDal()),
             CreatedAt = context.CreatedAt,
             UpdatedAt = context.UpdatedAt
@@ -23,7 +23,7 @@ internal static class ChatHistoryMapper
         return ChatContext.CreateExisting(
             contextId: history.ContextId,
             title: history.Title,
-            username: history.Username,
+            userId: history.UserId,
             messages: history.ChatMessages.Select(message => message.ToDomain()),
             createdAt: history.CreatedAt,
             updatedAt: history.UpdatedAt);

@@ -38,32 +38,39 @@ internal class ChatContextMongoRepository(IMongoClientFactory mongoClientFactory
         return chatHistoryDal?.ToDomain();
     }
 
-    public async Task<ReadOnlyCollection<ChatContextMetadata>> GetManyMetadataAsync(string username, CancellationToken cancellationToken)
+    public async Task<ReadOnlyCollection<ChatContextMetadata>> GetManyMetadataAsync(Guid userId, CancellationToken cancellationToken)
     {
-        var collection = GetCollection();
+        try
+        {
+            var collection = GetCollection();
 
-        var filter = Builders<ChatHistoryDal>
-            .Filter
-            .Where(x => string.Equals(x.Username, username, StringComparison.OrdinalIgnoreCase));
+            var filter = Builders<ChatHistoryDal>
+                .Filter
+                .Where(x => x.UserId == userId);
 
-        using IAsyncCursor<ChatHistoryMetadataDal> result = await collection
-            .FindAsync(filter, new FindOptions<ChatHistoryDal, ChatHistoryMetadataDal>()
-            {
-                Projection = Builders<ChatHistoryDal>
-                    .Projection
-                    .Expression(chatHistory => new ChatHistoryMetadataDal()
-                    {
-                        ContextId = chatHistory.ContextId,
-                        Title = chatHistory.Title,
-                        Username = chatHistory.Username,
-                        CreatedAt = chatHistory.CreatedAt,
-                        UpdatedAt = chatHistory.UpdatedAt,
-                    })
-            }, cancellationToken: cancellationToken);
+            using IAsyncCursor<ChatHistoryMetadataDal> result = await collection
+                .FindAsync(filter, new FindOptions<ChatHistoryDal, ChatHistoryMetadataDal>()
+                {
+                    Projection = Builders<ChatHistoryDal>
+                        .Projection
+                        .Expression(chatHistory => new ChatHistoryMetadataDal()
+                        {
+                            ContextId = chatHistory.ContextId,
+                            Title = chatHistory.Title,
+                            UserId = chatHistory.UserId,
+                            CreatedAt = chatHistory.CreatedAt,
+                            UpdatedAt = chatHistory.UpdatedAt,
+                        })
+                }, cancellationToken: cancellationToken);
 
-        var chatHistoryMetadataDals = await result.ToListAsync(cancellationToken);
+            var chatHistoryMetadataDals = await result.ToListAsync(cancellationToken);
 
-        return chatHistoryMetadataDals.Select(dal => dal.ToDomain()).ToList().AsReadOnly();
+            return chatHistoryMetadataDals.Select(dal => dal.ToDomain()).ToList().AsReadOnly();
+        }
+        catch(Exception ex)
+        {
+            throw new Exception("Error getting chat context metadata", ex);
+        }
     }
 
     public async Task DeleteAsync(Guid contextId, CancellationToken cancellationToken)

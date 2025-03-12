@@ -37,7 +37,7 @@ public class UpdatePromptCommandHandlerShould
 			cmd.PromptId, 
 			key: _fixture.Create<string>(), 
 			value: _fixture.Create<string>(), 
-			cmd.Owner);
+			cmd.UserId);
 		
 		_promptRepository
 			.GetAsync(cmd.PromptId, cancellationToken)
@@ -56,7 +56,7 @@ public class UpdatePromptCommandHandlerShould
 					x.PromptId == cmd.PromptId
 					&& x.Key == cmd.Key
 					&& x.Value == cmd.Value
-					&& x.Owner == cmd.Owner),
+					&& x.OwnerId == cmd.UserId),
 				Arg.Any<CancellationToken>());
 	}
 	
@@ -85,7 +85,7 @@ public class UpdatePromptCommandHandlerShould
 			cmd.PromptId, 
 			key: _fixture.Create<string>(), 
 			value: _fixture.Create<string>(), 
-			_fixture.Create<string>());
+			ownerId: _fixture.Create<Guid>());
 		
 		_promptRepository
 			.GetAsync(cmd.PromptId, cancellationToken)
@@ -109,20 +109,20 @@ public class UpdatePromptCommandHandlerShould
 			cmd.PromptId, 
 			key: _fixture.Create<string>(), 
 			value: _fixture.Create<string>(), 
-			cmd.Owner);
+			cmd.UserId);
 		
 		var existingPrompt = Prompt.CreateExisting(
 			Guid.NewGuid(), 
 			key: cmd.Key, 
 			value: _fixture.Create<string>(), 
-			cmd.Owner);
+			cmd.UserId);
 		
 		_promptRepository
 			.GetAsync(cmd.PromptId, cancellationToken)
 			.Returns(promptToUpdate);
 		
 		_promptRepository
-			.GetAsync(cmd.Owner, cmd.Key, cancellationToken)
+			.GetAsync(cmd.UserId, cmd.Key, cancellationToken)
 			.Returns(existingPrompt);
 		
 		// Act

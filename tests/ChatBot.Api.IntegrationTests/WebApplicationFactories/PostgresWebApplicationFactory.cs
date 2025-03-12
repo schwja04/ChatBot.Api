@@ -6,6 +6,7 @@ using ChatBot.Domain.PromptEntity;
 using ChatBot.Infrastructure.EntityFrameworkCore.Postgresql;
 using ChatBot.Infrastructure.Repositories.Persistence.EntityFrameworkCore;
 using DotNet.Testcontainers.Builders;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.EntityFrameworkCore;
@@ -72,6 +73,10 @@ public class PostgresWebApplicationFactory : WebApplicationFactory<IApiMarker>, 
             services.AddScoped<IChatContextRepository, ChatContextEntityFrameworkRepository>();
             // services.Decorate<IPromptRepository, CachedPromptRepository>();
             services.AddSingleton<IChatClient, SubstituteChatClient>();
+            
+            services.AddAuthentication(defaultScheme: "TestScheme")
+                .AddScheme<AuthenticationSchemeOptions, TestAuthHandler>(
+                    "TestScheme", options => { });
         });
     }
     

@@ -21,8 +21,8 @@ public class PromptKeyCannotBeEmptyExceptionHandler(ILogger<PromptKeyCannotBeEmp
         
         _logger.LogError(
             ex, 
-            "User ({Owner}) attempted to set Prompt ({PromptId}) to empty.", 
-            ex.Owner,
+            "User ({UserId}) attempted to set Prompt ({PromptId}) to empty.", 
+            ex.OwnerId,
             ex.PromptId);
 
         var problemDetails = new ProblemDetails
@@ -33,7 +33,7 @@ public class PromptKeyCannotBeEmptyExceptionHandler(ILogger<PromptKeyCannotBeEmp
             Extensions = new Dictionary<string, object?>()
             {
                 ["promptId"] = ex.PromptId,
-                ["owner"] = ex.Owner
+                ["userId"] = ex.OwnerId,
             }
         };
 
