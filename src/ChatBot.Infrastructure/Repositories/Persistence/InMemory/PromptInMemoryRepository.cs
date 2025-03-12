@@ -10,23 +10,23 @@ internal class PromptInMemoryRepository : IPromptRepository
         Prompt.CreateNew(
             key: PromptKey.Email,
             value: PromptValue.Email,
-            owner: "System"),
+            ownerId: Guid.Empty),
         Prompt.CreateNew(
             key: PromptKey.None,
             value: PromptValue.None,
-            owner: "System"),
+            ownerId: Guid.Empty),
         Prompt.CreateNew(
             key: PromptKey.Title,
             value: PromptValue.Title,
-            owner: "System"),
+            ownerId: Guid.Empty),
         Prompt.CreateNew(
             key: "Custom",
             value: "Does not matter {0}",
-            owner: "Unknown"),
+            ownerId: Guid.NewGuid()),
         Prompt.CreateNew(
             key: "ShouldNotShow",
             value: "Also does not matter {0}",
-            owner: "schwjac"),
+            ownerId: Guid.NewGuid()),
     };
 
     public Task<Prompt?> GetAsync(Guid promptId, CancellationToken cancellationToken)
@@ -43,10 +43,10 @@ internal class PromptInMemoryRepository : IPromptRepository
         return Task.FromResult<Prompt?>(copiedPrompt);
     }
 
-    public Task<Prompt?> GetAsync(string username, string promptKey, CancellationToken cancellationToken)
+    public Task<Prompt?> GetAsync(Guid userId, string promptKey, CancellationToken cancellationToken)
     {
         var userPrompt = _prompts.FirstOrDefault(prompt =>
-            string.Equals(prompt.Owner, username, StringComparison.OrdinalIgnoreCase)
+            prompt.OwnerId == userId
             && string.Equals(prompt.Key, promptKey, StringComparison.OrdinalIgnoreCase));
 
         if (userPrompt is null)
@@ -60,10 +60,10 @@ internal class PromptInMemoryRepository : IPromptRepository
         return Task.FromResult<Prompt?>(copiedPrompt);
     }
 
-    public Task<ReadOnlyCollection<Prompt>> GetManyAsync(string username, CancellationToken cancellationToken)
+    public Task<ReadOnlyCollection<Prompt>> GetManyAsync(Guid userId, CancellationToken cancellationToken)
     {
         var userPrompts = _prompts
-            .Where(prompt => string.Equals(prompt.Owner, username, StringComparison.OrdinalIgnoreCase))
+            .Where(prompt => prompt.OwnerId == userId)
             .Select(p => p with { })
             .ToList()
             .AsReadOnly();

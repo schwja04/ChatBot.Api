@@ -12,7 +12,7 @@ public static class ChatContextMetadataMapper
         {
             ContextId = metadata.ContextId,
             Title = metadata.Title,
-            Username = metadata.Username,
+            UserId = metadata.UserId,
             CreatedAt = metadata.CreatedAt,
             UpdatedAt = metadata.UpdatedAt
         };

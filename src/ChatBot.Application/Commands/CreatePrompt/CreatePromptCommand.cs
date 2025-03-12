@@ -9,5 +9,5 @@ public record CreatePromptCommand : IRequest<Prompt>
 
     public required string Value { get; init; }
 
-    public required string Owner { get; init; }
+    public required Guid OwnerId { get; init; }
 }

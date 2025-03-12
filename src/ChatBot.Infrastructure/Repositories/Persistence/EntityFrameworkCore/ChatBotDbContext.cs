@@ -29,10 +29,10 @@ public class PromptConfiguration : IEntityTypeConfiguration<Prompt>
         builder.Property(p => p.PromptId).IsRequired();
         builder.Property(p => p.Key).IsRequired();
         builder.Property(p => p.Value).IsRequired();
-        builder.Property(p => p.Owner).IsRequired();
+        builder.Property(p => p.OwnerId).IsRequired();
         
         builder.HasIndex(p => p.PromptId).IsUnique();
-        builder.HasIndex(p => new { p.Owner, p.Key }).IsUnique();
+        builder.HasIndex(p => new { Owner = p.OwnerId, p.Key }).IsUnique();
     }
 }
 
@@ -49,7 +49,7 @@ public class ChatContextConfiguration : IEntityTypeConfiguration<ChatContext>
 
         // Configure properties
         builder.Property(cc => cc.Title).IsRequired();
-        builder.Property(cc => cc.Username).IsRequired();
+        builder.Property(cc => cc.UserId).IsRequired();
         builder.Property(cc => cc.CreatedAt)
             .HasConversion(x => x.UtcDateTime, x => new DateTimeOffset(x, TimeSpan.Zero))
             .IsRequired();

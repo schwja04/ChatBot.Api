@@ -31,7 +31,7 @@ public class GetChatContextQueryHandlerShould
         var query = new GetChatContextQuery
         {
             ContextId = chatContext.ContextId,
-            Username = chatContext.Username
+            UserId = chatContext.UserId
         };
 
         _chatContextRepository.GetAsync(query.ContextId, Arg.Any<CancellationToken>()).Returns(chatContext);

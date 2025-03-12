@@ -1,5 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 using System.Net.Mime;
+using ChatBot.Api.Authentication;
 using ChatBot.Api.Contracts;
 using ChatBot.Api.Mappers;
 using ChatBot.Application.Commands.CreatePrompt;
@@ -30,13 +31,16 @@ public class PromptsController(ILogger<PromptsController> logger, IMediator medi
     {
         var query = new GetManyPromptsQuery()
         {
-            Username = User.Identity?.Name ?? DefaultUsername,
+            UserId = User.GetUserId(),
             IncludeSystemPrompts = includeSystemPrompts
         };
 
+        var username = User.GetUsername();
+
         _logger.LogInformation(
-            "Getting prompts for {Username}. Included system prompts: {IncludeSystemPrompts}",
-            query.Username,
+            "Getting prompts for user {Username} ({UserId}). Included system prompts: {IncludeSystemPrompts}",
+            username,
+            query.UserId,
             query.IncludeSystemPrompts);
         ReadOnlyCollection<Prompt> prompts = await _mediator.Send(query, cancellationToken);
 
@@ -47,7 +51,7 @@ public class PromptsController(ILogger<PromptsController> logger, IMediator medi
                 PromptId = x.PromptId,
                 Key = x.Key,
                 Value = x.Value,
-                Owner = x.Owner
+                OwnerId = x.OwnerId
             }).ToList().AsReadOnly()
         });
     }
@@ -59,14 +63,19 @@ public class PromptsController(ILogger<PromptsController> logger, IMediator medi
         [FromRoute] Guid promptId,
         CancellationToken cancellationToken = default)
     {
+        var userId = User.GetUserId();
         string username = User.Identity?.Name ?? DefaultUsername;
 
-        var command = new GetPromptQuery(username, promptId);
+        var command = new GetPromptQuery
+        {
+            PromptId = promptId,
+            UserId = userId
+        };
 
-        _logger.LogInformation("Getting prompt {PromptId} for {Username}", promptId, username);
+        _logger.LogInformation("Getting prompt {PromptId} for user {Username} ({UserId})", promptId, username, userId);
         var prompt = await _mediator.Send(command, cancellationToken);
 
-        _logger.LogInformation("Prompt {PromptId} found for {Username}", promptId, username);
+        _logger.LogInformation("Prompt {PromptId} found for user {Username} ({UserId})", promptId, username, userId);
         return Ok(prompt.ToGetPromptResponse());
     }
 
@@ -76,23 +85,23 @@ public class PromptsController(ILogger<PromptsController> logger, IMediator medi
     public async Task<IActionResult> CreateAsync(
         [FromBody] CreatePromptRequest request, CancellationToken cancellationToken = default)
     {
-        string username = User.Identity?.Name ?? DefaultUsername;
-
+        var username = User.GetUsername();
+        
         var command = new CreatePromptCommand
         {
             Key = request.Key,
             Value = request.Value,
-            Owner = username
+            OwnerId = User.GetUserId()
         };
 
-        _logger.LogInformation("Creating prompt for {Username}", username);
+        _logger.LogInformation("Creating prompt for user {Username} ({UserId})", username, command.OwnerId);
         Prompt prompt = await _mediator.Send(command, cancellationToken);
 
         var uri = new Uri(
             Routes.PromptsByPromptId.Replace("{promptId}", prompt.PromptId.ToString()),
             UriKind.Relative);
 
-        _logger.LogInformation("Prompt {PromptId} created for {Username}", prompt.PromptId, username);
+        _logger.LogInformation("Prompt {PromptId} created for user {Username} ({UserId})", prompt.PromptId, username, command.OwnerId);
         return Created(uri, prompt.ToCreatePromptResponse());
     }
 
@@ -101,15 +110,15 @@ public class PromptsController(ILogger<PromptsController> logger, IMediator medi
     public async Task<IActionResult> DeleteAsync(
         [FromRoute] Guid promptId, CancellationToken cancellationToken = default)
     {
-        string username = User.Identity?.Name ?? DefaultUsername;
+        var username = User.GetUsername();
 
         var command = new DeletePromptCommand
         {
             PromptId = promptId,
-            Username = username
+            UserId = User.GetUserId()
         };
 
-        _logger.LogInformation("Deleting prompt {PromptId} for {Username}", promptId, username);
+        _logger.LogInformation("Deleting prompt {PromptId} for user {Username} ({UserId})", promptId, username, command.UserId);
         await _mediator.Send(command, cancellationToken);
 
         return NoContent();
@@ -120,17 +129,17 @@ public class PromptsController(ILogger<PromptsController> logger, IMediator medi
     public async Task<IActionResult> UpdateAsync(
         [FromRoute] Guid promptId, [FromBody] UpdatePromptRequest request, CancellationToken cancellationToken = default)
     {
-        string username = User.Identity?.Name ?? DefaultUsername;
+        string username = User.GetUsername();
 
         var command = new UpdatePromptCommand
         {
             PromptId = promptId,
             Key = request.Key,
             Value = request.Value,
-            Owner = username
+            UserId = User.GetUserId()
         };
 
-        _logger.LogInformation("Updating prompt {PromptId} for {Username}", promptId, username);
+        _logger.LogInformation("Updating prompt {PromptId} for user {Username} ({UserId})", promptId, username, command.UserId);
         await _mediator.Send(command, cancellationToken);
 
         return NoContent();

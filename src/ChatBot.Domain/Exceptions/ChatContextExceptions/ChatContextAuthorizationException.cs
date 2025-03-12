@@ -2,17 +2,17 @@
 
 public sealed class ChatContextAuthorizationException : ApplicationException
 {
-	public ChatContextAuthorizationException(Guid contextId, string unauthorizedUser)
+	public ChatContextAuthorizationException(Guid contextId, Guid unauthorizedUserId)
 		: base("User is not authorized to access this ChatContext")
 	{
 		Data.Add(nameof(contextId), contextId);
-		Data.Add(nameof(unauthorizedUser), unauthorizedUser);
+		Data.Add(nameof(unauthorizedUserId), unauthorizedUserId);
 		
 		ContextId = contextId;
-		UnauthorizedUser = unauthorizedUser;
+		UnauthorizedUserId = unauthorizedUserId;
 	}
 	
 	public Guid ContextId { get; }
-	public string UnauthorizedUser { get; }
+	public Guid UnauthorizedUserId { get; }
 }
 

@@ -2,7 +2,7 @@ namespace ChatBot.Domain.Exceptions.PromptExceptions;
 
 public sealed class PromptDuplicateKeyException : ApplicationException
 {
-    public PromptDuplicateKeyException(string key, string owner)
+    public PromptDuplicateKeyException(string key, Guid owner)
         : base("Prompt with provided key already exists.")
     {
         Data.Add(nameof(key), key);
@@ -14,5 +14,5 @@ public sealed class PromptDuplicateKeyException : ApplicationException
     
     public string Key { get; }
     
-    public string Owner { get; }
+    public Guid Owner { get; }
 }

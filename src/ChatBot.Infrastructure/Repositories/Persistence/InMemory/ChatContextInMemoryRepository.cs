@@ -23,14 +23,14 @@ internal class ChatContextInMemoryRepository : IChatContextRepository
         return Task.FromResult<ChatContext?>(chatHistory);
     }
 
-    public Task<ReadOnlyCollection<ChatContextMetadata>> GetManyMetadataAsync(string username, CancellationToken cancellationToken)
+    public Task<ReadOnlyCollection<ChatContextMetadata>> GetManyMetadataAsync(Guid userId, CancellationToken cancellationToken)
     {
         var chatHistoryMetadatas = _chatHistories.Values
-            .Where(chatHistory => string.Equals(chatHistory.Username, username, StringComparison.OrdinalIgnoreCase))
+            .Where(chatHistory => chatHistory.UserId == userId)
             .Select(chatHistory => ChatContextMetadata.CreateExisting(
                 contextId: chatHistory.ContextId,
                 title: chatHistory.Title,
-                username: chatHistory.Username,
+                userId: chatHistory.UserId,
                 createdAt: chatHistory.CreatedAt,
                 updatedAt: chatHistory.UpdatedAt))
             .ToList()

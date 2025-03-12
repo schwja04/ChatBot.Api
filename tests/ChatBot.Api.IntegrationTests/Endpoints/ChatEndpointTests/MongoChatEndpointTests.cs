@@ -8,7 +8,7 @@ public class MongoChatEndpointTests(MongoWebApplicationFactory factory)
     private readonly HttpClient _client = factory.HttpClient;
     
     [Fact]
-    public async Task PromptEndpointsShould()
+    public async Task ChatEndpointsShould()
     {
         await ChatTestCases.RunAsync(_client);
     }

@@ -36,14 +36,14 @@ public class PromptsControllerShould
 	public async Task GetManyAsync_ShouldReturn200()
 	{
 		// Arrange
-		var username = _fixture.Create<string>();
+		var userId = _fixture.Create<Guid>();
 		var prompts = new List<Prompt>().AsReadOnly();
 		var cancellationToken = CancellationToken.None;
 
 		_mediator.Send(Arg.Any<GetManyPromptsQuery>(), Arg.Any<CancellationToken>())
 			.Returns(prompts);
 
-		_sut.ControllerContext = TestHelpers.CreateTestControllerContext(username);
+		_sut.ControllerContext = TestHelpers.CreateTestControllerContext(userId);
 
 		// Act
 		var response = await _sut.GetManyAsync(includeSystemPrompts: false, cancellationToken);
@@ -63,13 +63,13 @@ public class PromptsControllerShould
 			_fixture.Create<Guid>(),
 			_fixture.Create<string>(),
 			_fixture.Create<string>(),
-			_fixture.Create<string>());
+			_fixture.Create<Guid>());
         var cancellationToken = CancellationToken.None;
 
         _mediator.Send(Arg.Any<GetPromptQuery>(), Arg.Any<CancellationToken>())
             .Returns(prompt);
 
-        _sut.ControllerContext = TestHelpers.CreateTestControllerContext(prompt.Owner);
+        _sut.ControllerContext = TestHelpers.CreateTestControllerContext(prompt.OwnerId);
 
         // Act
         var response = await _sut.GetAsync(prompt.PromptId, cancellationToken);
@@ -86,18 +86,18 @@ public class PromptsControllerShould
     {
         // Arrange
         var request = _fixture.Create<CreatePromptRequest>();
-        var username = _fixture.Create<string>();
+        var userId = _fixture.Create<Guid>();
         var cancellationToken = CancellationToken.None;
 
         var prompt = Prompt.CreateNew(
             request.Key,
             request.Value,
-            username);
+            userId);
 
         _mediator.Send(Arg.Any<CreatePromptCommand>(), Arg.Any<CancellationToken>())
             .Returns(prompt);
 
-        _sut.ControllerContext = TestHelpers.CreateTestControllerContext(username);
+        _sut.ControllerContext = TestHelpers.CreateTestControllerContext(userId);
 
         // Act
         var result = await _sut.CreateAsync(request, cancellationToken);
@@ -112,12 +112,12 @@ public class PromptsControllerShould
     public async Task DeleteAsync_ShouldReturnNoContent()
     {
         // Arrange
-        var username = _fixture.Create<string>();
+        var userId = _fixture.Create<Guid>();
         var promptId = _fixture.Create<Guid>();
 
         var cancellationToken = CancellationToken.None;
 
-        _sut.ControllerContext = TestHelpers.CreateTestControllerContext(username);
+        _sut.ControllerContext = TestHelpers.CreateTestControllerContext(userId);
 
         // Act
         var result = await _sut.DeleteAsync(promptId, cancellationToken);
@@ -131,7 +131,7 @@ public class PromptsControllerShould
             .Send(
                 Arg.Is<DeletePromptCommand>(x =>
                     x.PromptId == promptId
-                    && x.Username == username
+                    && x.UserId == userId
                 ),
                 Arg.Any<CancellationToken>());
     }
@@ -140,13 +140,13 @@ public class PromptsControllerShould
     public async Task UpdateAsync_ShouldReturnNoContent()
     {
         // Arrange
-        var username = _fixture.Create<string>();
+        var userId = _fixture.Create<Guid>();
         var request = _fixture.Create<UpdatePromptRequest>();
         var promptId = _fixture.Create<Guid>();
 
         var cancellationToken = CancellationToken.None;
 
-        _sut.ControllerContext = TestHelpers.CreateTestControllerContext(username);
+        _sut.ControllerContext = TestHelpers.CreateTestControllerContext(userId);
 
         // Act
         var result = await _sut.UpdateAsync(promptId, request, cancellationToken);
@@ -162,7 +162,7 @@ public class PromptsControllerShould
                     x.PromptId == promptId
                     && x.Key == request.Key
                     && x.Value == request.Value
-                    && x.Owner == username),
+                    && x.UserId == userId),
                 Arg.Any<CancellationToken>());
     }
 }

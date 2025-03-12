@@ -2,5 +2,5 @@ namespace ChatBot.Application;
 
 public static class Constants
 {
-    public const string SystemUser = "System";
+    public static Guid SystemUser = Guid.Empty;
 }

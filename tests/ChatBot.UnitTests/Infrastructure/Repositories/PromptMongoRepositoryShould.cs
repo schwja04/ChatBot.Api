@@ -59,7 +59,7 @@ public class PromptMongoRepositoryShould
         result!.PromptId.Should().Be(promptDal.PromptId);
         result!.Key.Should().Be(promptDal.Key);
         result!.Value.Should().Be(promptDal.Value);
-        result!.Owner.Should().Be(promptDal.Owner);
+        result!.OwnerId.Should().Be(promptDal.OwnerId);
     }
 
     [Fact]
@@ -73,14 +73,14 @@ public class PromptMongoRepositoryShould
         _mongoCursor.Current.Returns([promptDal]);
 
         // Act
-        var result = await _sut.GetAsync(promptDal.Owner, promptDal.Key, cancellationToken);
+        var result = await _sut.GetAsync(promptDal.OwnerId, promptDal.Key, cancellationToken);
 
         // Assert
         result.Should().NotBeNull();
         result!.PromptId.Should().Be(promptDal.PromptId);
         result!.Key.Should().Be(promptDal.Key);
         result!.Value.Should().Be(promptDal.Value);
-        result!.Owner.Should().Be(promptDal.Owner);
+        result!.OwnerId.Should().Be(promptDal.OwnerId);
     }
 
     [Fact]
@@ -95,7 +95,7 @@ public class PromptMongoRepositoryShould
         _mongoCursor.Current.Returns(promptDals);
 
         // Act
-        var result = await _sut.GetManyAsync(promptDals.First().Owner, cancellationToken);
+        var result = await _sut.GetManyAsync(promptDals.First().OwnerId, cancellationToken);
 
         // Assert
         result.Should().NotBeNull();
@@ -107,7 +107,7 @@ public class PromptMongoRepositoryShould
         firstPrompt.PromptId.Should().Be(firstPromptDal.PromptId);
         firstPrompt.Key.Should().Be(firstPromptDal.Key);
         firstPrompt.Value.Should().Be(firstPromptDal.Value);
-        firstPrompt.Owner.Should().Be(firstPromptDal.Owner);
+        firstPrompt.OwnerId.Should().Be(firstPromptDal.OwnerId);
     }
 
     [Fact]
@@ -128,7 +128,7 @@ public class PromptMongoRepositoryShould
                 x.PromptId == prompt.PromptId &&
                 x.Key == prompt.Key &&
                 x.Value == prompt.Value &&
-                x.Owner == prompt.Owner),
+                x.OwnerId == prompt.OwnerId),
             Arg.Any<InsertOneOptions>(),
             cancellationToken);
     }
@@ -143,7 +143,7 @@ public class PromptMongoRepositoryShould
             PromptId = prompt.PromptId,
             Key = _fixture.Create<string>(),
             Value = _fixture.Create<string>(),
-            Owner = prompt.Owner
+            OwnerId = prompt.OwnerId
         };
 
         _mongoCursor.MoveNextAsync(CancellationToken.None).ReturnsForAnyArgs(true);
@@ -160,7 +160,7 @@ public class PromptMongoRepositoryShould
                     x => x.PromptId == prompt.PromptId &&
                          x.Key == prompt.Key &&
                          x.Value == prompt.Value &&
-                         x.Owner == prompt.Owner
+                         x.OwnerId == prompt.OwnerId
                 ),
                 Arg.Is<ReplaceOptions>(x => x.IsUpsert == false),
                 Arg.Any<CancellationToken>());

@@ -12,7 +12,7 @@ internal static class PromptMapper
             PromptId = prompt.PromptId,
             Key = prompt.Key,
             Value = prompt.Value,
-            Owner = prompt.Owner,
+            OwnerId = prompt.OwnerId,
         };
     }
 
@@ -22,6 +22,6 @@ internal static class PromptMapper
             promptId: prompt.PromptId,
             key: prompt.Key,
             value: prompt.Value,
-            owner: prompt.Owner);
+            ownerId: prompt.OwnerId);
     }
 }

@@ -10,5 +10,5 @@ public record UpdatePromptCommand : IRequest
 
     public required string Value { get; init; }
 
-    public required string Owner { get; init; }
+    public required Guid UserId { get; init; }
 }

@@ -20,24 +20,24 @@ internal class DeleteChatContextCommandHandler(
         if (chatContext is null)
         {
             _logger.LogError(
-                "Attempt to delete a chat context with id {ContextId} by user {Username} failed. Context not found.",
+                "Attempt to delete a chat context with id {ContextId} by user {UserId} failed. Context not found.",
                 request.ContextId,
-                request.Username);
-            throw new ChatContextNotFoundException(request.ContextId, request.Username);
+                request.UserId);
+            throw new ChatContextNotFoundException(request.ContextId, request.UserId);
         }
 
-        if (!string.Equals(chatContext.Username, request.Username, StringComparison.OrdinalIgnoreCase))
+        if (chatContext.UserId != request.UserId)
         {
             _logger.LogError(
-                "Attempt to delete a chat context with id {ContextId} by user {Username} failed. User is not authorized.",
+                "Attempt to delete a chat context with id {ContextId} by user {UserId} failed. User is not authorized.",
                 request.ContextId,
-                request.Username);
-            throw new ChatContextAuthorizationException(request.ContextId, request.Username);
+                request.UserId);
+            throw new ChatContextAuthorizationException(request.ContextId, request.UserId);
         }
 
         _logger.LogInformation(
-            "User {Username} is deleting chat context with id {ContextId}.",
-            request.Username,
+            "User {UserId} is deleting chat context with id {ContextId}.",
+            request.UserId,
             request.ContextId);
         await _chatContextRepository.DeleteAsync(request.ContextId, cancellationToken);
     }

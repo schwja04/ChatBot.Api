@@ -41,11 +41,11 @@ public class GetManyPromptQueryHandlerShould
 			Prompt.CreateNew(
 				_fixture.Create<string>(),
 				_fixture.Create<string>(),
-				query.Username)
+				query.UserId)
 		}.AsReadOnly();
 
 		_promptRepository
-			.GetManyAsync(Arg.Any<string>(), Arg.Any<CancellationToken>())
+			.GetManyAsync(Arg.Any<Guid>(), Arg.Any<CancellationToken>())
 			.Returns(userPrompts);
 
 		// Act
@@ -53,7 +53,7 @@ public class GetManyPromptQueryHandlerShould
 
 		// Assert
 		result.Count.Should().Be(userPrompts.Count);
-		result.All(p => string.Equals(p.Owner, query.Username)).Should().BeTrue();
+		result.All(p => p.OwnerId == query.UserId).Should().BeTrue();
 	}
 	
 	[Fact]
@@ -71,7 +71,7 @@ public class GetManyPromptQueryHandlerShould
 			Prompt.CreateNew(
 				_fixture.Create<string>(),
 				_fixture.Create<string>(),
-				query.Username)
+				query.UserId)
 		}.AsReadOnly();
 		
 		var systemPrompts = new List<Prompt>()
@@ -83,7 +83,7 @@ public class GetManyPromptQueryHandlerShould
 		}.AsReadOnly();
 
 		_promptRepository
-			.GetManyAsync(Arg.Any<string>(), Arg.Any<CancellationToken>())
+			.GetManyAsync(Arg.Any<Guid>(), Arg.Any<CancellationToken>())
 			.Returns(userPrompts, systemPrompts);
 
 		// Act
@@ -91,7 +91,7 @@ public class GetManyPromptQueryHandlerShould
 
 		// Assert
 		result.Count.Should().Be(userPrompts.Count + systemPrompts.Count);
-		result.Count(p => string.Equals(p.Owner, query.Username)).Should().Be(userPrompts.Count);
-		result.Count(p => string.Equals(p.Owner, Constants.SystemUser)).Should().Be(systemPrompts.Count);
+		result.Count(p => p.OwnerId == query.UserId).Should().Be(userPrompts.Count);
+		result.Count(p => p.OwnerId == Constants.SystemUser).Should().Be(systemPrompts.Count);
 	}
 }

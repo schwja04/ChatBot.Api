@@ -67,7 +67,7 @@ public class GetPromptQueryHandlerShould
 	{
 		// Arrange
 		var prompt = _fixture.Create<Prompt>();
-		var query = new GetPromptQuery(prompt.Owner, prompt.PromptId);
+		var query = new GetPromptQuery{ PromptId = prompt.PromptId, UserId = prompt.OwnerId };
 		var cancellationToken = CancellationToken.None;
 
 		_promptRepository

@@ -23,7 +23,7 @@ public class ChatContextAuthorizationExceptionHandler(
         _logger.LogError(
             ex, 
             "User ({UnauthorizedUser}) is not authorized to access ChatContext ({ContextId}).", 
-            ex.UnauthorizedUser, 
+            ex.UnauthorizedUserId, 
             ex.ContextId);
         
         var problemDetails = new ProblemDetails
@@ -34,7 +34,7 @@ public class ChatContextAuthorizationExceptionHandler(
             Extensions = new Dictionary<string, object?>()
             {
                 ["contextId"] = ex.ContextId,
-                ["unauthorizedUser"] = ex.UnauthorizedUser
+                ["unauthorizedUser"] = ex.UnauthorizedUserId
             }
         };
 

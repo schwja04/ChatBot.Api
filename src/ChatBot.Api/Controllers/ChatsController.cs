@@ -1,4 +1,5 @@
 using System.Net.Mime;
+using ChatBot.Api.Authentication;
 using ChatBot.Api.Contracts;
 using ChatBot.Api.Mappers;
 using ChatBot.Application.Commands.DeleteChatContext;
@@ -29,12 +30,15 @@ public class ChatsController(ILogger<ChatsController> logger, IMediator mediator
             ContextId = request.ContextId,
             Content = request.Content,
             PromptKey = request.PromptKey,
-            Username = User.Identity?.Name ?? DefaultUsername
+            UserId = User.GetUserId()
         };
         
+        var username = User.GetUsername();
+        
         _logger.LogInformation(
-            "Processing chat message for {Username} in context {ContextId}.",
-            command.Username, 
+            "Processing chat message for user {Username} ({UserId}) in context {ContextId}.",
+            username,
+            command.UserId,
             command.ContextId);
         var response = await _mediator.Send(command, cancellationToken);
         return Ok(new ProcessChatMessageResponse
@@ -51,10 +55,12 @@ public class ChatsController(ILogger<ChatsController> logger, IMediator mediator
     {
         var query = new GetManyChatContextMetadataQuery()
         {
-            Username = User.Identity?.Name ?? DefaultUsername,
+            UserId = User.GetUserId()
         };
+        
+        var username = User.GetUsername();
 
-        _logger.LogInformation("Getting chat context metadata records for {Username}.", query.Username);
+        _logger.LogInformation("Getting chat context metadata records for {Username} ({UserId}).", username, query.UserId);
         var chatContextMetadatas = await _mediator.Send(query, cancellationToken);
 
         return Ok(new GetManyChatContextMetadataResponse
@@ -63,7 +69,7 @@ public class ChatsController(ILogger<ChatsController> logger, IMediator mediator
             {
                 ContextId = x.ContextId,
                 Title = x.Title,
-                Username = x.Username,
+                UserId = x.UserId,
                 CreatedAt = x.CreatedAt,
                 UpdatedAt = x.UpdatedAt
             }).ToArray()
@@ -78,17 +84,19 @@ public class ChatsController(ILogger<ChatsController> logger, IMediator mediator
         var query = new GetChatContextQuery
         {
             ContextId = contextId,
-            Username = User.Identity?.Name ?? DefaultUsername
+            UserId = User.GetUserId()
         };
 
-        _logger.LogInformation("Getting chat context {ContextId} for {Username}.", query.ContextId, query.Username);
+        var username = User.GetUsername();
+        
+        _logger.LogInformation("Getting chat context {ContextId} for {Username} ({UserId}).", query.ContextId, username, query.UserId);
         var response = await _mediator.Send(query, cancellationToken);
 
         return Ok(new GetChatContextResponse
         {
             ContextId = response.ContextId,
             Title = response.Title,
-            Username = response.Username,
+            UserId = response.UserId,
             ChatMessages = response.Messages.ToChatMessageResponses(),
             CreatedAt = response.CreatedAt,
             UpdatedAt = response.UpdatedAt
@@ -106,12 +114,15 @@ public class ChatsController(ILogger<ChatsController> logger, IMediator mediator
         {
             ContextId = contextId,
             Title = request.Title,
-            Username = User.Identity?.Name ?? DefaultUsername
+            UserId = User.GetUserId()
         };
 
+        var username = User.GetUsername();
+        
         _logger.LogInformation(
-            "Updating chat context title for {Username} in context {ContextId}.",
-            command.Username,
+            "Updating chat context title for user {Username} ({UserId}) in context {ContextId}.",
+            username,
+            command.UserId,
             command.ContextId);
         await _mediator.Send(command, cancellationToken);
 
@@ -126,13 +137,16 @@ public class ChatsController(ILogger<ChatsController> logger, IMediator mediator
         var command = new DeleteChatContextCommand
         {
             ContextId = contextId,
-            Username = User.Identity?.Name ?? DefaultUsername
+            UserId = User.GetUserId()
         };
+        
+        var username = User.GetUsername();
 
         _logger.LogInformation(
-            "Deleting chat context {ContextId} for {Username}.",
+            "Deleting chat context {ContextId} for user {Username} ({UserId}).",
             command.ContextId,
-            command.Username);
+            username,
+            command.UserId);
         await _mediator.Send(command, cancellationToken);
 
         return NoContent();

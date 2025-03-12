@@ -22,23 +22,23 @@ internal class DeletePromptCommandHandler(
             _logger.LogError(
                 "Attempted to delete prompt with id ({PromptId}) for owner ({Owner}), but prompt was not found.",
                 request.PromptId,
-                request.Username);
-            throw new PromptNotFoundException(request.PromptId, request.Username);
+                request.UserId);
+            throw new PromptNotFoundException(request.PromptId, request.UserId);
         }
         
-        if (prompt.Owner != request.Username)
+        if (prompt.OwnerId != request.UserId)
         {
             _logger.LogError(
                 "Attempted to delete prompt with id ({PromptId}) for user ({User}), but user is not authorized.",
                 request.PromptId,
-                request.Username);
-            throw new PromptAuthorizationException(request.PromptId, request.Username);
+                request.UserId);
+            throw new PromptAuthorizationException(request.PromptId, request.UserId);
         }
         
         _logger.LogInformation(
             "Deleting prompt with id ({PromptId}) for owner ({Owner}).",
             request.PromptId,
-            request.Username);
+            request.UserId);
         await _promptRepository.DeleteAsync(prompt, cancellationToken);
     }
 }

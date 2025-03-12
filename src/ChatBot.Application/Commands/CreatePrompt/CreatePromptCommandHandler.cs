@@ -16,21 +16,21 @@ internal class CreatePromptCommandHandler(
     public async Task<Prompt> Handle(
         CreatePromptCommand request, CancellationToken cancellationToken)
     {
-        var existingPrompt = await _promptRepository.GetAsync(request.Owner, request.Key, cancellationToken);
+        var existingPrompt = await _promptRepository.GetAsync(request.OwnerId, request.Key, cancellationToken);
         if (existingPrompt is not null)
         {
             _logger.LogError(
-                "Attempted to create prompt with key ({Key}) for owner ({Owner}), but prompt with same key already exists.",
+                "Attempted to create prompt with key ({Key}) for owner ({OwnerId}), but prompt with same key already exists.",
                 request.Key,
-                request.Owner);
-            throw new PromptDuplicateKeyException(request.Key, request.Owner);
+                request.OwnerId);
+            throw new PromptDuplicateKeyException(request.Key, request.OwnerId);
         }
         _logger.LogInformation(
-            "Creating new prompt with key ({Key}) and value ({Value}) for owner ({Owner}).",
+            "Creating new prompt with key ({Key}) and value ({Value}) for owner ({OwnerId}).",
             request.Key,
             request.Value,
-            request.Owner);
-        var newPrompt = Prompt.CreateNew(request.Key, request.Value, request.Owner);
+            request.OwnerId);
+        var newPrompt = Prompt.CreateNew(request.Key, request.Value, request.OwnerId);
 
         await _promptRepository.CreateAsync(newPrompt, cancellationToken);
 

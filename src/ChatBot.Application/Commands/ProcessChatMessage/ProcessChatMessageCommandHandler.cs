@@ -34,7 +34,7 @@ internal class ProcessChatMessageCommandHandler(
         _logger.LogInformation(
             "Sending chatContext ({ContextId}) to openai for user {Username}",
             chatContext.ContextId,
-            request.Username);
+            request.UserId);
         ChatMessage assistantMessage = await _chatCompletionRepository.GetChatCompletionAsync(chatContext, cancellationToken);
         chatContext.AddMessage(assistantMessage);
 
@@ -51,18 +51,18 @@ internal class ProcessChatMessageCommandHandler(
     {
         if (request.ContextId == Guid.Empty)
         {
-            var newChatHistory = ChatContext.CreateNew(request.Username);
+            var newChatHistory = ChatContext.CreateNew(request.UserId);
             _logger.LogInformation(
                 "Creating new chatContext ({ContextId}) for user {Username}",
                 newChatHistory.ContextId,
-                request.Username);
+                request.UserId);
             return newChatHistory;
         }
 
         _logger.LogInformation(
             "Retrieving chatContext ({ContextId}) for user {Username}",
             request.ContextId,
-            request.Username);
+            request.UserId);
         var savedChatHistory = await _chatContextRepository.GetAsync(request.ContextId, cancellationToken);
 
         if (savedChatHistory is null)
@@ -70,30 +70,30 @@ internal class ProcessChatMessageCommandHandler(
             _logger.LogError(
                 "ChatContext ({ContextId}) not found for user {Username}",
                 request.ContextId,
-                request.Username);
-            throw new ChatContextNotFoundException(request.ContextId, request.Username);
+                request.UserId);
+            throw new ChatContextNotFoundException(request.ContextId, request.UserId);
         }
 
-        if (!string.Equals(savedChatHistory.Username, request.Username, StringComparison.OrdinalIgnoreCase))
+        if (savedChatHistory.UserId != request.UserId)
         {
             _logger.LogWarning(
-                "User {Username} attempted to access chatContext ({ContextId}) that belongs to {Owner}",
-                request.Username,
+                "User ({UserId}) attempted to access chatContext ({ContextId}) that belongs to {Owner}",
+                request.UserId,
                 request.ContextId,
-                savedChatHistory.Username);
-            throw new ChatContextAuthorizationException(request.ContextId, request.Username);
+                savedChatHistory.UserId);
+            throw new ChatContextAuthorizationException(request.ContextId, request.UserId);
         }
         
         _logger.LogInformation(
-            "Retrieved chatContext ({ContextId}) for user {Username}",
+            "Retrieved chatContext ({ContextId}) for user {UserId}",
             request.ContextId,
-            request.Username);
+            request.UserId);
         return savedChatHistory;
     }
 
     private async Task<string> GenerateTitleAsync(ProcessChatMessageCommand request, CancellationToken cancellationToken)
     {
-        var tempHistory = ChatContext.CreateNew(request.Username);
+        var tempHistory = ChatContext.CreateNew(request.UserId);
 
         ChatMessage titleUserMessage = ChatMessage.CreateUserMessage(request.Content, PromptKey.Title);
 
@@ -101,7 +101,7 @@ internal class ProcessChatMessageCommandHandler(
 
         _logger.LogInformation(
             "Generating a title for new chat context with openai for user {Username}",
-            request.Username);
+            request.UserId);
         ChatMessage titleAssistantMessage = await _chatCompletionRepository
             .GetChatCompletionAsync(tempHistory, cancellationToken);
 

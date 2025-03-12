@@ -24,7 +24,7 @@ public class ChatContextNotFoundExceptionHandler(
             ex, 
             "ChatContext ({ContextId}) not found for User ({Username}).", 
             ex.ContextId,
-            ex.Username);
+            ex.UserId);
         
         var problemDetails = new ProblemDetails
         {
@@ -34,7 +34,7 @@ public class ChatContextNotFoundExceptionHandler(
             Extensions = new Dictionary<string, object?>()
             {
                 ["contextId"] = ex.ContextId,
-                ["username"] = ex.Username
+                ["username"] = ex.UserId
             }
         };
 

@@ -6,5 +6,5 @@ namespace ChatBot.Application.Queries.GetManyChatContextMetadata;
 
 public record GetManyChatContextMetadataQuery : IRequest<ReadOnlyCollection<ChatContextMetadata>>
 {
-    public required string Username { get; init; }
+    public required Guid UserId { get; init; }
 }

@@ -16,9 +16,9 @@ internal class GetManyPromptsQueryHandler(
     public async Task<ReadOnlyCollection<Prompt>> Handle(GetManyPromptsQuery request, CancellationToken cancellationToken)
     {
 	    _logger.LogInformation(
-		    "Getting prompts for user ({Username}).",
-		    request.Username);
-	    var userPrompts = await _readPromptRepository.GetManyAsync(request.Username, cancellationToken);
+		    "Getting prompts for user ({UserId}).",
+		    request.UserId);
+	    var userPrompts = await _readPromptRepository.GetManyAsync(request.UserId, cancellationToken);
 	    
 	    if (!request.IncludeSystemPrompts)
 	    {
@@ -26,8 +26,8 @@ internal class GetManyPromptsQueryHandler(
 	    }
 	    
 	    _logger.LogInformation(
-		    "Getting system prompts for user ({Username}).",
-		    request.Username);
+		    "Getting system prompts for user ({UserId}).",
+		    request.UserId);
 	    var systemPrompts = await _readPromptRepository.GetManyAsync(Constants.SystemUser, cancellationToken);
 	    
 	    var allPrompts = new List<Prompt>(userPrompts);

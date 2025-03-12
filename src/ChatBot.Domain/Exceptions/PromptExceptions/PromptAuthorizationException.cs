@@ -2,17 +2,17 @@
 
 public class PromptAuthorizationException : ApplicationException
 {
-	public PromptAuthorizationException(Guid promptId, string unauthorizedUser)
+	public PromptAuthorizationException(Guid promptId, Guid unauthorizedUserId)
         : base("User is not authorized to access this Prompt")
     {
         base.Data.Add(nameof(promptId), promptId);
-        base.Data.Add(nameof(unauthorizedUser), unauthorizedUser);
+        base.Data.Add(nameof(unauthorizedUserId), unauthorizedUserId);
 
         PromptId = promptId;
-        UnauthorizedUser = unauthorizedUser;
+        UnauthorizedUserId = unauthorizedUserId;
     }
     
     public Guid PromptId { get; }
-    public string UnauthorizedUser { get; }
+    public Guid UnauthorizedUserId { get; }
 }
 

@@ -20,25 +20,25 @@ internal class GetChatContextQueryHandler(
         if (chatContext is null)
         {
             _logger.LogError(
-                "Attempted to get chat context ({ContextId}) for user {Username}, but the chat context was not found",
+                "Attempted to get chat context ({ContextId}) for user {UserId}, but the chat context was not found",
                 request.ContextId,
-                request.Username);
-            throw new ChatContextNotFoundException(request.ContextId, request.Username);
+                request.UserId);
+            throw new ChatContextNotFoundException(request.ContextId, request.UserId);
         }
 
-        if (!string.Equals(chatContext.Username, request.Username, StringComparison.OrdinalIgnoreCase))
+        if (chatContext.UserId != request.UserId)
         {
             _logger.LogError(
-                "Attempted to get chat context ({ContextId}) for user {Username}, but the user is not authorized",
+                "Attempted to get chat context ({ContextId}) for user {UserId}, but the user is not authorized",
                 request.ContextId,
-                request.Username);
-            throw new ChatContextAuthorizationException(request.ContextId, request.Username);
+                request.UserId);
+            throw new ChatContextAuthorizationException(request.ContextId, request.UserId);
         }
 
         _logger.LogInformation(
-            "Retrieved chat context ({ContextId}) for user {Username}",
+            "Retrieved chat context ({ContextId}) for user {UserId}",
             chatContext.ContextId,
-            chatContext.Username);
+            chatContext.UserId);
         return chatContext;
     }
 }

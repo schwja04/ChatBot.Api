@@ -14,11 +14,11 @@ public class ChatContextEntityFrameworkRepository(ChatBotDbContext dbContext) : 
             .SingleOrDefaultAsync(x => x.ContextId == contextId, cancellationToken);    
     }
 
-    public async Task<ReadOnlyCollection<ChatContextMetadata>> GetManyMetadataAsync(string username, CancellationToken cancellationToken)
+    public async Task<ReadOnlyCollection<ChatContextMetadata>> GetManyMetadataAsync(Guid userId, CancellationToken cancellationToken)
     {
         var metadatas = await _dbContext.ChatContexts
-            .Where(x => x.Username == username)
-            .Select(x => ChatContextMetadata.CreateExisting(x.ContextId, x.Title, x.Username, x.CreatedAt, x.UpdatedAt))
+            .Where(x => x.UserId == userId)
+            .Select(x => ChatContextMetadata.CreateExisting(x.ContextId, x.Title, x.UserId, x.CreatedAt, x.UpdatedAt))
             .ToListAsync(cancellationToken);
         
         return metadatas.AsReadOnly();

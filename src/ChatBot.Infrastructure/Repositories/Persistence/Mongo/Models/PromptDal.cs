@@ -13,6 +13,7 @@ internal record PromptDal
 
     public required string Value { get; init; }
 
-    public required string Owner { get; init; }
+    [BsonRepresentation(BsonType.String)]
+    public required Guid OwnerId { get; init; }
 }
 

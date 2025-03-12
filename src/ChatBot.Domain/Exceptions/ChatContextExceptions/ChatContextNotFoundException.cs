@@ -4,15 +4,15 @@ namespace ChatBot.Domain.Exceptions.ChatContextExceptions;
 
 public sealed class ChatContextNotFoundException : ApplicationException
 {
-    public ChatContextNotFoundException(Guid contextId, string username) : base($"{nameof(ChatContext)} not found")
+    public ChatContextNotFoundException(Guid contextId, Guid userId) : base($"{nameof(ChatContext)} not found")
     {
         ContextId = contextId;
-        Username = username;
+        UserId = userId;
         Data.Add(nameof(ContextId), contextId);
-        Data.Add(nameof(username), username);
+        Data.Add(nameof(UserId), userId);
     }
 
     public Guid ContextId { get; }
-    public string Username { get; }
+    public Guid UserId { get; }
 }
 

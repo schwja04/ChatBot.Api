@@ -35,7 +35,7 @@ public class ChatMessageMapperShould
         var chatContext = ChatContext.CreateExisting(
             _fixture.Create<Guid>(),
             _fixture.Create<string>(),
-            _fixture.Create<string>(),
+            _fixture.Create<Guid>(),
             chatMessages,
             _fixture.Create<DateTimeOffset>(),
             _fixture.Create<DateTimeOffset>());
@@ -43,7 +43,7 @@ public class ChatMessageMapperShould
         _promptMapper
             .BuildMessageContentAsync(
                 Arg.Any<ChatMessage>(), 
-                Arg.Any<string>(), 
+                Arg.Any<Guid>(), 
                 Arg.Any<CancellationToken>())
             .Returns(chatMessages[0].Content);
         

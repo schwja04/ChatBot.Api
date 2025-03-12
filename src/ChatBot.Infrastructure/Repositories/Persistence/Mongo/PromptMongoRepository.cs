@@ -33,14 +33,13 @@ internal class PromptMongoRepository(
         return promptDal?.ToDomain();
     }
     
-    public async Task<Prompt?> GetAsync(string username, string promptKey, CancellationToken cancellationToken)
+    public async Task<Prompt?> GetAsync(Guid userId, string promptKey, CancellationToken cancellationToken)
     {
         var collection = GetCollection();
 
         var filter = Builders<PromptDal>
             .Filter
-            .Where(x =>
-                string.Equals(x.Owner, username, StringComparison.OrdinalIgnoreCase)
+            .Where(x => x.OwnerId == userId
                 && string.Equals(x.Key, promptKey, StringComparison.OrdinalIgnoreCase));
 
         using IAsyncCursor<PromptDal> result = await collection
@@ -51,13 +50,13 @@ internal class PromptMongoRepository(
         return promptDal?.ToDomain();
     }
 
-    public async Task<ReadOnlyCollection<Prompt>> GetManyAsync(string username, CancellationToken cancellationToken)
+    public async Task<ReadOnlyCollection<Prompt>> GetManyAsync(Guid userId, CancellationToken cancellationToken)
     {
         var collection = GetCollection();
 
         var filter = Builders<PromptDal>
             .Filter
-            .Where(x => string.Equals(x.Owner, username, StringComparison.OrdinalIgnoreCase));
+            .Where(x => x.OwnerId == userId);
 
         using IAsyncCursor<PromptDal> result = await collection
             .FindAsync(filter, cancellationToken: cancellationToken);

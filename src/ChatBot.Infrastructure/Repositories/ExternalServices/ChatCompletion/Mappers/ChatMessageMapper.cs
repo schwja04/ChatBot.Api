@@ -31,7 +31,7 @@ internal class ChatMessageMapper(IPromptMessageMapper promptMapper)
         {
             Role = currentMessage.Role.ToLLMChatRole(),
             Text = await _promptMapper.BuildMessageContentAsync(
-                currentMessage, chatContext.Username, cancellationToken)
+                currentMessage, chatContext.UserId, cancellationToken)
         });
         
         return reqMessages.AsReadOnly();

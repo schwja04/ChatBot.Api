@@ -19,28 +19,28 @@ internal class UpdatePromptCommandHandler(
         if (promptById is null)
         {
             _logger.LogError(
-                "Attempted to update prompt with id ({PromptId}) for user ({User}), but prompt was not found.",
+                "Attempted to update prompt with id ({PromptId}) for user ({UserId}), but prompt was not found.",
                 request.PromptId,
-                request.Owner);
-            throw new PromptNotFoundException(request.PromptId, request.Owner);
+                request.UserId);
+            throw new PromptNotFoundException(request.PromptId, request.UserId);
         }
-        if (promptById.Owner != request.Owner)
+        if (promptById.OwnerId != request.UserId)
         {
             _logger.LogError(
-                "Attempted to update prompt with id ({PromptId}) for user ({User}), but user is not authorized.",
+                "Attempted to update prompt with id ({PromptId}) for user ({UserId}), but user is not authorized.",
                 request.PromptId,
-                request.Owner);
-            throw new PromptAuthorizationException(request.PromptId, request.Owner);
+                request.UserId);
+            throw new PromptAuthorizationException(request.PromptId, request.UserId);
         }
         
-        Prompt? promptByKey = await _promptRepository.GetAsync(request.Owner, request.Key, cancellationToken);
+        Prompt? promptByKey = await _promptRepository.GetAsync(request.UserId, request.Key, cancellationToken);
         if (promptByKey is not null && promptByKey.PromptId != request.PromptId)
         {
             _logger.LogError(
                 "Attempted to update prompt with key ({Key}) for owner ({Owner}), but a prompt with same key already exists.",
                 request.Key,
-                request.Owner);
-            throw new PromptDuplicateKeyException(request.Key, request.Owner);
+                request.UserId);
+            throw new PromptDuplicateKeyException(request.Key, request.UserId);
         }
         
         promptById.UpdateKey(request.Key);
@@ -49,7 +49,7 @@ internal class UpdatePromptCommandHandler(
         _logger.LogInformation(
             "Updating prompt with id ({PromptId}) for owner ({Owner}).",
             request.PromptId,
-            request.Owner);
+            request.UserId);
 		await _promptRepository.UpdateAsync(promptById, cancellationToken);
     }
 }

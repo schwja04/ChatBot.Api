@@ -16,17 +16,17 @@ internal class PromptEntityFrameworkRepository(ChatBotDbContext dbContext) : IPr
         return prompt;
     }
 
-    public async Task<Prompt?> GetAsync(string username, string promptKey, CancellationToken cancellationToken)
+    public async Task<Prompt?> GetAsync(Guid userId, string promptKey, CancellationToken cancellationToken)
     {
         var prompt = await _dbContext.Prompts
-            .SingleOrDefaultAsync(p => p.Owner == username && p.Key == promptKey, cancellationToken);
+            .SingleOrDefaultAsync(p => p.OwnerId == userId && p.Key == promptKey, cancellationToken);
         return prompt;
     }
 
-    public async Task<ReadOnlyCollection<Prompt>> GetManyAsync(string username, CancellationToken cancellationToken)
+    public async Task<ReadOnlyCollection<Prompt>> GetManyAsync(Guid userId, CancellationToken cancellationToken)
     {
         var prompts =  await _dbContext.Prompts
-            .Where(p => p.Owner == username)
+            .Where(p => p.OwnerId == userId)
             .ToListAsync(cancellationToken);
 
         return prompts.AsReadOnly();

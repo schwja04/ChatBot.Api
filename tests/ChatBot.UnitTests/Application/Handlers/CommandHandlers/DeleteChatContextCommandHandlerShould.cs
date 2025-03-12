@@ -26,7 +26,7 @@ public class DeleteChatContextCommandHandlerShould
         var command = new DeleteChatContextCommand()
         {
             ContextId = Guid.NewGuid(),
-            Username = "test"
+            UserId = Guid.NewGuid()
         };
         
         // Act
@@ -43,7 +43,7 @@ public class DeleteChatContextCommandHandlerShould
         var chatContext = ChatContext.CreateExisting(
             Guid.NewGuid(),
             "test",
-            "testUser",
+            Guid.NewGuid(),
             [],
             DateTime.UtcNow,
             DateTime.UtcNow);
@@ -52,7 +52,7 @@ public class DeleteChatContextCommandHandlerShould
         var command = new DeleteChatContextCommand()
         {
             ContextId = chatContext.ContextId,
-            Username = "testUser2"
+            UserId = Guid.NewGuid(),
         };
         
         // Act
@@ -69,7 +69,7 @@ public class DeleteChatContextCommandHandlerShould
         var chatContext = ChatContext.CreateExisting(
             Guid.NewGuid(),
             "test",
-            "testUser",
+            Guid.NewGuid(),
             [],
             DateTime.UtcNow,
             DateTime.UtcNow);
@@ -78,7 +78,7 @@ public class DeleteChatContextCommandHandlerShould
         var command = new DeleteChatContextCommand()
         {
             ContextId = chatContext.ContextId,
-            Username = chatContext.Username
+            UserId = chatContext.UserId
         };
         
         // Act

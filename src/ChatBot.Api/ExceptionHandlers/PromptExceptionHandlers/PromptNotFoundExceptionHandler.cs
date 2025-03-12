@@ -22,7 +22,7 @@ public class PromptNotFoundExceptionHandler(ILogger<PromptNotFoundExceptionHandl
             ex,
             "Prompt ({PromptId}) not found for user ({owner}).",
             ex.PromptId,
-            ex.Owner);
+            ex.OwnerId);
 
         var problemDetails = new ProblemDetails
         {
@@ -32,7 +32,7 @@ public class PromptNotFoundExceptionHandler(ILogger<PromptNotFoundExceptionHandl
             Extensions = new Dictionary<string, object?>()
             {
                 ["promptId"] = ex.PromptId,
-                ["username"] = ex.Owner
+                ["username"] = ex.OwnerId
             }
         };
 

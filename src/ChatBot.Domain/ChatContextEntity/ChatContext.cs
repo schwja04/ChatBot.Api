@@ -15,14 +15,14 @@ public record ChatContext
     private ChatContext(
         Guid contextId, 
         string title, 
-        string username, 
+        Guid userId, 
         IEnumerable<ChatMessage> messages, 
         DateTimeOffset createdAt, 
         DateTimeOffset updatedAt)
     {
         ContextId = contextId;
         Title = title;
-        Username = username;
+        UserId = userId;
         _messages.AddRange(messages);
 
         CreatedAt = createdAt;
@@ -33,7 +33,7 @@ public record ChatContext
 
     public string Title { get; private set; }
 
-    public string Username { get; }
+    public Guid UserId { get; }
 
     public ReadOnlyCollection<ChatMessage> Messages => _messages.AsReadOnly();
 
@@ -45,7 +45,7 @@ public record ChatContext
     {
         if (string.IsNullOrWhiteSpace(title))
         {
-            throw new ChatContextTitleCannotBeEmptyException(ContextId, Username);
+            throw new ChatContextTitleCannotBeEmptyException(ContextId, UserId);
         }
         
         if (string.Equals(Title, title, StringComparison.OrdinalIgnoreCase))
@@ -64,14 +64,14 @@ public record ChatContext
         _messages.Add(message);
     }
 
-    public static ChatContext CreateNew(string username)
+    public static ChatContext CreateNew(Guid userId)
     {
         DateTimeOffset now = DateTimeOffset.Now;
 
         return new ChatContext(
             contextId: Guid.NewGuid(),
             title: string.Empty,
-            username: username,
+            userId: userId,
             messages: [],
             createdAt: now,
             updatedAt: now);
@@ -80,7 +80,7 @@ public record ChatContext
     public static ChatContext CreateExisting(
         Guid contextId,
         string title,
-        string username,
+        Guid userId,
         IEnumerable<ChatMessage> messages,
         DateTimeOffset createdAt,
         DateTimeOffset updatedAt)
@@ -88,7 +88,7 @@ public record ChatContext
         return new ChatContext(
             contextId: contextId,
             title: title,
-            username: username,
+            userId: userId,
             messages: messages,
             createdAt: createdAt,
             updatedAt: updatedAt);

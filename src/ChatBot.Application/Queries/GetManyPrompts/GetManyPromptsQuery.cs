@@ -6,7 +6,7 @@ namespace ChatBot.Application.Queries.GetManyPrompts;
 
 public record GetManyPromptsQuery : IRequest<ReadOnlyCollection<Prompt>>
 {
-	public required string Username { get; init; }
+	public required Guid UserId { get; init; }
 	
 	public required bool IncludeSystemPrompts { get; init; }
 }

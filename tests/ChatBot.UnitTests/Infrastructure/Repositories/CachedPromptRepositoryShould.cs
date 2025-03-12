@@ -77,7 +77,7 @@ public class CachedPromptRepositoryShould
         _memoryCache.TryGetValue(Arg.Any<object>(), out Arg.Any<object?>()).Returns(
             _ => false);
         _innerPromptRepository.GetAsync(prompt.PromptId, cancellationToken).Returns(prompt);
-        _innerPromptRepository.GetManyAsync(prompt.Owner, cancellationToken).Returns(promptCollection);
+        _innerPromptRepository.GetManyAsync(prompt.OwnerId, cancellationToken).Returns(promptCollection);
         
         // Act
         var result = await _sut.GetAsync(prompt.PromptId, cancellationToken);
