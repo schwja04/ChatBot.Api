@@ -32,8 +32,8 @@ internal static class ServiceCollectionExtensions
 
         services
             .AddTransient<IChatCompletionRepository, ChatCompletionRepository>()
-            .AddSingleton<IPromptMessageMapper, PromptMessageMapper>()
-            .AddSingleton<IChatMessageMapper, ChatMessageMapper>()
+            .AddScoped<IPromptMessageMapper, PromptMessageMapper>()
+            .AddScoped<IChatMessageMapper, ChatMessageMapper>()
             .AddTransientWithHttpClient<IChatClient, OllamaChatClient>(configuration, (httpClient, sp) =>
             {
                 var chatCompletionOptions = sp.GetRequiredService<IOptions<ChatCompletionOptions>>().Value;

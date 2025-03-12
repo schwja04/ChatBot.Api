@@ -3,6 +3,8 @@ using ChatBot.Api;
 using ChatBot.Api.Swagger.Filters;
 using Common.Cors;
 using Common.ServiceDefaults;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.IdentityModel.JsonWebTokens;
 
 // ReSharper disable ClassNeverInstantiated.Global
 
@@ -23,6 +25,20 @@ builder.Services.AddSwaggerGen(c =>
 });
 
 builder.Services.AddLogging(loggingBuilder => loggingBuilder.AddConsole());
+
+builder.Services.AddAuthorization(
+    options =>
+    {
+        options.FallbackPolicy = new AuthorizationPolicyBuilder()
+            .RequireAuthenticatedUser()
+            .Build();
+    });
+builder.Services.AddAuthentication()
+    .AddKeycloakJwtBearer("keycloak", realm: "chatbot", options =>
+    {
+        options.RequireHttpsMetadata = false;
+        options.Audience = "account";
+    });
 
 // Add swagger with Newtonsoft functionality
 builder.Services
@@ -52,5 +68,9 @@ app.UseCors("CorsPolicy");
 app.MapControllers();
 app.UseHttpsRedirection();
 app.UseExceptionHandler();
+
+JsonWebTokenHandler.DefaultInboundClaimTypeMap.Clear();
+app.UseAuthentication();
+app.UseAuthorization();
 
 app.Run();
