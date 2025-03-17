@@ -1,3 +1,4 @@
+using System.Text.Json;
 using System.Text.Json.Serialization;
 using ChatBot.Api;
 using ChatBot.Api.Swagger.Filters;
@@ -5,6 +6,7 @@ using Common.Cors;
 using Common.ServiceDefaults;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.IdentityModel.JsonWebTokens;
+using Microsoft.OpenApi.Models;
 
 // ReSharper disable ClassNeverInstantiated.Global
 
@@ -19,9 +21,53 @@ builder.Services.RegisterServices(builder.Configuration);
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen(c =>
+builder.Services.AddSwaggerGen(options =>
 {
-    c.SchemaFilter<EnumSchemaFilter>();
+    var keycloakConfig = builder.Configuration.GetSection("Authorization:Keycloak");
+    var realm = keycloakConfig["Realm"]!;
+    
+    
+    using var httpClient = new HttpClient();
+    var json = httpClient.GetStringAsync($"https+http://keycloak/realms/{realm}/.well-known/openid-configuration").Result;
+    var config = JsonSerializer.Deserialize<OpenIdConnectConfiguration>(json)!;
+    
+    options.SchemaFilter<EnumSchemaFilter>();
+
+    options.AddSecurityDefinition("oauth2", new OpenApiSecurityScheme
+    {
+        Type = SecuritySchemeType.OAuth2,
+        Flows = new OpenApiOAuthFlows
+        {
+            AuthorizationCode = new OpenApiOAuthFlow
+            {
+                AuthorizationUrl = new Uri(config.AuthorizationEndpoint),
+                TokenUrl = new Uri(config.TokenEndpoint),
+                Scopes = new Dictionary<string, string>
+                {
+                    { "openid", "OpenID Connect scope" },
+                    { "profile", "Access user profile" },
+                    { "email", "Access user email" }
+                },
+                
+            },
+            
+        }
+    });
+
+    options.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
+        {
+            new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference
+                {
+                    Type = ReferenceType.SecurityScheme,
+                    Id = "oauth2"
+                }
+            },
+            new List<string> { "openid", "profile", "email" }
+        }
+    });
 });
 
 builder.Services.AddLogging(loggingBuilder => loggingBuilder.AddConsole());
@@ -58,7 +104,13 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment() || app.Environment.IsEnvironment("Local"))
 {
     app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseSwaggerUI(options =>
+    {
+        options.OAuthClientId("chatbot-public-client");
+        options.OAuthScopeSeparator(" ");
+        options.OAuthAppName("Swagger UI with Keycloak");
+        options.OAuth2RedirectUrl("https://localhost:5001/swagger/oauth2-redirect.html");
+    });
 }
 
 app.UseRouting();
@@ -74,3 +126,15 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.Run();
+
+public class OpenIdConnectConfiguration
+{
+    [JsonPropertyName("authorization_endpoint")]
+    public string AuthorizationEndpoint { get; set; } = null!;
+    
+    [JsonPropertyName("token_endpoint")]
+    public string TokenEndpoint { get; set; } = null!;
+    
+    [JsonPropertyName("issuer")]
+    public string Issuer { get; set; } = null!;
+}
