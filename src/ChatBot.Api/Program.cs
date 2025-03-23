@@ -4,6 +4,7 @@ using ChatBot.Api.Authentication;
 using ChatBot.Api.OpenApi;
 using Common.Cors;
 using Common.ServiceDefaults;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.IdentityModel.JsonWebTokens;
 using Microsoft.OpenApi.Models;
 
@@ -35,9 +36,9 @@ builder.Services.AddLogging(loggingBuilder => loggingBuilder.AddConsole());
 builder.Services.AddAuthorization(
     options =>
     {
-        // options.FallbackPolicy = new AuthorizationPolicyBuilder()
-        //     .RequireAuthenticatedUser()
-        //     .Build();
+        options.FallbackPolicy = new AuthorizationPolicyBuilder()
+            .RequireAuthenticatedUser()
+            .Build();
     });
 builder.Services.AddKeycloakAuth(builder.Configuration);
 
@@ -58,7 +59,7 @@ var app = builder.Build();
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment() || app.Environment.IsEnvironment("Local"))
 {
-    app.MapOpenApi();
+    app.MapOpenApi().AllowAnonymous();
     app.UseSwaggerUI(options =>
     {
         options.SwaggerEndpoint("/openapi/v1.json", "ChatBot API");
