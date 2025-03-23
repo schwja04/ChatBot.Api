@@ -1,10 +1,12 @@
 using System.Text.Json.Serialization;
 using ChatBot.Api;
-using ChatBot.Api.Swagger.Filters;
+using ChatBot.Api.Authentication;
+using ChatBot.Api.OpenApi;
 using Common.Cors;
 using Common.ServiceDefaults;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.IdentityModel.JsonWebTokens;
+using Microsoft.OpenApi.Models;
 
 // ReSharper disable ClassNeverInstantiated.Global
 
@@ -18,10 +20,15 @@ builder.Services.AddCorsConfiguration(builder.Configuration);
 builder.Services.RegisterServices(builder.Configuration);
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen(c =>
+builder.Services.AddOpenApi(options =>
 {
-    c.SchemaFilter<EnumSchemaFilter>();
+    options.AddDocumentTransformer<KeycloakBearerTokenDocumentTransformer>();
+    // THIS IS A WORKAROUND, THIS SHOULD BE REMOVED AT THE RELEASE OF 9.0.4
+    options.AddDocumentTransformer((document, _, _) =>
+    {
+        document.Servers = new List<OpenApiServer>();
+        return Task.CompletedTask;
+    });
 });
 
 builder.Services.AddLogging(loggingBuilder => loggingBuilder.AddConsole());
@@ -33,12 +40,7 @@ builder.Services.AddAuthorization(
             .RequireAuthenticatedUser()
             .Build();
     });
-builder.Services.AddAuthentication()
-    .AddKeycloakJwtBearer("keycloak", realm: "chatbot", options =>
-    {
-        options.RequireHttpsMetadata = false;
-        options.Audience = "account";
-    });
+builder.Services.AddKeycloakAuth(builder.Configuration);
 
 // Add swagger with Newtonsoft functionality
 builder.Services
@@ -57,8 +59,15 @@ var app = builder.Build();
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment() || app.Environment.IsEnvironment("Local"))
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
+    app.MapOpenApi().AllowAnonymous();
+    app.UseSwaggerUI(options =>
+    {
+        options.SwaggerEndpoint("/openapi/v1.json", "ChatBot API");
+        options.OAuthClientId("chatbot-public-client");
+        options.OAuthScopeSeparator(" ");
+        options.OAuthAppName("Swagger UI with Keycloak");
+        options.OAuth2RedirectUrl($"https://localhost:5001/swagger/oauth2-redirect.html");
+    });
 }
 
 app.UseRouting();
