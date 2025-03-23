@@ -19,7 +19,6 @@ This context is then passed to the OpenAI Completion API with each request.
 ## Testing
 ### Unit Tests
 These are the most basic tests and are used to test individual components of the application.
-
 ### Integration Tests
 This is where I began stretching to get as much out of this project as possible.
 #### Libraries
@@ -27,7 +26,16 @@ This is where I began stretching to get as much out of this project as possible.
 - `TestContainers` - This is used to spin up a docker container with a database for the tests to interact with.
   - This coupled with `WebApplicationFactory` allowed me to test the various database implementations in a repeatable fashion.
 - `XUnit` - The testing framework I used. The functionality of the ICollectionFixture shined here as I was able to reuse the same database in multiple test classes.
-- `WireMock.Net` (Still in testing) - This is used to mock the OpenAI API. This will allow me to test the chatbot functionality without actually hitting the API. This would be more ideal than an NSubstitute mock of the OpenAIClient, as it would be a true test of the solution.
+- `WireMock.Net` (Still in testing) - This is used to mock the OpenAI API. This will allow me to test the chatbot functionality without actually hitting the API. 
+This would be more ideal than an NSubstitute mock of the OpenAIClient, as it would be a true test of the solution.
+
+## Authentication
+### Keycloak
+- Keycloak was chosen as the identity provider because it is open-source and easy to host locally in a docker container.
+This is beneficial as it fits well with the Dotnet Aspire orchestration for having a local development environment up quickly.
+### Setup
+- Either setup with a realm init file or manually configure the realm and client.
+    - I've opted to configure the realm and client manually as it will not be done often.
 
 ## Future
 - Redis Cache for Prompts to replace the in-memory cache
