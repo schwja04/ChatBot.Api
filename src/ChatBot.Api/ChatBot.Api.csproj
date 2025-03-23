@@ -53,9 +53,6 @@
     <None Remove="Swagger\Filters\" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="OpenApi\Filters\" />
-  </ItemGroup>
-  <ItemGroup>
     <Content Update="appsettings.Local.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
