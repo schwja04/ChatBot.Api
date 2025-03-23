@@ -37,7 +37,7 @@ var keycloak = builder.AddKeycloak(
     .WithExternalHttpEndpoints();
 
 var openAIServiceHttp = builder.Configuration.GetValue<string>("Services:OpenAIService:http:0")!;
-
+var keycloakBaseAddress = keycloak.Resource.GetEndpoint("http");
 builder.AddProject<ChatBot_Api>("chatbot-api")
     .WithReference(mongoDb)
     .WaitFor(mongoDb)
@@ -47,6 +47,7 @@ builder.AddProject<ChatBot_Api>("chatbot-api")
     .WithEnvironment("Mongo__Username", mongoUsername.Resource.Value)
     .WithEnvironment("Mongo__Password", mongoPassword.Resource.Value)
     .WithEnvironment("Mongo__DatabaseName", databaseName)
-    .WithEnvironment("Services__OpenAIService__http__0", openAIServiceHttp);
+    .WithEnvironment("Services__OpenAIService__http__0", openAIServiceHttp)
+    .WithEnvironment("Authorization__Keycloak__BaseAddress", keycloakBaseAddress);
 
 builder.Build().Run();
