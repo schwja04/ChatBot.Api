@@ -1,13 +1,11 @@
 using ChatBot.Api.Authentication;
 using Microsoft.AspNetCore.OpenApi;
 using Microsoft.Extensions.Options;
-using Microsoft.OpenApi.Any;
-using Microsoft.OpenApi.Interfaces;
 using Microsoft.OpenApi.Models;
 
-namespace ChatBot.Api.Swagger;
+namespace ChatBot.Api.OpenApi;
 
-internal class KeyCloakBearerTokenDocumentTransformer(IServiceProvider serviceProvider) : IOpenApiDocumentTransformer
+internal class KeycloakBearerTokenDocumentTransformer(IServiceProvider serviceProvider) : IOpenApiDocumentTransformer
 {
     private readonly IServiceProvider _serviceProvider = serviceProvider;
 

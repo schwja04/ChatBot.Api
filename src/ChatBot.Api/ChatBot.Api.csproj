@@ -53,7 +53,7 @@
     <None Remove="Swagger\Filters\" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Swagger\Filters\" />
+    <Folder Include="OpenApi\Filters\" />
   </ItemGroup>
   <ItemGroup>
     <Content Update="appsettings.Local.json">

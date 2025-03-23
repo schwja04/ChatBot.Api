@@ -2,7 +2,7 @@
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
-namespace ChatBot.Api.Swagger.Filters;
+namespace ChatBot.Api.OpenApi.Filters;
 
 public class EnumSchemaFilter : ISchemaFilter
 {

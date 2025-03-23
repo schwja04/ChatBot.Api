@@ -1,9 +1,11 @@
 using System.Text.Json.Serialization;
 using ChatBot.Api;
-using ChatBot.Api.Swagger;
+using ChatBot.Api.Authentication;
+using ChatBot.Api.OpenApi;
 using Common.Cors;
 using Common.ServiceDefaults;
 using Microsoft.IdentityModel.JsonWebTokens;
+using Microsoft.OpenApi.Models;
 
 // ReSharper disable ClassNeverInstantiated.Global
 
@@ -17,8 +19,16 @@ builder.Services.AddCorsConfiguration(builder.Configuration);
 builder.Services.RegisterServices(builder.Configuration);
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-// builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGenWithKeycloak(builder.Configuration);
+builder.Services.AddOpenApi(options =>
+{
+    options.AddDocumentTransformer<KeycloakBearerTokenDocumentTransformer>();
+    // THIS IS A WORKAROUND, THIS SHOULD BE REMOVED AT THE RELEASE OF 9.0.4
+    options.AddDocumentTransformer((document, _, _) =>
+    {
+        document.Servers = new List<OpenApiServer>();
+        return Task.CompletedTask;
+    });
+});
 
 builder.Services.AddLogging(loggingBuilder => loggingBuilder.AddConsole());
 
@@ -29,12 +39,7 @@ builder.Services.AddAuthorization(
         //     .RequireAuthenticatedUser()
         //     .Build();
     });
-builder.Services.AddAuthentication()
-    .AddKeycloakJwtBearer("keycloak", realm: "chatbot", options =>
-    {
-        options.RequireHttpsMetadata = false;
-        options.Audience = "account";
-    });
+builder.Services.AddKeycloakAuth(builder.Configuration);
 
 // Add swagger with Newtonsoft functionality
 builder.Services
